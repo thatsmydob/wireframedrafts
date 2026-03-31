@@ -62,8 +62,8 @@
   .om-meta-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text3); }
   .om-meta-val { font-size: 21px; font-weight: 700; color: var(--text); line-height: 1.1; }
 
-  /* Right: KPI row */
-  .om-kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px 12px; margin-bottom: 10px; }
+  /* Right: KPI 3×2 grid */
+  .om-kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px 12px; margin-bottom: 10px; }
   .om-kpi-item { display: flex; flex-direction: column; gap: 2px; }
   .om-kpi-label { font-size: 9px; color: var(--text3); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
   .om-kpi-val { font-size: 21px; font-weight: 700; color: var(--text); line-height: 1.1; }
@@ -292,8 +292,13 @@
     <div class="om-kpi-grid">
       <div class="om-kpi-item">
         <div class="om-kpi-label"># Facilities</div>
-        <div class="om-kpi-val" style="font-size:15px;line-height:1.2;">12 (9 / 75%)</div>
-        <div class="om-kpi-sub">total (members / % in OM)</div>
+        <div class="om-kpi-val">12</div>
+        <div class="om-kpi-sub">in this OM</div>
+      </div>
+      <div class="om-kpi-item">
+        <div class="om-kpi-label">% AAPACN Member</div>
+        <div class="om-kpi-val">75% (9)</div>
+        <div class="om-kpi-sub">facilities with members</div>
       </div>
       <div class="om-kpi-item">
         <div class="om-kpi-label">% Rural</div>
