@@ -120,8 +120,14 @@
   .accent-financial  th { border-bottom-color: #444; }
   .accent-training   th { border-bottom-color: #444; }
 
+  /* ── Star + Benchmark side-by-side layout ── */
+  .bench-row { display: flex; align-items: flex-start; border-top: 2px solid var(--border); }
+  .bench-star { flex: 0 0 310px; border-right: 1px solid var(--border); }
+  .bench-star .star-section { border-top: none; }
+  .bench-dotplot { flex: 1 1 0; min-width: 0; }
+
   /* ── Dot plot section ── */
-  .dotplot-section { background: var(--surface); border-top: 2px solid var(--border); padding: 14px 20px 18px; }
+  .dotplot-section { background: var(--surface); padding: 14px 20px 18px; }
   .dotplot-title { font-size: 12px; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: 0.5px; }
   .dotplot-subtitle { font-size: 10px; color: var(--text3); margin-top: 3px; margin-bottom: 14px; }
   .dotplot-axis-header { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
@@ -145,6 +151,7 @@
   /* facility dots */
   .fdot { position: absolute; width: 10px; height: 10px; border-radius: 50%; transform: translateX(-50%) translateY(-50%); cursor: pointer; z-index: 3; border: 1.5px solid rgba(255,255,255,0.8); transition: transform 0.1s; }
   .fdot:hover { transform: translateX(-50%) translateY(-50%) scale(1.5); z-index: 10; }
+  .bdot { position: absolute; width: 5px; height: 5px; border-radius: 50%; background: #c8c4bc; transform: translateX(-50%) translateY(-50%); opacity: 0.55; pointer-events: none; z-index: 1; }
   .dotplot-legend { font-size: 8.5px; color: var(--text3); margin-top: 10px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
   .dp-legend-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; vertical-align: middle; margin-right: 3px; }
 
@@ -360,11 +367,11 @@
       </div>
     </div>
 
-<!-- Dot plot (rendered by JS) -->
-<div class="dotplot-section" id="dotplot-section"></div>
-
-<!-- ── Star Rating Distribution ── -->
-<div class="star-section" id="star-section">
+<!-- Star chart (left) + Benchmarks (right) side by side -->
+<div class="bench-row">
+  <div class="bench-star">
+    <!-- ── Star Rating Distribution ── -->
+    <div class="star-section" id="star-section">
   <div class="star-section-title">Distribution of CMS Star Ratings across all facilities</div>
   <div class="star-legend">
     <div class="star-legend-item"><div class="star-legend-dot" style="background:#444;"></div>AAPACN Members &nbsp;<span style="font-family:'DM Mono',monospace;color:var(--text3);">(10 facilities)</span></div>
@@ -415,7 +422,13 @@
       <div class="star-axis-line"></div>
     </div>
   </div>
-</div>
+</div><!-- /star-section -->
+  </div><!-- /bench-star -->
+  <div class="bench-dotplot">
+    <!-- Dot plot (rendered by JS) -->
+    <div class="dotplot-section" id="dotplot-section"></div>
+  </div><!-- /bench-dotplot -->
+</div><!-- /bench-row -->
 
 <!-- Status bar -->
 <div class="status-bar">
@@ -809,17 +822,17 @@ function makeDotData(currentVal, min, max, count) {
 
 const DOT_PLOT_DATA = {
   clinical: [
-    { currentVal:15.5, min:8.1,  max:26.4, allVals:makeDotData(15.5,8.1,  26.4,47) },
-    { currentVal:6.1,  min:2.8,  max:11.2, allVals:makeDotData(6.1, 2.8,  11.2,47) },
+    { currentVal:15.5, min:8.1,  max:26.4, allVals:makeDotData(15.5,8.1,  26.4,200) },
+    { currentVal:6.1,  min:2.8,  max:11.2, allVals:makeDotData(6.1, 2.8,  11.2,200) },
     { currentVal:2.7,  min:0.9,  max:5.8,  allVals:makeDotData(2.7, 0.9,  5.8, 47) },
     { currentVal:3.2,  min:1.1,  max:8.4,  allVals:makeDotData(3.2, 1.1,  8.4, 47) },
-    { currentVal:18.8, min:14.2, max:24.1, allVals:makeDotData(18.8,14.2, 24.1,47) },
+    { currentVal:18.8, min:14.2, max:24.1, allVals:makeDotData(18.8,14.2, 24.1,200) },
   ],
   regulatory: [
     { currentVal:1.8,  min:0.0,  max:5.2,  allVals:makeDotData(1.8, 0.0,  5.2, 47) },
     { currentVal:0.3,  min:0.0,  max:2.1,  allVals:makeDotData(0.3, 0.0,  2.1, 47) },
     { currentVal:3.1,  min:1.2,  max:6.8,  allVals:makeDotData(3.1, 1.2,  6.8, 47) },
-    { currentVal:27.0, min:9.0,  max:58.0, allVals:makeDotData(27.0,9.0,  58.0,47) },
+    { currentVal:27.0, min:9.0,  max:58.0, allVals:makeDotData(27.0,9.0,  58.0,200) },
     { currentVal:3.1,  min:1.8,  max:4.8,  allVals:makeDotData(3.1, 1.8,  4.8, 47) },
     { currentVal:3.1,  min:1.5,  max:4.9,  allVals:makeDotData(3.1, 1.5,  4.9, 47) },
     { currentVal:3.4,  min:2.1,  max:4.8,  allVals:makeDotData(3.4, 2.1,  4.8, 47) },
@@ -827,19 +840,19 @@ const DOT_PLOT_DATA = {
     { currentVal:0.15, min:0.0,  max:0.8,  allVals:makeDotData(0.15,0.0,  0.8, 47) },
   ],
   staffing: [
-    { currentVal:0.54, min:0.38, max:0.82, allVals:makeDotData(0.54,0.38, 0.82,47) },
-    { currentVal:3.79, min:3.10, max:4.62, allVals:makeDotData(3.79,3.10, 4.62,47) },
-    { currentVal:3.61, min:2.95, max:4.41, allVals:makeDotData(3.61,2.95, 4.41,47) },
-    { currentVal:26.4, min:14.2, max:42.8, allVals:makeDotData(26.4,14.2, 42.8,47) },
-    { currentVal:36.0, min:21.0, max:54.0, allVals:makeDotData(36.0,21.0, 54.0,47) },
+    { currentVal:0.54, min:0.38, max:0.82, allVals:makeDotData(0.54,0.38, 0.82,200) },
+    { currentVal:3.79, min:3.10, max:4.62, allVals:makeDotData(3.79,3.10, 4.62,200) },
+    { currentVal:3.61, min:2.95, max:4.41, allVals:makeDotData(3.61,2.95, 4.41,200) },
+    { currentVal:26.4, min:14.2, max:42.8, allVals:makeDotData(26.4,14.2, 42.8,200) },
+    { currentVal:36.0, min:21.0, max:54.0, allVals:makeDotData(36.0,21.0, 54.0,200) },
   ],
   financial: [
-    { currentVal:1.03, min:0.78, max:1.42, allVals:makeDotData(1.03,0.78, 1.42,47) },
-    { currentVal:79.8, min:58.0, max:96.0, allVals:makeDotData(79.8,58.0, 96.0,47) },
+    { currentVal:1.03, min:0.78, max:1.42, allVals:makeDotData(1.03,0.78, 1.42,200) },
+    { currentVal:79.8, min:58.0, max:96.0, allVals:makeDotData(79.8,58.0, 96.0,200) },
   ],
   training: [
     { currentVal:12.4, min:0.0,  max:95.0,  allVals:makeDotData(12.4,0.0,  95.0, 47) },
-    { currentVal:20.0, min:0.0,  max:150.0, allVals:makeDotData(20.0,0.0,  150.0,47) },
+    { currentVal:20.0, min:0.0,  max:150.0, allVals:makeDotData(20.0,0.0,  150.0,200) },
     { currentVal:30.1, min:0.0,  max:52.0,  allVals:makeDotData(30.1,0.0,  52.0, 47) },
     { currentVal:37.8, min:0.0,  max:60.0,  allVals:makeDotData(37.8,0.0,  60.0, 47) },
     { currentVal:26.8, min:0.0,  max:48.0,  allVals:makeDotData(26.8,0.0,  48.0, 47) },
@@ -857,10 +870,10 @@ function renderDotPlot(tabKey) {
 
   let html = `
     <div class="dotplot-title">Facility Performance vs. National Benchmarks &mdash; ${tab.label}</div>
-    <div class="dotplot-subtitle">Each dot represents one facility in this OM, positioned by its national percentile rank for that metric. &nbsp;<strong style="color:#27ae60;font-weight:600">Green zone</strong> = top 10% nationally &nbsp;&middot;&nbsp; <strong style="color:#c0392b;font-weight:600">Red zone</strong> = bottom 10% &nbsp;&middot;&nbsp; <strong style="color:var(--text2);font-weight:600">|</strong> = national average &nbsp;&middot;&nbsp; Hover any dot to see the facility name, value, and how it compares nationally.</div>
+    <div class="dotplot-subtitle">Each dot represents one facility nationally. OM facilities shown in dark. &nbsp;<strong style="color:var(--text2);font-weight:600">|</strong> = national average &nbsp;&middot;&nbsp; Vertical lines = 25th, 50th, 75th, 100th percentile &nbsp;&middot;&nbsp; Hover any dark dot to see details.</div>
     <div class="dotplot-axis-header">
       <div class="dotplot-metric-label"></div>
-      <div class="dotplot-axis-labels"><span>0th pct</span><span>50th pct</span><span>100th pct</span></div>
+      <div class="dotplot-axis-labels"><span>0th</span><span>25th</span><span>50th</span><span>75th</span><span>100th</span></div>
     </div>`;
 
   meta.forEach((m, metaIdx) => {
@@ -873,21 +886,18 @@ function renderDotPlot(tabKey) {
     const allMax = allSorted[allSorted.length - 1];
     const range  = allMax - allMin || 1;
 
-    // 10th and 90th percentile thresholds
-    const p10val = allSorted[Math.floor(allSorted.length * 0.10)];
-    const p90val = allSorted[Math.floor(allSorted.length * 0.90)];
-    const p10pct = Math.min(98, Math.max(2, ((p10val - allMin) / range) * 100));
-    const p90pct = Math.min(98, Math.max(2, ((p90val - allMin) / range) * 100));
+    // 25th / 50th / 75th percentile positions
+    const p25val = allSorted[Math.floor(allSorted.length * 0.25)];
+    const p50val = allSorted[Math.floor(allSorted.length * 0.50)];
+    const p75val = allSorted[Math.floor(allSorted.length * 0.75)];
+    const p25pct = Math.min(97, Math.max(3, ((p25val - allMin) / range) * 100));
+    const p50pct = Math.min(97, Math.max(3, ((p50val - allMin) / range) * 100));
+    const p75pct = Math.min(97, Math.max(3, ((p75val - allMin) / range) * 100));
 
     // National avg line position
     const natPct = m.benchmarkNat != null
       ? Math.min(98, Math.max(2, ((m.benchmarkNat - allMin) / range) * 100))
       : null;
-
-    // Zone shading: for highIsBad, low values = good (left = green, right = red)
-    // for !highIsBad, high values = good (left = red, right = green)
-    const leftZoneCls  = m.highIsBad ? 'dp-zone dp-zone-left-good'  : 'dp-zone dp-zone-left-bad';
-    const rightZoneCls = m.highIsBad ? 'dp-zone dp-zone-right-bad' : 'dp-zone dp-zone-right-good';
 
     const avgLine = natPct != null
       ? `<div class="dotplot-avg-line" style="left:${natPct}%"></div>
@@ -895,12 +905,22 @@ function renderDotPlot(tabKey) {
       : '';
 
     const pctLines = `
-      <div class="dp-pct-line"  style="left:${p10pct}%"></div>
-      <div class="dp-pct-label" style="left:${p10pct}%">10th</div>
-      <div class="dp-pct-line"  style="left:${p90pct}%"></div>
-      <div class="dp-pct-label" style="left:${p90pct}%">90th</div>`;
+      <div class="dp-pct-line" style="left:${p25pct}%"></div>
+      <div class="dp-pct-label" style="left:${p25pct}%">25th</div>
+      <div class="dp-pct-line" style="left:${p50pct}%"></div>
+      <div class="dp-pct-label" style="left:${p50pct}%">50th</div>
+      <div class="dp-pct-line" style="left:${p75pct}%"></div>
+      <div class="dp-pct-label" style="left:${p75pct}%">75th</div>
+      <div class="dp-pct-line" style="left:98%"></div>
+      <div class="dp-pct-label" style="left:98%">100th</div>`;
 
-    // Facility dots — colIdx skips name + memberStatus
+    // Background distribution dots (200 national facilities, same vertical plane)
+    const bgDots = allVals.map(v => {
+      const p = Math.min(97, Math.max(3, ((v - allMin) / range) * 100));
+      return `<div class="bdot" style="left:${p}%;top:50%;"></div>`;
+    }).join('');
+
+    // Facility dots — same vertical plane (top:50%), no jitter
     const colIdx = metaIdx + 2;
     const dots = tab.fRows.map((row, rowIdx) => {
       const raw = row[colIdx];
@@ -908,9 +928,6 @@ function renderDotPlot(tabKey) {
       if (isNaN(num)) return '';
 
       const pos = Math.min(97, Math.max(3, ((num - allMin) / range) * 100));
-
-      // Vertical scatter: deterministic jitter so overlapping dots separate
-      const topPct = 30 + ((rowIdx * 17 + metaIdx * 7) % 40); // 30–70% of track height
 
       const betterCount = m.highIsBad
         ? allVals.filter(v => v > num).length
@@ -922,7 +939,7 @@ function renderDotPlot(tabKey) {
       const dotColor = isMember ? '#444' : '#bbb';
 
       return `<div class="fdot"
-        style="left:${pos}%; top:${topPct}%; background:${dotColor};"
+        style="left:${pos}%;top:50%;background:${dotColor};"
         data-name="${row[0]}"
         data-status="${row[1]}"
         data-raw="${raw}"
@@ -936,11 +953,10 @@ function renderDotPlot(tabKey) {
       <div class="dotplot-row">
         <div class="dotplot-name">${m.name}</div>
         <div class="dotplot-track">
-          <div class="${leftZoneCls}"></div>
-          <div class="${rightZoneCls}"></div>
           <div class="dp-track-line"></div>
           ${pctLines}
           ${avgLine}
+          ${bgDots}
           ${dots}
         </div>
       </div>`;
@@ -948,12 +964,11 @@ function renderDotPlot(tabKey) {
 
   html += `
     <div class="dotplot-legend">
-      <span><span class="dp-legend-dot" style="background:${color}"></span> AAPACN Member</span>
-      <span><span class="dp-legend-dot" style="background:#b0b8c8"></span> Non-member</span>
+      <span><span class="dp-legend-dot" style="background:#444"></span> OM Member facility</span>
+      <span><span class="dp-legend-dot" style="background:#bbb"></span> Non-member facility</span>
+      <span><span class="dp-legend-dot" style="background:#c8c4bc;opacity:0.6"></span> National distribution</span>
       <span style="color:var(--text2); font-weight:700">|</span> National avg
-      <span style="background:rgba(39,174,96,0.15); padding:1px 5px; border-radius:2px">■ Top 10%</span>
-      <span style="background:rgba(192,57,43,0.10); padding:1px 5px; border-radius:2px">■ Bottom 10%</span>
-      <span style="color:var(--text3)">Hover dot for details</span>
+      <span style="color:var(--text3)">· Hover dark dot for details</span>
     </div>`;
 
   section.innerHTML = html;
