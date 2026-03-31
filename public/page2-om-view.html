@@ -2,12 +2,26 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <title>AAPACN OM View — Sunrise Senior Living</title>
 <style>
+  :root {
+    --bg:      #f0ede8;
+    --chrome:  #e8e5df;
+    --surface: #ffffff;
+    --border:  #d4d0c8;
+    --border2: #b8b4ac;
+    --text:    #1c1b18;
+    --text2:   #5c5a54;
+    --text3:   #9c9a94;
+    --ph:      #dddad4;
+    --flag-bg: #e2ded7;
+  }
   /* ── Reset & base ── */
   * { box-sizing: border-box; margin: 0; padding: 0; }
   input, button, select, textarea { font-family: inherit; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; background: #f0f2f5; color: #333; }
+  body { font-family: 'DM Sans', sans-serif; font-size: 13px; background: var(--bg); color: var(--text); }
 
   /* ── Nav ── */
   .nav { background: #1a2a4a; color: #fff; padding: 10px 20px; display: flex; align-items: center; justify-content: flex-start; }
@@ -16,53 +30,53 @@
   .nav-link.active { background: #333; opacity: 1; }
 
   /* ── Filter bar ── */
-  .filters { background: #eef1f7; padding: 8px 20px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; border-bottom: 1px solid #d0d5e0; }
-  .filter-label { font-size: 11px; color: #666; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-  .filter-select { background: #fff; border: 1px solid #ccc; padding: 4px 10px; border-radius: 3px; color: #333; font-size: 12px; cursor: pointer; appearance: none; padding-right: 20px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 6px center; }
-  .filter-select.highlight { border-color: #888; color: #333; font-weight: 600; }
-  .back-btn { background: #fff; border: 1px solid #c0c8dc; padding: 4px 12px; border-radius: 3px; font-size: 12px; color: #444; font-weight: 600; cursor: pointer; white-space: nowrap; }
-  .filter-divider { width: 1px; height: 20px; background: #d0d5e0; }
+  .filters { background: #f8f7f4; padding: 8px 20px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; border-bottom: 1px solid var(--border); }
+  .filter-label { font-size: 11px; color: var(--text2); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .filter-select { background: var(--surface); border: 1px solid var(--border); padding: 4px 10px; border-radius: 3px; color: var(--text); font-size: 12px; cursor: pointer; appearance: none; padding-right: 20px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 6px center; }
+  .filter-select.highlight { border-color: var(--text3); color: var(--text); font-weight: 600; }
+  .back-btn { background: var(--surface); border: 1px solid var(--border2); padding: 4px 12px; border-radius: 3px; font-size: 12px; color: #444; font-weight: 600; cursor: pointer; white-space: nowrap; }
+  .filter-divider { width: 1px; height: 20px; background: var(--border); }
 
   /* ── Page header ── */
-  .page-header { background: #fff; padding: 10px 20px 8px; border-bottom: 1px solid #e0e4ef; }
-  .page-header-title { font-size: 16px; font-weight: 700; color: #1a2a4a; line-height: 1.2; }
-  .page-header-sub { font-size: 10.5px; color: #555; line-height: 1.5; margin-top: 3px; font-style: italic; }
+  .page-header { background: var(--surface); padding: 10px 20px 8px; border-bottom: 1px solid var(--border); }
+  .page-header-title { font-size: 16px; font-weight: 700; color: var(--text); line-height: 1.2; }
+  .page-header-sub { font-size: 10.5px; color: var(--text2); line-height: 1.5; margin-top: 3px; font-style: italic; }
 
   /* ── OM Identity Banner (3 columns) ── */
-  .om-identity { display: flex; background: #fff; border-bottom: 2px solid #e0e4ef; }
+  .om-identity { display: flex; background: var(--surface); border-bottom: 2px solid var(--border); }
   .om-id-left   { flex: 0 0 28%; padding: 16px 20px; display: flex; flex-direction: column; justify-content: center; }
   .om-id-middle { flex: 0 0 30%; padding: 16px 20px; }
   .om-id-right  { flex: 1; padding: 16px 20px; }
 
   /* Left column */
-  .om-card-name { font-size: 23px; font-weight: 700; color: #1a2a4a; line-height: 1.15; margin-bottom: 4px; }
+  .om-card-name { font-size: 23px; font-weight: 700; color: var(--text); line-height: 1.15; margin-bottom: 4px; }
   .om-card-sub  { font-size: 10.5px; color: #777; margin-bottom: 10px; line-height: 1.4; }
   .om-tier-badge { display: inline-block; background: #1a2a4a; color: #fff; padding: 3px 10px; border-radius: 3px; font-size: 11px; font-weight: 700; letter-spacing: 0.3px; }
 
   /* Section title (shared) */
-  .om-section-title { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #aaa; margin-bottom: 10px; }
+  .om-section-title { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text3); margin-bottom: 10px; }
 
   /* Middle: org info 2×2 grid */
   .om-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; }
   .om-meta-item { display: flex; flex-direction: column; gap: 3px; }
-  .om-meta-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: #aaa; }
-  .om-meta-val { font-size: 21px; font-weight: 700; color: #1a2a4a; line-height: 1.1; }
+  .om-meta-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text3); }
+  .om-meta-val { font-size: 21px; font-weight: 700; color: var(--text); line-height: 1.1; }
 
   /* Right: KPI 2×2 grid */
   .om-kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; margin-bottom: 10px; }
   .om-kpi-item { display: flex; flex-direction: column; gap: 2px; }
-  .om-kpi-label { font-size: 9px; color: #aaa; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-  .om-kpi-val { font-size: 21px; font-weight: 700; color: #1a2a4a; line-height: 1.1; }
+  .om-kpi-label { font-size: 9px; color: var(--text3); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .om-kpi-val { font-size: 21px; font-weight: 700; color: var(--text); line-height: 1.1; }
   .om-kpi-val.warn { color: #c0392b; }
   .om-kpi-val.good { color: #444; }
   .om-kpi-val.blue { color: #444; }
-  .om-kpi-sub { font-size: 8.5px; color: #999; margin-top: 1px; }
-  .om-insight { font-size: 10px; color: #555; background: #f2f2f2; border-radius: 4px; padding: 5px 9px; line-height: 1.45; border-left: 3px solid #888; font-style: italic; }
+  .om-kpi-sub { font-size: 8.5px; color: var(--text3); margin-top: 1px; }
+  .om-insight { font-size: 10px; color: var(--text2); background: var(--chrome); border-radius: 8px; padding: 5px 9px; line-height: 1.45; border-left: 3px solid #888; font-style: italic; }
 
   /* ── Domain tabs ── */
-  .tabs-row { background: #fff; padding: 0 20px; display: flex; gap: 3px; border-bottom: 2px solid #ddd; margin-top: 0; }
-  .tab { padding: 8px 16px; font-size: 12px; font-weight: 600; cursor: pointer; color: #666; background: transparent; border: none; border-bottom: 3px solid transparent; margin-bottom: -2px; }
-  .tab:hover { color: #333; }
+  .tabs-row { background: var(--surface); padding: 0 20px; display: flex; gap: 3px; border-bottom: 2px solid var(--border); margin-top: 0; }
+  .tab { padding: 8px 16px; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--text2); background: transparent; border: none; border-bottom: 3px solid transparent; margin-bottom: -2px; }
+  .tab:hover { color: var(--text); }
   .tab[data-tab="clinical"].active   { color: #444; border-bottom-color: #444; }
   .tab[data-tab="regulatory"].active { color: #444; border-bottom-color: #444; }
   .tab[data-tab="staffing"].active   { color: #444; border-bottom-color: #444; }
@@ -70,34 +84,34 @@
   .tab[data-tab="training"].active   { color: #444; border-bottom-color: #444; }
 
   /* ── Table panel ── */
-  .tables-wrap { background: #fff; padding: 0 16px; }
+  .tables-wrap { background: var(--surface); padding: 0 16px; }
   .table-panel { margin-top: 16px; }
-  .panel-title { font-size: 12px; font-weight: 700; color: #1a2a4a; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 4px; border-bottom: 2px solid #e0e0e0; }
-  .panel-sub { font-size: 9.5px; color: #888; margin-bottom: 10px; line-height: 1.5; }
+  .panel-title { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 4px; border-bottom: 2px solid #e0e0e0; }
+  .panel-sub { font-size: 9.5px; color: var(--text3); margin-bottom: 10px; line-height: 1.5; }
   .table-scroll { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 11px; white-space: nowrap; }
-  thead tr { background: #f5f5f5; }
-  th { padding: 6px 10px; text-align: center; border-bottom: 2px solid #ddd; color: #555; font-weight: 600; cursor: help; }
-  th:hover { background: #ebebeb; }
-  th.col-name { text-align: left; min-width: 200px; position: sticky; left: 0; background: #f5f5f5; z-index: 1; cursor: default; }
-  th.col-name:hover { background: #f5f5f5; }
-  td { padding: 6px 10px; border-bottom: 1px solid #eee; text-align: center; }
+  thead tr { background: #f0ede8; }
+  th { padding: 6px 10px; text-align: center; border-bottom: 2px solid var(--border); color: var(--text2); font-weight: 600; cursor: help; }
+  th:hover { background: var(--chrome); }
+  th.col-name { text-align: left; min-width: 200px; position: sticky; left: 0; background: #f0ede8; z-index: 1; cursor: default; }
+  th.col-name:hover { background: #f0ede8; }
+  td { padding: 6px 10px; border-bottom: 1px solid var(--border); text-align: center; }
   td.col-name { text-align: left; font-weight: 600; position: sticky; left: 0; z-index: 1; }
   td.data-cell { cursor: pointer; }
-  td.data-cell:hover { background: #ebebeb !important; }
-  tr:hover td { background: #f5f5f5 !important; }
-  tr:hover td.col-name { background: #f5f5f5 !important; }
-  tr.outlier-row td { background: #f8f8f8; }
-  tr.outlier-row:hover td { background: #f0f0f0 !important; }
-  tr.outlier-row td.col-name { background: #f8f8f8; }
-  tr.outlier-row:hover td.col-name { background: #f0f0f0 !important; }
+  td.data-cell:hover { background: var(--chrome) !important; }
+  tr:hover td { background: #f7f6f2 !important; }
+  tr:hover td.col-name { background: #f7f6f2 !important; }
+  tr.outlier-row td { background: var(--chrome); }
+  tr.outlier-row:hover td { background: #ede9e3 !important; }
+  tr.outlier-row td.col-name { background: var(--chrome); }
+  tr.outlier-row:hover td.col-name { background: #ede9e3 !important; }
   .name-f { color: #444; }
   .val-red { color: #c0392b; font-weight: 600; }
-  .val-green { color: #555; font-weight: 600; }
-  .val-muted { color: #aaa; }
-  .member-yes { color: #333; font-weight: 700; }
+  .val-green { color: var(--text2); font-weight: 600; }
+  .val-muted { color: var(--text3); }
+  .member-yes { color: var(--text); font-weight: 700; }
   .outlier-badge { margin-left: 5px; font-size: 9px; background: #666; color: #fff; padding: 1px 5px; border-radius: 8px; font-weight: 700; vertical-align: middle; }
-  .table-hint { margin-top: 6px; font-size: 11px; color: #999; padding-bottom: 12px; }
+  .table-hint { margin-top: 6px; font-size: 11px; color: var(--text3); padding-bottom: 12px; }
 
   /* ── Tab accent underlines ── */
   .accent-clinical   th { border-bottom-color: #444; }
@@ -107,14 +121,14 @@
   .accent-training   th { border-bottom-color: #444; }
 
   /* ── Dot plot section ── */
-  .dotplot-section { background: #f8f8f8; border-top: 2px solid #e0e4ef; padding: 14px 20px 18px; }
-  .dotplot-title { font-size: 12px; font-weight: 700; color: #1a2a4a; text-transform: uppercase; letter-spacing: 0.5px; }
-  .dotplot-subtitle { font-size: 10px; color: #888; margin-top: 3px; margin-bottom: 14px; }
+  .dotplot-section { background: var(--chrome); border-top: 2px solid var(--border); padding: 14px 20px 18px; }
+  .dotplot-title { font-size: 12px; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: 0.5px; }
+  .dotplot-subtitle { font-size: 10px; color: var(--text3); margin-top: 3px; margin-bottom: 14px; }
   .dotplot-axis-header { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
-  .dotplot-metric-label { width: 170px; font-size: 9px; color: #aaa; text-align: right; }
-  .dotplot-axis-labels { flex: 1; display: flex; justify-content: space-between; font-size: 9px; color: #aaa; }
+  .dotplot-metric-label { width: 170px; font-size: 9px; color: var(--text3); text-align: right; }
+  .dotplot-axis-labels { flex: 1; display: flex; justify-content: space-between; font-size: 9px; color: var(--text3); }
   .dotplot-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; cursor: default; }
-  .dotplot-name { width: 170px; font-size: 10px; color: #333; font-weight: 600; text-align: right; flex-shrink: 0; }
+  .dotplot-name { width: 170px; font-size: 10px; color: var(--text); font-weight: 600; text-align: right; flex-shrink: 0; }
   .dotplot-track { flex: 1; position: relative; height: 26px; border-radius: 2px; overflow: visible; }
   /* percentile zones */
   .dp-zone { position: absolute; top: 0; height: 26px; width: 10%; }
@@ -125,70 +139,70 @@
   .dp-track-line { position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: #d8dde8; transform: translateY(-50%); }
   /* avg + pct lines */
   .dotplot-avg-line  { position: absolute; top: 2px; width: 2px; height: 22px; background: #888; border-radius: 1px; transform: translateX(-50%); z-index: 2; }
-  .dotplot-avg-label { position: absolute; top: 17px; font-size: 8px; color: #555; white-space: nowrap; transform: translateX(-50%); z-index: 2; font-weight: 600; }
+  .dotplot-avg-label { position: absolute; top: 17px; font-size: 8px; color: var(--text2); white-space: nowrap; transform: translateX(-50%); z-index: 2; font-weight: 600; }
   .dp-pct-line { position: absolute; top: 4px; width: 1px; height: 18px; border-left: 1px dashed rgba(0,0,0,0.2); transform: translateX(-50%); z-index: 2; }
-  .dp-pct-label { position: absolute; top: 17px; font-size: 8px; color: #aaa; white-space: nowrap; transform: translateX(-50%); z-index: 2; }
+  .dp-pct-label { position: absolute; top: 17px; font-size: 8px; color: var(--text3); white-space: nowrap; transform: translateX(-50%); z-index: 2; }
   /* facility dots */
   .fdot { position: absolute; width: 10px; height: 10px; border-radius: 50%; transform: translateX(-50%) translateY(-50%); cursor: pointer; z-index: 3; border: 1.5px solid rgba(255,255,255,0.8); transition: transform 0.1s; }
   .fdot:hover { transform: translateX(-50%) translateY(-50%) scale(1.5); z-index: 10; }
-  .dotplot-legend { font-size: 8.5px; color: #999; margin-top: 10px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+  .dotplot-legend { font-size: 8.5px; color: var(--text3); margin-top: 10px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
   .dp-legend-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; vertical-align: middle; margin-right: 3px; }
 
   /* ── Status bar ── */
-  .status-bar { background: #f5f5f5; padding: 6px 20px; border-top: 1px solid #ddd; display: flex; justify-content: space-between; font-size: 11px; color: #888; }
+  .status-bar { background: #f0ede8; padding: 6px 20px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 11px; color: var(--text3); }
 
   /* ── Tooltip ── */
-  #tooltip { position: fixed; z-index: 9999; background: #fff; border: 1px solid #d0d5e0; border-radius: 6px; box-shadow: 0 4px 16px rgba(0,0,0,0.14); width: 270px; font-size: 12px; pointer-events: auto; display: none; }
-  .tt-header { padding: 10px 12px 8px; border-bottom: 1px solid #eee; }
-  .tt-metric-name { font-weight: 700; color: #1a2a4a; font-size: 13px; margin-bottom: 3px; }
-  .tt-entity { font-size: 11px; color: #888; margin-bottom: 5px; }
+  #tooltip { position: fixed; z-index: 9999; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.14); width: 270px; font-size: 12px; pointer-events: auto; display: none; }
+  .tt-header { padding: 10px 12px 8px; border-bottom: 1px solid var(--border); }
+  .tt-metric-name { font-weight: 700; color: var(--text); font-size: 13px; margin-bottom: 3px; }
+  .tt-entity { font-size: 11px; color: var(--text3); margin-bottom: 5px; }
   .tt-definition { color: #444; line-height: 1.45; font-size: 10.5px; }
-  .tt-meta { margin-top: 5px; font-size: 9.5px; color: #999; }
+  .tt-meta { margin-top: 5px; font-size: 9.5px; color: var(--text3); }
   .tt-body { padding: 10px 12px; }
   .tt-value-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 3px; }
-  .tt-value-label { color: #666; }
-  .tt-value-num { font-weight: 700; color: #1a2a4a; }
+  .tt-value-label { color: var(--text2); }
+  .tt-value-num { font-weight: 700; color: var(--text); }
   .tt-value-num.above { color: #c0392b; }
-  .tt-value-num.below { color: #555; }
+  .tt-value-num.below { color: var(--text2); }
   .tt-direction { font-size: 9.5px; font-weight: 700; padding: 1px 6px; border-radius: 8px; margin-left: 6px; }
-  .tt-direction.above { background: #f2f2f2; color: #c0392b; }
-  .tt-direction.below { background: #f2f2f2; color: #555; }
-  .tt-direction.at    { background: #f5f5f5; color: #777; }
+  .tt-direction.above { background: var(--chrome); color: #c0392b; }
+  .tt-direction.below { background: var(--chrome); color: var(--text2); }
+  .tt-direction.at    { background: #f0ede8; color: #777; }
   .tt-bar-wrap { margin: 8px 0 4px; }
   .tt-bar-track { background: transparent; border-radius: 3px; height: 8px; }
   .tt-bar-fill { height: 8px; border-radius: 3px; }
   .tt-bar-fill.bad  { background: #444; }
   .tt-bar-fill.good { background: #999; }
-  .tt-bar-label { font-size: 9.5px; color: #666; margin-top: 3px; text-align: right; }
-  .tt-divider { border: none; border-top: 1px solid #eee; margin: 8px 0; }
-  .tt-trend-title { font-size: 9.5px; font-weight: 700; color: #666; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .tt-bar-label { font-size: 9.5px; color: var(--text2); margin-top: 3px; text-align: right; }
+  .tt-divider { border: none; border-top: 1px solid var(--border); margin: 8px 0; }
+  .tt-trend-title { font-size: 9.5px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
   .tt-sparkline { display: block; }
-  .tt-trend-labels { display: flex; justify-content: space-between; font-size: 10px; color: #aaa; margin-top: 2px; }
+  .tt-trend-labels { display: flex; justify-content: space-between; font-size: 10px; color: var(--text3); margin-top: 2px; }
   .tt-trend-direction { font-size: 9.5px; font-weight: 600; margin-top: 4px; }
   .tt-trend-direction.worse  { color: #c0392b; }
-  .tt-trend-direction.better { color: #555; }
-  .tt-trend-direction.stable { color: #888; }
-  .tt-no-trend { font-size: 9.5px; color: #aaa; font-style: italic; }
+  .tt-trend-direction.better { color: var(--text2); }
+  .tt-trend-direction.stable { color: var(--text3); }
+  .tt-no-trend { font-size: 9.5px; color: var(--text3); font-style: italic; }
 
   /* ── Dot plot tooltip extras ── */
-  .tt-dp-header { padding: 10px 12px 8px; border-bottom: 1px solid #eee; }
-  .tt-dp-om { font-size: 10.5px; font-weight: 700; color: #1a2a4a; margin-bottom: 2px; }
-  .tt-dp-val { font-size: 11px; color: #555; margin-bottom: 2px; }
+  .tt-dp-header { padding: 10px 12px 8px; border-bottom: 1px solid var(--border); }
+  .tt-dp-om { font-size: 10.5px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+  .tt-dp-val { font-size: 11px; color: var(--text2); margin-bottom: 2px; }
   .tt-dp-pct { display: inline-block; font-size: 9.5px; font-weight: 700; padding: 1px 7px; border-radius: 8px; margin-top: 1px; }
-  .tt-dp-pct.good   { background: #f2f2f2; color: #555; }
-  .tt-dp-pct.mid    { background: #f5f5f5; color: #777; }
-  .tt-dp-pct.warn   { background: #f2f2f2; color: #c0392b; }
-  .tt-dp-section-title { font-size: 8.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #999; margin: 8px 0 4px; }
-  .tt-dp-row { display: flex; justify-content: space-between; align-items: center; font-size: 9.5px; padding: 2px 0; border-bottom: 1px solid #f5f5f5; }
+  .tt-dp-pct.good   { background: var(--chrome); color: var(--text2); }
+  .tt-dp-pct.mid    { background: #f0ede8; color: #777; }
+  .tt-dp-pct.warn   { background: var(--chrome); color: #c0392b; }
+  .tt-dp-section-title { font-size: 8.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text3); margin: 8px 0 4px; }
+  .tt-dp-row { display: flex; justify-content: space-between; align-items: center; font-size: 9.5px; padding: 2px 0; border-bottom: 1px solid var(--border); }
   .tt-dp-row:last-child { border-bottom: none; }
-  .tt-dp-fname { color: #333; max-width: 155px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .tt-dp-fname { color: var(--text); max-width: 155px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .tt-dp-fval  { font-weight: 700; margin-left: 8px; white-space: nowrap; }
-  .tt-dp-fval.good { color: #555; }
+  .tt-dp-fval.good { color: var(--text2); }
   .tt-dp-fval.bad  { color: #c0392b; }
 
   /* ── Tooltip nav footer ── */
-  .tt-nav-footer { border-top: 1px solid #eee; padding: 8px 12px; display: none; }
-  .tt-nav-btn { display: block; width: 100%; padding: 5px 0; background: #333; color: #fff; border: none; border-radius: 4px; font-size: 12px; font-weight: 600; cursor: pointer; text-align: center; }
+  .tt-nav-footer { border-top: 1px solid var(--border); padding: 8px 12px; display: none; }
+  .tt-nav-btn { display: block; width: 100%; padding: 5px 0; background: #333; color: #fff; border: none; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; text-align: center; }
   .tt-nav-btn:hover { background: #222; }
 
 </style>
@@ -233,7 +247,7 @@
   <select class="filter-select"><option>AAPACN Cert Status</option><option>Certified</option><option>Not Certified</option></select>
   <select class="filter-select highlight"><option>Facility Size (Beds)</option><option>Small (&lt;90)</option><option>Medium (91–150)</option><option>Large (&gt;150)</option></select>
   <div class="filter-divider"></div>
-  <button onclick="clearAllFilters()" style="background:#fff;border:1px solid #c0c8dc;padding:4px 12px;border-radius:3px;font-size:12px;color:#666;cursor:pointer;font-weight:600;">&#10005; Clear All</button>
+  <button onclick="clearAllFilters()" style="background:var(--surface);border:1px solid var(--border2);padding:4px 12px;border-radius:3px;font-size:12px;color:var(--text2);cursor:pointer;font-weight:600;">&#10005; Clear All</button>
 </div>
 
 <!-- Page Header -->
@@ -554,19 +568,19 @@ function makeBenchmarkBar(facilVal, meta) {
 
   const stateRow = state != null ? `
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
-      <span style="width:95px;font-size:9.5px;color:#666;text-align:right;flex-shrink:0;">State avg</span>
+      <span style="width:95px;font-size:9.5px;color:var(--text2);text-align:right;flex-shrink:0;">State avg</span>
       ${bar(state)}
       <span style="width:36px;font-size:9.5px;color:#444;font-weight:600;text-align:right;flex-shrink:0;">${state}${unit}</span>
     </div>` : '';
 
   return `
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
-      <span style="width:95px;font-size:9.5px;color:#666;text-align:right;flex-shrink:0;">This facility</span>
+      <span style="width:95px;font-size:9.5px;color:var(--text2);text-align:right;flex-shrink:0;">This facility</span>
       ${bar(num)}
       <span style="width:36px;font-size:9.5px;color:#444;font-weight:600;text-align:right;flex-shrink:0;">${facilVal}</span>
     </div>
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
-      <span style="width:95px;font-size:9.5px;color:#666;text-align:right;flex-shrink:0;">National avg</span>
+      <span style="width:95px;font-size:9.5px;color:var(--text2);text-align:right;flex-shrink:0;">National avg</span>
       ${bar(nat)}
       <span style="width:36px;font-size:9.5px;color:#444;font-weight:600;text-align:right;flex-shrink:0;">${nat}${unit}</span>
     </div>
@@ -772,7 +786,7 @@ function renderDotPlot(tabKey) {
 
   let html = `
     <div class="dotplot-title">Facility Performance vs. National Benchmarks &mdash; ${tab.label}</div>
-    <div class="dotplot-subtitle">Each dot represents one facility in this OM, positioned by its national percentile rank for that metric. &nbsp;<strong style="color:#27ae60;font-weight:600">Green zone</strong> = top 10% nationally &nbsp;&middot;&nbsp; <strong style="color:#c0392b;font-weight:600">Red zone</strong> = bottom 10% &nbsp;&middot;&nbsp; <strong style="color:#555;font-weight:600">|</strong> = national average &nbsp;&middot;&nbsp; Hover any dot to see the facility name, value, and how it compares nationally.</div>
+    <div class="dotplot-subtitle">Each dot represents one facility in this OM, positioned by its national percentile rank for that metric. &nbsp;<strong style="color:#27ae60;font-weight:600">Green zone</strong> = top 10% nationally &nbsp;&middot;&nbsp; <strong style="color:#c0392b;font-weight:600">Red zone</strong> = bottom 10% &nbsp;&middot;&nbsp; <strong style="color:var(--text2);font-weight:600">|</strong> = national average &nbsp;&middot;&nbsp; Hover any dot to see the facility name, value, and how it compares nationally.</div>
     <div class="dotplot-axis-header">
       <div class="dotplot-metric-label"></div>
       <div class="dotplot-axis-labels"><span>0th pct</span><span>50th pct</span><span>100th pct</span></div>
@@ -865,10 +879,10 @@ function renderDotPlot(tabKey) {
     <div class="dotplot-legend">
       <span><span class="dp-legend-dot" style="background:${color}"></span> AAPACN Member</span>
       <span><span class="dp-legend-dot" style="background:#b0b8c8"></span> Non-member</span>
-      <span style="color:#555; font-weight:700">|</span> National avg
+      <span style="color:var(--text2); font-weight:700">|</span> National avg
       <span style="background:rgba(39,174,96,0.15); padding:1px 5px; border-radius:2px">■ Top 10%</span>
       <span style="background:rgba(192,57,43,0.10); padding:1px 5px; border-radius:2px">■ Bottom 10%</span>
-      <span style="color:#999">Hover dot for details</span>
+      <span style="color:var(--text3)">Hover dot for details</span>
     </div>`;
 
   section.innerHTML = html;

@@ -2,12 +2,26 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <title>AAPACN Facility Detail — Sunrise Hyde Park</title>
 <style>
+  :root {
+    --bg:      #f0ede8;
+    --chrome:  #e8e5df;
+    --surface: #ffffff;
+    --border:  #d4d0c8;
+    --border2: #b8b4ac;
+    --text:    #1c1b18;
+    --text2:   #5c5a54;
+    --text3:   #9c9a94;
+    --ph:      #dddad4;
+    --flag-bg: #e2ded7;
+  }
   /* ── Reset & base ── */
   * { box-sizing: border-box; margin: 0; padding: 0; }
   input, button, select, textarea { font-family: inherit; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; background: #f0f2f5; color: #333; }
+  body { font-family: 'DM Sans', sans-serif; font-size: 13px; background: var(--bg); color: var(--text); }
 
   /* ── Nav ── */
   .nav { background: #1a2a4a; color: #fff; padding: 10px 20px; display: flex; align-items: center; justify-content: flex-start; }
@@ -16,53 +30,53 @@
   .nav-link.active { background: #333; opacity: 1; }
 
   /* ── Filter bar ── */
-  .filters { background: #eef1f7; padding: 8px 20px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; border-bottom: 1px solid #d0d5e0; }
-  .filter-label { font-size: 11px; color: #666; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-  .filter-select { background: #fff; border: 1px solid #ccc; padding: 4px 10px; border-radius: 3px; color: #333; font-size: 12px; cursor: pointer; appearance: none; padding-right: 20px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 6px center; }
-  .filter-select.highlight { border-color: #888; color: #333; font-weight: 600; }
-  .back-btn { background: #fff; border: 1px solid #c0c8dc; padding: 4px 12px; border-radius: 3px; font-size: 12px; color: #444; font-weight: 600; cursor: pointer; white-space: nowrap; }
-  .filter-divider { width: 1px; height: 20px; background: #d0d5e0; }
+  .filters { background: #f8f7f4; padding: 8px 20px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; border-bottom: 1px solid var(--border); }
+  .filter-label { font-size: 11px; color: var(--text2); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .filter-select { background: var(--surface); border: 1px solid var(--border); padding: 4px 10px; border-radius: 3px; color: var(--text); font-size: 12px; cursor: pointer; appearance: none; padding-right: 20px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 6px center; }
+  .filter-select.highlight { border-color: var(--text3); color: var(--text); font-weight: 600; }
+  .back-btn { background: var(--surface); border: 1px solid var(--border2); padding: 4px 12px; border-radius: 3px; font-size: 12px; color: #444; font-weight: 600; cursor: pointer; white-space: nowrap; }
+  .filter-divider { width: 1px; height: 20px; background: var(--border); }
 
   /* ── Page header ── */
-  .page-header { background: #fff; padding: 10px 20px 8px; border-bottom: 1px solid #e0e4ef; }
-  .page-header-title { font-size: 16px; font-weight: 700; color: #1a2a4a; line-height: 1.2; }
-  .page-header-sub { font-size: 10.5px; color: #555; line-height: 1.5; margin-top: 3px; font-style: italic; }
+  .page-header { background: var(--surface); padding: 10px 20px 8px; border-bottom: 1px solid var(--border); }
+  .page-header-title { font-size: 16px; font-weight: 700; color: var(--text); line-height: 1.2; }
+  .page-header-sub { font-size: 10.5px; color: var(--text2); line-height: 1.5; margin-top: 3px; font-style: italic; }
 
   /* ── Facility Identity Banner (3 columns) ── */
-  .fac-identity { display: flex; background: #fff; border-bottom: 2px solid #e0e4ef; }
+  .fac-identity { display: flex; background: var(--surface); border-bottom: 2px solid var(--border); }
   .fac-id-left   { flex: 0 0 28%; padding: 16px 20px; display: flex; flex-direction: column; justify-content: center; }
   .fac-id-middle { flex: 0 0 30%; padding: 16px 20px; }
   .fac-id-right  { flex: 1; padding: 16px 20px; }
 
   /* Left column */
-  .fac-card-name { font-size: 23px; font-weight: 700; color: #1a2a4a; line-height: 1.15; margin-bottom: 4px; }
+  .fac-card-name { font-size: 23px; font-weight: 700; color: var(--text); line-height: 1.15; margin-bottom: 4px; }
   .fac-card-sub  { font-size: 10.5px; color: #777; margin-bottom: 10px; line-height: 1.4; }
   .fac-tier-badge { display: inline-block; background: #1a2a4a; color: #fff; padding: 3px 10px; border-radius: 3px; font-size: 11px; font-weight: 700; }
 
   /* Section title (shared) */
-  .fac-section-title { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #aaa; margin-bottom: 10px; }
+  .fac-section-title { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text3); margin-bottom: 10px; }
 
   /* Middle: facility info 2×3 grid */
   .fac-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; }
   .fac-meta-item { display: flex; flex-direction: column; gap: 3px; }
-  .fac-meta-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: #aaa; }
-  .fac-meta-val { font-size: 15px; font-weight: 700; color: #1a2a4a; line-height: 1.2; }
+  .fac-meta-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text3); }
+  .fac-meta-val { font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.2; }
   .fac-meta-val.small { font-size: 13px; }
 
   /* Right: KPI 2×2 grid */
   .fac-kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; }
   .fac-kpi-item { display: flex; flex-direction: column; gap: 2px; }
-  .fac-kpi-label { font-size: 9px; color: #aaa; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-  .fac-kpi-val { font-size: 21px; font-weight: 700; color: #1a2a4a; line-height: 1.1; }
+  .fac-kpi-label { font-size: 9px; color: var(--text3); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .fac-kpi-val { font-size: 21px; font-weight: 700; color: var(--text); line-height: 1.1; }
   .fac-kpi-val.warn  { color: #c0392b; }
   .fac-kpi-val.good  { color: #444; }
   .fac-kpi-val.blue  { color: #444; }
-  .fac-kpi-sub { font-size: 8.5px; color: #999; margin-top: 1px; }
+  .fac-kpi-sub { font-size: 8.5px; color: var(--text3); margin-top: 1px; }
 
   /* ── Domain tab strip ── */
-  .domain-tabs { display: flex; background: #fff; border-bottom: 2px solid #e0e4ef; padding: 0 20px; }
-  .domain-tab { padding: 10px 18px; font-size: 12px; font-weight: 600; color: #666; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; white-space: nowrap; display: flex; align-items: center; gap: 6px; transition: color 0.15s; }
-  .domain-tab:hover { color: #333; }
+  .domain-tabs { display: flex; background: var(--surface); border-bottom: 2px solid var(--border); padding: 0 20px; }
+  .domain-tab { padding: 10px 18px; font-size: 12px; font-weight: 600; color: var(--text2); cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; white-space: nowrap; display: flex; align-items: center; gap: 6px; transition: color 0.15s; }
+  .domain-tab:hover { color: var(--text); }
   .domain-tab.active { border-bottom-color: var(--tab-color); color: var(--tab-color); }
   .domain-tab-badge { font-size: 10px; font-weight: 700; background: #666; color: #fff; border-radius: 8px; padding: 1px 5px; line-height: 1.4; }
 
@@ -79,17 +93,17 @@
 
   /* ── Metric grid (2×2) ── */
   .metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .metric-group { padding: 10px 12px; background: #fff; border: 1px solid #e8eaf0; border-radius: 6px; cursor: pointer; transition: background 0.1s; }
-  .metric-group:hover { background: #f5f5f5; }
+  .metric-group { padding: 10px 12px; background: var(--surface); border: 1px solid #e8eaf0; border-radius: 8px; cursor: pointer; transition: background 0.1s; }
+  .metric-group:hover { background: #f0ede8; }
   .metric-group.selected { background: #f0f0f0; border-left: 3px solid var(--tab-color); padding-left: 9px; }
   .metric-group-header { margin-bottom: 7px; }
-  .metric-group-name { font-size: 10.5px; font-weight: 700; color: #1a2a4a; display: block; }
+  .metric-group-name { font-size: 10.5px; font-weight: 700; color: var(--text); display: block; }
   .metric-group-name.violation { color: #c0392b; }
-  .metric-group-dir { font-size: 8.5px; color: #aaa; font-style: italic; }
+  .metric-group-dir { font-size: 8.5px; color: var(--text3); font-style: italic; }
   .mbar-row { display: flex; align-items: center; gap: 5px; margin-bottom: 3px; }
   .mbar-row:last-child { margin-bottom: 0; }
-  .mbar-label { width: 54px; font-size: 8.5px; color: #888; text-align: right; flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .mbar-label.facility { color: #333; font-weight: 600; }
+  .mbar-label { width: 54px; font-size: 8.5px; color: var(--text3); text-align: right; flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mbar-label.facility { color: var(--text); font-weight: 600; }
   .mbar-track { flex: 1; height: 6px; background: transparent; border-radius: 3px; overflow: hidden; }
   .mbar-fill { height: 6px; border-radius: 3px; }
   .mbar-fill.facility  { background: #555; }
@@ -97,60 +111,60 @@
   .mbar-fill.b1 { background: #999; }
   .mbar-fill.b2 { background: #bbb; }
   .mbar-fill.b3 { background: #ccc; }
-  .mbar-val { width: 30px; font-size: 8.5px; color: #555; font-weight: 600; text-align: right; flex-shrink: 0; }
-  .mbar-val.facility { color: #1a2a4a; }
-  .mbar-no-bench { font-size: 8.5px; color: #bbb; font-style: italic; }
+  .mbar-val { width: 30px; font-size: 8.5px; color: var(--text2); font-weight: 600; text-align: right; flex-shrink: 0; }
+  .mbar-val.facility { color: var(--text); }
+  .mbar-no-bench { font-size: 8.5px; color: var(--text3); font-style: italic; }
 
   /* ── Trend chart panel ── */
-  .chart-panel { background: #fff; border-radius: 6px; border: 1px solid #e0e4ed; overflow: hidden; }
+  .chart-panel { background: var(--surface); border-radius: 8px; border: 1px solid var(--border); overflow: hidden; }
   .chart-placeholder { display: flex; align-items: center; justify-content: center; height: 210px; background: #f7f8fb; text-align: center; }
-  .chart-placeholder-title { font-size: 14px; font-weight: 600; color: #c0c8dc; margin-bottom: 6px; }
-  .chart-placeholder-sub { font-size: 11px; color: #d0d5e0; }
+  .chart-placeholder-title { font-size: 14px; font-weight: 600; color: var(--ph); margin-bottom: 6px; }
+  .chart-placeholder-sub { font-size: 11px; color: var(--ph); }
   .chart-header { padding: 12px 16px 8px; border-bottom: 1px solid #f0f0f0; }
   .chart-metric-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
-  .chart-metric-meta { font-size: 10px; color: #aaa; }
+  .chart-metric-meta { font-size: 10px; color: var(--text3); }
   .chart-body { padding: 10px 16px 4px; }
-  .chart-nodata-inner { border: 2px dashed #d0d5e0; border-radius: 4px; padding: 28px 20px; text-align: center; margin: 12px 16px; }
-  .chart-nodata-msg { font-size: 12px; color: #aaa; font-style: italic; }
-  .chart-nodata-src { font-size: 11px; color: #bbb; margin-top: 4px; }
-  .chart-legend { display: flex; gap: 12px; flex-wrap: wrap; font-size: 10px; color: #666; padding: 8px 16px 12px; border-top: 1px solid #f0f0f0; }
+  .chart-nodata-inner { border: 2px dashed var(--border); border-radius: 8px; padding: 28px 20px; text-align: center; margin: 12px 16px; }
+  .chart-nodata-msg { font-size: 12px; color: var(--text3); font-style: italic; }
+  .chart-nodata-src { font-size: 11px; color: var(--text3); margin-top: 4px; }
+  .chart-legend { display: flex; gap: 12px; flex-wrap: wrap; font-size: 10px; color: var(--text2); padding: 8px 16px 12px; border-top: 1px solid #f0f0f0; }
   .legend-item { display: flex; align-items: center; gap: 4px; }
   .legend-swatch-solid  { width: 18px; height: 2.5px; border-radius: 2px; }
   .legend-swatch-dashed { width: 18px; height: 0; border-top: 2px dashed currentColor; }
 
   /* ── Status bar ── */
-  .status-bar { background: #f5f5f5; padding: 6px 20px; border-top: 1px solid #ddd; display: flex; justify-content: space-between; font-size: 11px; color: #888; }
+  .status-bar { background: #f0ede8; padding: 6px 20px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 11px; color: var(--text3); }
 
   /* ── Tooltip (identical to page2) ── */
-  #tooltip { position: fixed; z-index: 9999; background: #fff; border: 1px solid #d0d5e0; border-radius: 6px; box-shadow: 0 4px 16px rgba(0,0,0,0.14); width: 270px; font-size: 12px; pointer-events: none; display: none; }
-  .tt-header { padding: 10px 12px 8px; border-bottom: 1px solid #eee; }
-  .tt-metric-name { font-weight: 700; color: #1a2a4a; font-size: 13px; margin-bottom: 3px; }
-  .tt-entity { font-size: 11px; color: #888; margin-bottom: 5px; }
+  #tooltip { position: fixed; z-index: 9999; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.14); width: 270px; font-size: 12px; pointer-events: none; display: none; }
+  .tt-header { padding: 10px 12px 8px; border-bottom: 1px solid var(--border); }
+  .tt-metric-name { font-weight: 700; color: var(--text); font-size: 13px; margin-bottom: 3px; }
+  .tt-entity { font-size: 11px; color: var(--text3); margin-bottom: 5px; }
   .tt-definition { color: #444; line-height: 1.45; font-size: 10.5px; }
-  .tt-meta { margin-top: 5px; font-size: 9.5px; color: #999; }
+  .tt-meta { margin-top: 5px; font-size: 9.5px; color: var(--text3); }
   .tt-body { padding: 10px 12px; }
   .tt-value-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 3px; }
-  .tt-value-label { color: #666; }
-  .tt-value-num { font-weight: 700; color: #1a2a4a; }
+  .tt-value-label { color: var(--text2); }
+  .tt-value-num { font-weight: 700; color: var(--text); }
   .tt-value-num.above { color: #c0392b; }
-  .tt-value-num.below { color: #555; }
+  .tt-value-num.below { color: var(--text2); }
   .tt-direction { font-size: 9.5px; font-weight: 700; padding: 1px 6px; border-radius: 8px; margin-left: 6px; }
-  .tt-direction.above { background: #f2f2f2; color: #c0392b; }
-  .tt-direction.below { background: #f2f2f2; color: #555; }
-  .tt-direction.at    { background: #f5f5f5; color: #777; }
+  .tt-direction.above { background: var(--chrome); color: #c0392b; }
+  .tt-direction.below { background: var(--chrome); color: var(--text2); }
+  .tt-direction.at    { background: #f0ede8; color: #777; }
   .tt-bar-wrap { margin: 8px 0 4px; }
   .tt-bar-track { background: transparent; border-radius: 3px; height: 8px; }
   .tt-bar-fill { height: 8px; border-radius: 3px; background: #999; }
-  .tt-bar-label { font-size: 9.5px; color: #666; margin-top: 3px; text-align: right; }
-  .tt-divider { border: none; border-top: 1px solid #eee; margin: 8px 0; }
-  .tt-trend-title { font-size: 9.5px; font-weight: 700; color: #666; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .tt-bar-label { font-size: 9.5px; color: var(--text2); margin-top: 3px; text-align: right; }
+  .tt-divider { border: none; border-top: 1px solid var(--border); margin: 8px 0; }
+  .tt-trend-title { font-size: 9.5px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
   .tt-sparkline { display: block; }
-  .tt-trend-labels { display: flex; justify-content: space-between; font-size: 10px; color: #aaa; margin-top: 2px; }
+  .tt-trend-labels { display: flex; justify-content: space-between; font-size: 10px; color: var(--text3); margin-top: 2px; }
   .tt-trend-direction { font-size: 9.5px; font-weight: 600; margin-top: 4px; }
   .tt-trend-direction.worse  { color: #c0392b; }
-  .tt-trend-direction.better { color: #555; }
-  .tt-trend-direction.stable { color: #888; }
-  .tt-no-trend { font-size: 9.5px; color: #aaa; font-style: italic; }
+  .tt-trend-direction.better { color: var(--text2); }
+  .tt-trend-direction.stable { color: var(--text3); }
+  .tt-no-trend { font-size: 9.5px; color: var(--text3); font-style: italic; }
 </style>
 </head>
 <body>
@@ -190,7 +204,7 @@
   <select class="filter-select"><option>AAPACN Cert Status</option><option>Certified</option><option>Not Certified</option></select>
   <select class="filter-select highlight"><option>Facility Size (Beds)</option><option>Small (&lt;90)</option><option>Medium (91&ndash;150)</option><option>Large (&gt;150)</option></select>
   <div class="filter-divider"></div>
-  <button onclick="clearAllFilters()" style="background:#fff;border:1px solid #c0c8dc;padding:4px 12px;border-radius:3px;font-size:12px;color:#666;cursor:pointer;font-weight:600;">&#10005; Clear All</button>
+  <button onclick="clearAllFilters()" style="background:var(--surface);border:1px solid var(--border2);padding:4px 12px;border-radius:3px;font-size:12px;color:var(--text2);cursor:pointer;font-weight:600;">&#10005; Clear All</button>
 </div>
 
 <!-- Page Header -->
@@ -293,8 +307,8 @@ const TAB_COLORS = {
 
 // ─── Tinted header backgrounds ────────────────────────────────────────────────
 const TAB_TINTS = {
-  clinical:'#f5f5f5', regulatory:'#f5f5f5', staffing:'#f5f5f5',
-  financial:'#f5f5f5', training:'#f5f5f5'
+  clinical:'#f0ede8', regulatory:'#f0ede8', staffing:'#f0ede8',
+  financial:'#f0ede8', training:'#f0ede8'
 };
 
 // ─── META — all 27 metrics with omAvg for trend chart ────────────────────────
@@ -437,19 +451,19 @@ function makeBenchmarkBar(facilVal, meta) {
 
   const stateRow = state != null ? `
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
-      <span style="width:95px;font-size:9.5px;color:#666;text-align:right;flex-shrink:0;">State avg</span>
+      <span style="width:95px;font-size:9.5px;color:var(--text2);text-align:right;flex-shrink:0;">State avg</span>
       ${bar(state)}
       <span style="width:36px;font-size:9.5px;color:#444;font-weight:600;text-align:right;flex-shrink:0;">${state}${unit}</span>
     </div>` : '';
 
   return `
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
-      <span style="width:95px;font-size:9.5px;color:#666;text-align:right;flex-shrink:0;">This facility</span>
+      <span style="width:95px;font-size:9.5px;color:var(--text2);text-align:right;flex-shrink:0;">This facility</span>
       ${bar(num)}
       <span style="width:36px;font-size:9.5px;color:#444;font-weight:600;text-align:right;flex-shrink:0;">${facilVal}</span>
     </div>
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
-      <span style="width:95px;font-size:9.5px;color:#666;text-align:right;flex-shrink:0;">National avg</span>
+      <span style="width:95px;font-size:9.5px;color:var(--text2);text-align:right;flex-shrink:0;">National avg</span>
       ${bar(nat)}
       <span style="width:36px;font-size:9.5px;color:#444;font-weight:600;text-align:right;flex-shrink:0;">${nat}${unit}</span>
     </div>
@@ -482,7 +496,7 @@ function dotColor(val, i, data) {
 function domainStatusBadge(domainKey) {
   const data = FACILITY_DATA[domainKey];
   if (domainKey === 'training') {
-    return `<span class="domain-badge" style="background:rgba(0,0,0,0.05);color:#555">Active</span>`;
+    return `<span class="domain-badge" style="background:rgba(0,0,0,0.05);color:var(--text2)">Active</span>`;
   }
   let aboveCount = 0;
   data.values.forEach((v, i) => { if (colorClass(v, i, data) === 'val-red') aboveCount++; });
@@ -490,7 +504,7 @@ function domainStatusBadge(domainKey) {
     const color = TAB_COLORS[domainKey];
     return `<span class="domain-badge" style="background:rgba(0,0,0,0.05);color:#c0392b">${aboveCount} above threshold</span>`;
   }
-  return `<span class="domain-badge" style="background:rgba(0,0,0,0.05);color:#555">Within range</span>`;
+  return `<span class="domain-badge" style="background:rgba(0,0,0,0.05);color:var(--text2)">Within range</span>`;
 }
 
 function makeBenchmarkBars(val, meta, idx, data) {
@@ -786,16 +800,16 @@ function renderTrendChart(domainKey, metaIdx) {
       <div class="legend-swatch-solid" style="background:${color}"></div>
       Sunrise Hyde Park
     </div>
-    <div class="legend-item" style="color:#aaa">
-      <div class="legend-swatch-dashed" style="border-color:#aaa"></div>
+    <div class="legend-item" style="color:var(--text3)">
+      <div class="legend-swatch-dashed" style="border-color:var(--text3)"></div>
       Nat'l avg
     </div>
     <div class="legend-item" style="color:#ccc">
       <div class="legend-swatch-dashed" style="border-color:#ccc"></div>
       State avg
     </div>
-    <div class="legend-item" style="color:#888">
-      <div class="legend-swatch-dashed" style="border-color:#888"></div>
+    <div class="legend-item" style="color:var(--text3)">
+      <div class="legend-swatch-dashed" style="border-color:var(--text3)"></div>
       OM avg
     </div>
   </div>`;
