@@ -269,14 +269,15 @@
       <div class="panel-sub" id="fac-panel-sub">Individual facility metrics — select a domain tab to change measures · Click a row to open Facility Detail</div>
     </div>
     <div class="tabs-row">
-      <div class="tab active" data-tab="clinical"   onclick="switchTab('clinical')">Clinical Quality</div>
+      <div class="tab active" data-tab="summary"    onclick="switchTab('summary')">Summary</div>
+      <div class="tab" data-tab="clinical"           onclick="switchTab('clinical')">Clinical Quality</div>
       <div class="tab" data-tab="regulatory"         onclick="switchTab('regulatory')">Regulatory &amp; Survey</div>
       <div class="tab" data-tab="staffing"           onclick="switchTab('staffing')">Workforce &amp; Staffing</div>
       <div class="tab" data-tab="financial"          onclick="switchTab('financial')">Financial</div>
       <div class="tab" data-tab="training"           onclick="switchTab('training')">Training &amp; Certification</div>
     </div>
     <div class="table-scroll">
-      <table id="facility-table" class="accent-clinical"><thead id="facility-head"></thead><tbody id="facility-body"></tbody></table>
+      <table id="facility-table" class="accent-summary"><thead id="facility-head"></thead><tbody id="facility-body"></tbody></table>
     </div>
     <div class="table-hint">Click row for Facility Detail &nbsp;|&nbsp; <span style="color:#c0392b">Red</span> = above threshold &nbsp;|&nbsp; <span style="color:#27ae60">Green</span> = below threshold</div>
   </div>
@@ -365,28 +366,28 @@
 const TAB_COLORS = { clinical:'#444', regulatory:'#444', staffing:'#444', financial:'#444', training:'#444' };
 
 // ─── OM summary table data ────────────────────────────────────────────────────
-const OM_COLS = ['Parent Organization', 'Avg Star Rating', '# Facilities', 'Avg Age (yrs)', 'Avg Turnover %', '# AAPACN Members'];
+const OM_COLS = ['Parent Organization', '# Facilities', '% Rural', 'Avg Age of Residents', 'Census', 'Avg Five Star'];
 const OM_META_COLS = [
   null,
-  { name:'Avg Star Rating',     def:'CMS 5-Star Overall rating averaged across all facilities in this Parent Organization. Composite of health inspection, staffing, and quality measure sub-ratings.', src:'NH Provider Info', lag:'1–3 months' },
-  { name:'# Facilities',        def:'Number of SNF facilities operating under this Parent Organization in the current filtered view.',                                                                     src:'CMS Provider Info', lag:'Monthly' },
-  { name:'Avg Age (yrs)',       def:'Average number of years since certification/opening across all facilities in this Parent Organization. Older facilities may have differing infrastructure challenges.', src:'CMS Provider Info', lag:'Annual' },
-  { name:'Avg Turnover %',      def:'Average staff turnover rate across all facilities in this Parent Organization over the trailing 12-month window. High turnover is the top predictor of care quality decline.',   src:'PBJ Employee Detail', lag:'~3 months' },
-  { name:'# AAPACN Members',    def:'Number of individual AAPACN member staff (RN, DON, Administrator, etc.) associated with facilities in this Parent Organization.',                                    src:'AAPACN ProTech', lag:'Monthly' },
+  { name:'# Facilities',          def:'Total facilities in this Parent Organization. Format: total (# AAPACN members / % in OM).',                                                   src:'CMS Provider Info', lag:'Monthly' },
+  { name:'% Rural',               def:'Percentage of facilities in this organization classified as rural by CMS.',                                                                    src:'CMS Provider Info', lag:'Annual' },
+  { name:'Avg Age of Residents',  def:'Average age of residents across all facilities in this organization.',                                                                         src:'MDS',               lag:'Quarterly' },
+  { name:'Census',                def:'Average occupancy rate (% of certified beds occupied on an average day) across all facilities in this organization.',                          src:'NH Provider Info',  lag:'1–3 months' },
+  { name:'Avg Five Star',         def:'CMS 5-Star Overall rating averaged across all facilities in this organization. Composite of health inspection, staffing, and quality measures.',src:'NH Provider Info',  lag:'1–3 months' },
 ];
 // rThresh / gThresh for OM summary columns (index matches OM_COLS)
-const OM_R_THRESH = [null, null, null, null, 30.0, null];
-const OM_G_THRESH = [null, 3.5,  null, null, 22.0, null];
-const OM_LOW_BAD  = [1]; // star rating: higher is better
+const OM_R_THRESH = [null, null, null, null, 70.0, 2.0];
+const OM_G_THRESH = [null, null, null, null, 85.0, 4.0];
+const OM_LOW_BAD  = [4]; // Avg Five Star: higher is better
 
 const OM_ROWS = [
-  { name:'Sunrise Senior Living', vals:[3.2, 42,  14, '28.4%', 186] },
-  { name:'Genesis HealthCare',    vals:[3.6, 18,  22, '22.1%',  94] },
-  { name:'Kindred Healthcare',    vals:[2.8,  7,  18, '31.7%',  28] },
-  { name:'Beverly Healthcare',    vals:[3.1, 31,  28, '26.5%', 112] },
-  { name:'Consulate Health Care', vals:[2.9, 24,  16, '29.8%',  67] },
-  { name:'Ensign Group',          vals:[3.7, 12,  11, '20.8%',  58] },
-  { name:'Independent',           vals:[3.3, 312, 31, '25.3%', 842] },
+  { name:'Sunrise Senior Living', vals:['42 (28 / 67%)', '24%', 82.1, '82.4%', 3.2] },
+  { name:'Genesis HealthCare',    vals:['18 (12 / 67%)', '18%', 80.8, '88.1%', 3.6] },
+  { name:'Kindred Healthcare',    vals:['7 (4 / 57%)',   '31%', 79.4, '71.2%', 2.8] },
+  { name:'Beverly Healthcare',    vals:['31 (19 / 61%)', '22%', 81.5, '79.8%', 3.1] },
+  { name:'Consulate Health Care', vals:['24 (15 / 63%)', '28%', 80.2, '75.6%', 2.9] },
+  { name:'Ensign Group',          vals:['12 (9 / 75%)',  '15%', 83.2, '85.3%', 3.7] },
+  { name:'Independent',           vals:['312 (186 / 60%)','35%', 80.9, '78.4%', 3.3] },
 ];
 
 // Facility → OM mapping (parallel to fRows per tab — same order)
@@ -445,6 +446,21 @@ const META = {
 
 // ─── Table data (1 metric = 1 column, anchored to confirmed list) ────────────
 const TABS = {
+  summary: {
+    label:'Summary', lag:'CMS Provider Info: monthly | MDS: quarterly',
+    cols:['Name','State','AAPACN Member','# Beds','Avg Age of Residents','Census\n(Occupancy Rate)','Avg Five Star','Avg Turnover','Total Health Citations'],
+    memberCol: 2,
+    pRows:[],
+    fRows:[
+      ['Sunrise of Lincoln Park', 'IL', 'Yes', '124', '82.1', '84.2%', 4, '26.2%', 28],
+      ['Sunrise of Hyde Park',    'IL', 'Yes',  '98', '79.8', '68.5%', 2, '35.8%', 55],
+      ['Valley Care Center',      'WI',  'No', '156', '81.4', '91.0%', 4, '21.0%', 18],
+      ['Elmwood Nursing & Rehab', 'IN',  'No', '112', '80.6', '73.1%', 3, '30.1%', 42],
+    ],
+    rThresh:[null, null, null, null, null, 70.0, 2.0, 30.0, 40],
+    gThresh:[null, null, null, null, null, 85.0, 4.0, 22.0, 20],
+    lowBad:[6],
+  },
   clinical: {
     label:'Clinical Quality', lag:'MDS QM: 6–9 mo | SNF QRP: 9 mo | SNF VBP: 2 yr',
     cols:['Name','AAPACN Members','Antipsychotic Use %','Exaggerated Wt Loss %','Falls w/ Major Injury %','Pressure Ulcer %\n(New/Worsening)','30-Day Readmission %'],
@@ -482,7 +498,7 @@ const TABS = {
   },
 };
 
-let currentTab = 'clinical';
+let currentTab = 'summary';
 
 // ─── Threshold coloring ──────────────────────────────────────────────────────
 function colorClass(val, i, tab) {
@@ -812,6 +828,7 @@ function selectFacility(name) {
 }
 
 function renderFacRows(rows, tab) {
+  const memberColIdx = (tab && tab.memberCol !== undefined) ? tab.memberCol : 1;
   return rows.map((cells, rowIdx) => {
     const facName = cells[0];
     const isSelected = facName === selectedFacility;
@@ -822,7 +839,7 @@ function renderFacRows(rows, tab) {
         html += `<td class="col-name name-f"
           onmouseenter="showFacNameTip(event,'${facName.replace(/'/g,"\\'")}') "
           onmouseleave="scheduleTipHide()">${v}</td>`;
-      } else if (i === 1) {
+      } else if (i === memberColIdx) {
         html += `<td class="${v==='Yes'?'member-yes':'val-muted'}">${v}</td>`;
       } else {
         const metaIdx = i - 2;
@@ -844,15 +861,14 @@ function renderFacilityTable() {
   if (selectedStarFilter !== null)  indices = indices.filter(i => FAC_STARS[i] === selectedStarFilter);
   if (selectedOM)                   indices = indices.filter(i => FAC_OM[i] === selectedOM);
   const memberFilter = document.getElementById('filter-member').value;
-  if (memberFilter)                 indices = indices.filter(i => t.fRows[i][1] === memberFilter);
+  const memberColIdx = t.memberCol !== undefined ? t.memberCol : 1;
+  if (memberFilter)                 indices = indices.filter(i => t.fRows[i][memberColIdx] === memberFilter);
   const rows = indices.map(i => t.fRows[i]);
 
   let countLabel = '14,302 facilities';
   if (selectedStarFilter !== null) countLabel = `Filtered: ${selectedStarFilter}★ CMS rating`;
   if (selectedOM) {
-    const omRow = OM_ROWS.find(r => r.name === selectedOM);
-    const num = omRow ? omRow.vals[1] : rows.length;
-    countLabel = `${num} facilities · ${selectedOM}`;
+    countLabel = `${rows.length} facilities · ${selectedOM}`;
   }
   document.getElementById('fac-panel-title').textContent = selectedOM ? selectedOM : 'All Facilities';
   document.getElementById('fac-panel-hint').textContent  = countLabel;
@@ -885,7 +901,7 @@ function clearAllFilters() {
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
 renderOMTable();
-switchTab('clinical');
+switchTab('summary');
 </script>
 </body>
 </html>
