@@ -227,8 +227,8 @@
 <div class="nav">
   <div class="nav-links">
     <div class="nav-link" onclick="window.location='page1-tooltips.html'" style="cursor:pointer">Portfolio Overview</div>
-    <div class="nav-link active">OM View</div>
-    <div class="nav-link" onclick="window.location='page3-facility-detail.html'" style="cursor:pointer">Facility Detail</div>
+    <div class="nav-link active">Parent Company View</div>
+    <div class="nav-link" onclick="window.location='page3-facility-detail.html'" style="cursor:pointer">Facility View</div>
     <div class="nav-link" onclick="window.location='page4-domain-deep-dive.html'" style="cursor:pointer">Domain Deep-Dive</div>
   </div>
 </div>
@@ -253,8 +253,8 @@
 
 <!-- Page Header -->
 <div class="page-header">
-  <div class="page-header-title">OM Portfolio View</div>
-  <div class="page-header-sub">A consolidated view of all facilities within a single Organizational Member. Identify which facilities and domains need attention, compare performance to national benchmarks, and understand the OM's overall portfolio posture.</div>
+  <div class="page-header-title">Parent Company Portfolio Overview</div>
+  <div class="page-header-sub">A consolidated view of all facilities within a single Parent Company. Identify which facilities and domains need attention, compare performance to national benchmarks, and understand the Parent Company's overall portfolio posture.</div>
 </div>
 
 <!-- OM Identity Banner -->
@@ -264,7 +264,7 @@
   <div class="om-id-left">
     <div class="om-card-name">Sunrise Senior Living</div>
     <div class="om-card-sub">Multi-state operator &middot; IL, WI, IN</div>
-    <div><span class="om-tier-badge">Organizational Member (OM)</span></div>
+    <div><span class="om-tier-badge">Parent Company</span></div>
   </div>
 
   <!-- Middle: organization info -->
@@ -656,7 +656,7 @@ function showCellTip(e, entityName, metaIdx, facilVal, rowIdx) {
     bodyHTML += `<div class="tt-no-trend">Trend not available for this metric</div>`;
   }
   document.getElementById('tt-body').innerHTML = bodyHTML;
-  setNavFooter('→ Open Facility Detail', 'page3-facility-detail.html');
+  setNavFooter('→ Open Facility View', 'page3-facility-detail.html');
   document.getElementById('tooltip').style.display = 'block';
   positionTip(e);
 }
@@ -931,7 +931,7 @@ function attachDotTooltips() {
         <span class="tt-dp-pct ${pctCls}">Better than ${betterPct}% of facilities nationally</span>
       `;
 
-      setNavFooter('→ Open Facility Detail', 'page3-facility-detail.html');
+      setNavFooter('→ Open Facility View', 'page3-facility-detail.html');
       document.getElementById('tooltip').style.display = 'block';
       positionTip(e);
     });

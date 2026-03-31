@@ -136,15 +136,15 @@ body { font-family: 'DM Sans', sans-serif; font-size: 13px; background: var(--bg
 <div class="nav">
   <div class="nav-links">
     <div class="nav-link" onclick="window.location='page1-tooltips.html'">Portfolio Overview</div>
-    <div class="nav-link" onclick="window.location='page2-om-view.html'">OM View</div>
-    <div class="nav-link" onclick="window.location='page3-facility-detail.html'">Facility Detail</div>
+    <div class="nav-link" onclick="window.location='page2-om-view.html'">Parent Company View</div>
+    <div class="nav-link" onclick="window.location='page3-facility-detail.html'">Facility View</div>
     <div class="nav-link active">Domain Deep-Dive</div>
   </div>
 </div>
 
 <!-- Filters -->
 <div class="filters">
-  <div class="back-btn" onclick="window.location='page2-om-view.html'">&#8592; Back to OM View</div>
+  <div class="back-btn" onclick="window.location='page2-om-view.html'">&#8592; Back to Parent Company View</div>
   <div class="filter-divider"></div>
   <span class="filter-label">Filter:</span>
   <select id="filter-org" class="filter-select" onchange="applyFilters()">
@@ -183,7 +183,7 @@ body { font-family: 'DM Sans', sans-serif; font-size: 13px; background: var(--bg
   <div class="om-id-left">
     <div class="om-card-name">Sunrise Senior Living</div>
     <div class="om-card-sub">Multi-state operator &middot; IL, WI, IN</div>
-    <div><span class="om-tier-badge">Organizational Member (OM)</span></div>
+    <div><span class="om-tier-badge">Parent Company</span></div>
   </div>
   <div class="om-id-middle">
     <div class="om-section-title">Organization Info</div>
@@ -445,7 +445,7 @@ function openPanel(facId) {
     <div class="panel-hdr">
       <div class="panel-fac-name">${fac.name}</div>
       <div class="panel-fac-sub">${fac.state} &middot; ${fac.beds} beds</div>
-      <div class="panel-detail-btn" onclick="window.location='page3-facility-detail.html'">&rarr; View Facility Detail</div>
+      <div class="panel-detail-btn" onclick="window.location='page3-facility-detail.html'">&rarr; Open Facility View</div>
     </div>
     <div class="panel-body">${sparksHTML}</div>`;
   panel.classList.add('open');

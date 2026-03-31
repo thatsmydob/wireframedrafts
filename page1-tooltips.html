@@ -209,8 +209,8 @@
 <div class="nav">
   <div class="nav-links">
     <div class="nav-link active">Portfolio Overview</div>
-    <div class="nav-link" onclick="window.location='page2-om-view.html'" style="cursor:pointer">OM View</div>
-    <div class="nav-link" onclick="window.location='page3-facility-detail.html'" style="cursor:pointer">Facility Detail</div>
+    <div class="nav-link" onclick="window.location='page2-om-view.html'" style="cursor:pointer">Parent Company View</div>
+    <div class="nav-link" onclick="window.location='page3-facility-detail.html'" style="cursor:pointer">Facility View</div>
     <div class="nav-link" onclick="window.location='page4-domain-deep-dive.html'" style="cursor:pointer">Domain Deep-Dive</div>
   </div>
 </div>
@@ -230,7 +230,7 @@
 
 <div style="background:var(--surface);border-bottom:1px solid var(--border);padding:10px 20px 8px;">
   <div style="font-size:16px;font-weight:700;color:var(--text);">Portfolio Overview</div>
-  <div style="font-size:12px;color:var(--text3);margin-top:3px;">A high-level view of facility performance across all Organizational Members. Use filters to narrow by state, facility size, or membership status. Click any facility row to drill into OM or facility-level detail.</div>
+  <div style="font-size:12px;color:var(--text3);margin-top:3px;">A high-level view of facility performance across all Parent Companies. Use filters to narrow by state, facility size, or membership status. Click any facility row to drill into Parent Company or facility-level detail.</div>
 </div>
 
 <div class="kpi-bar">
@@ -256,7 +256,7 @@
     <div class="table-scroll">
       <table id="parent-table"><thead id="parent-head"></thead><tbody id="parent-body"></tbody></table>
     </div>
-    <div class="table-hint">Click row to filter facilities · Hover name or cells for details &amp; OM View link</div>
+    <div class="table-hint">Click row to filter facilities · Hover name or cells for details &amp; Parent Company View link</div>
   </div>
 
   <!-- Right: Domain tabs + Facility table -->
@@ -266,7 +266,7 @@
         <div class="panel-title" id="fac-panel-title">All Facilities</div>
         <div class="panel-hint" id="fac-panel-hint">14,302 facilities</div>
       </div>
-      <div class="panel-sub" id="fac-panel-sub">Individual facility metrics — select a domain tab to change measures · Click a row to open Facility Detail</div>
+      <div class="panel-sub" id="fac-panel-sub">Individual facility metrics — select a domain tab to change measures · Click a row to open Facility View</div>
     </div>
     <div class="tabs-row">
       <div class="tab active" data-tab="summary"    onclick="switchTab('summary')">Summary</div>
@@ -279,7 +279,7 @@
     <div class="table-scroll">
       <table id="facility-table" class="accent-summary"><thead id="facility-head"></thead><tbody id="facility-body"></tbody></table>
     </div>
-    <div class="table-hint">Click row for Facility Detail &nbsp;|&nbsp; <span style="color:#c0392b">Red</span> = exceeds benchmark &nbsp;|&nbsp; Hover cells for details</div>
+    <div class="table-hint">Click row for Facility View &nbsp;|&nbsp; <span style="color:#c0392b">Red</span> = exceeds benchmark &nbsp;|&nbsp; Hover cells for details</div>
   </div>
 
 </div>
@@ -646,7 +646,7 @@ function showCellTip(e, entityName, metaIdx, facilVal, rowIdx) {
   }
 
   document.getElementById('tt-body').innerHTML = bodyHTML;
-  setNavFooter('→ Open Facility Detail', 'page3-facility-detail.html');
+  setNavFooter('→ Open Facility View', 'page3-facility-detail.html');
   showTip(); positionTip(e);
 }
 
@@ -761,7 +761,7 @@ function showOMNameTip(e, omName, hasOMView) {
   document.getElementById('tt-def').textContent    = 'Click row to filter the facility table to this organization\'s facilities.';
   document.getElementById('tt-meta').textContent   = '';
   document.getElementById('tt-body').innerHTML     = '';
-  setNavFooter(hasOMView ? '→ Open OM View' : null, hasOMView ? 'page2-om-view.html' : null);
+  setNavFooter(hasOMView ? '→ Open Parent Company View' : null, hasOMView ? 'page2-om-view.html' : null);
   showTip();
   positionTip(e);
 }
@@ -769,10 +769,10 @@ function showOMNameTip(e, omName, hasOMView) {
 function showFacNameTip(e, facName) {
   document.getElementById('tt-name').textContent   = facName;
   document.getElementById('tt-entity').textContent = 'Facility';
-  document.getElementById('tt-def').textContent    = 'Click row to select this facility. Open Facility Detail to see full performance across all domains.';
+  document.getElementById('tt-def').textContent    = 'Click row to select this facility. Open Facility View to see full performance across all domains.';
   document.getElementById('tt-meta').textContent   = '';
   document.getElementById('tt-body').innerHTML     = '';
-  setNavFooter('→ Open Facility Detail', 'page3-facility-detail.html');
+  setNavFooter('→ Open Facility View', 'page3-facility-detail.html');
   showTip(); positionTip(e);
 }
 
@@ -797,7 +797,7 @@ function showOMCellTip(e, omName, colIdx, val) {
   document.getElementById('tt-meta').textContent   = `Source: ${meta.src} · Lag: ${meta.lag}`;
   document.getElementById('tt-body').innerHTML     =
     `<div class="tt-value-row"><span class="tt-value-label">${omName}:</span><span class="tt-value-num">${val}</span></div>`;
-  setNavFooter('→ Open OM View', 'page2-om-view.html');
+  setNavFooter('→ Open Parent Company View', 'page2-om-view.html');
   showTip(); positionTip(e);
 }
 
@@ -882,8 +882,8 @@ function renderFacilityTable() {
   document.getElementById('fac-panel-title').textContent = selectedOM ? selectedOM : 'All Facilities';
   document.getElementById('fac-panel-hint').textContent  = countLabel;
   document.getElementById('fac-panel-sub').textContent   = selectedOM
-    ? `Showing facilities within ${selectedOM} — select a domain tab to change measures · Click a row to open Facility Detail`
-    : 'Individual facility metrics — select a domain tab to change measures · Click a row to open Facility Detail';
+    ? `Showing facilities within ${selectedOM} — select a domain tab to change measures · Click a row to open Facility View`
+    : 'Individual facility metrics — select a domain tab to change measures · Click a row to open Facility View';
   document.getElementById('facility-head').innerHTML = renderHead(t.cols);
   document.getElementById('facility-body').innerHTML = renderFacRows(rows, t);
 }
