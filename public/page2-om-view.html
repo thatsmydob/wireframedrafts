@@ -62,8 +62,8 @@
   .om-meta-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text3); }
   .om-meta-val { font-size: 21px; font-weight: 700; color: var(--text); line-height: 1.1; }
 
-  /* Right: KPI 2×2 grid */
-  .om-kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; margin-bottom: 10px; }
+  /* Right: KPI row */
+  .om-kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px 12px; margin-bottom: 10px; }
   .om-kpi-item { display: flex; flex-direction: column; gap: 2px; }
   .om-kpi-label { font-size: 9px; color: var(--text3); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
   .om-kpi-val { font-size: 21px; font-weight: 700; color: var(--text); line-height: 1.1; }
@@ -291,24 +291,29 @@
     <div class="om-section-title">Portfolio Snapshot</div>
     <div class="om-kpi-grid">
       <div class="om-kpi-item">
-        <div class="om-kpi-label">Total Facilities</div>
-        <div class="om-kpi-val">12</div>
-        <div class="om-kpi-sub">in this OM</div>
+        <div class="om-kpi-label"># Facilities</div>
+        <div class="om-kpi-val" style="font-size:15px;line-height:1.2;">12 (9 / 75%)</div>
+        <div class="om-kpi-sub">total (members / % in OM)</div>
       </div>
       <div class="om-kpi-item">
-        <div class="om-kpi-label">Avg CMS 5-Star</div>
-        <div class="om-kpi-val warn">3.2 &#9733;</div>
+        <div class="om-kpi-label">% Rural</div>
+        <div class="om-kpi-val">24%</div>
+        <div class="om-kpi-sub">of OM facilities</div>
+      </div>
+      <div class="om-kpi-item">
+        <div class="om-kpi-label">Avg Age of Residents</div>
+        <div class="om-kpi-val">82.1</div>
+        <div class="om-kpi-sub">years</div>
+      </div>
+      <div class="om-kpi-item">
+        <div class="om-kpi-label">Census</div>
+        <div class="om-kpi-val">82.4%</div>
+        <div class="om-kpi-sub">occupancy rate</div>
+      </div>
+      <div class="om-kpi-item">
+        <div class="om-kpi-label">Avg Five Star</div>
+        <div class="om-kpi-val">3.2 &#9733;</div>
         <div class="om-kpi-sub">OM avg</div>
-      </div>
-      <div class="om-kpi-item">
-        <div class="om-kpi-label">Avg Turnover %</div>
-        <div class="om-kpi-val warn">26.2%</div>
-        <div class="om-kpi-sub">nat'l avg: 24.0%</div>
-      </div>
-      <div class="om-kpi-item">
-        <div class="om-kpi-label"># AAPACN Members</div>
-        <div class="om-kpi-val blue">9</div>
-        <div class="om-kpi-sub">75% of OM</div>
       </div>
     </div>
   </div>
