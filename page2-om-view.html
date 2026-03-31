@@ -340,7 +340,7 @@
     <div class="tables-wrap">
       <div class="table-panel">
         <div class="panel-title" id="panel-title">Facilities — Sunrise Senior Living</div>
-        <div class="panel-sub" id="panel-sub">Showing all facilities in this OM for the selected domain. Hover column headers for metric definitions &nbsp;&middot;&nbsp; Hover cells for benchmarks &amp; trend history &nbsp;&middot;&nbsp; <span style="color:#c0392b">Red</span> = above alert threshold &nbsp;&middot;&nbsp; <span style="color:#27ae60">Green</span> = at or below target</div>
+        <div class="panel-sub" id="panel-sub">Showing all facilities in this OM for the selected domain. Hover column headers for metric definitions &nbsp;&middot;&nbsp; Hover cells for benchmarks &amp; trend history &nbsp;&middot;&nbsp; <span style="color:#c0392b">Red</span> = exceeds national benchmark</div>
         <div class="table-scroll">
           <table id="facility-table" class="accent-clinical">
             <thead id="facility-head"></thead>
@@ -413,18 +413,18 @@ const TABS = {
     label:'Clinical Quality', lag:'MDS QM: 6–9 mo | SNF QRP: 9 mo | SNF VBP: 2 yr',
     cols:['Facility Name','Member Status','Antipsychotic Use %','Exag. Wt Loss %','Falls w/ Major Injury %','Pressure Ulcer %\n(New/Worsening)','30-Day Readmit %'],
     fRows:[
-      ['Sunrise Evanston',     'Non-Member','24.1%','9.8%','2.3%','2.9%','21.7%'],
-      ['Sunrise Waukegan',     'Non-Member','21.8%','7.2%','4.1%','5.1%','18.9%'],
+      ['Sunrise Evanston',     'Non-member','24.1%','9.8%','2.3%','2.9%','21.7%'],
+      ['Sunrise Waukegan',     'Non-member','21.8%','7.2%','4.1%','5.1%','18.9%'],
       ['Sunrise Hyde Park',    'OM',        '13.4%','6.8%','2.8%','2.4%','17.2%'],
       ['Sunrise Lincoln Park', 'OM',        '13.4%','4.2%','1.9%','2.1%','16.4%'],
-      ['Sunrise Oak Park',     'OM+',       '11.2%','6.3%','1.1%','2.4%','15.8%'],
+      ['Sunrise Oak Park',     'OM',       '11.2%','6.3%','1.1%','2.4%','15.8%'],
       ['Sunrise Naperville',   'OM',        '15.8%','5.1%','3.2%','3.8%','19.4%'],
       ['Sunrise Schaumburg',   'OM',        '12.9%','4.8%','2.5%','2.9%','17.8%'],
       ['Sunrise Rockford',     'OM',        '16.2%','5.8%','3.9%','4.2%','20.1%'],
-      ['Sunrise Madison',      'Individual','14.7%','4.5%','2.8%','3.1%','18.5%'],
-      ['Sunrise Kenosha',      'Individual','13.1%','3.8%','1.8%','1.9%','16.9%'],
+      ['Sunrise Madison',      'OM','14.7%','4.5%','2.8%','3.1%','18.5%'],
+      ['Sunrise Kenosha',      'OM','13.1%','3.8%','1.8%','1.9%','16.9%'],
       ['Sunrise Indianapolis', 'OM',        '15.7%','5.7%','3.8%','4.1%','19.8%'],
-      ['Sunrise Bloomington',  'OM+',       '9.8%', '3.3%','1.1%','1.5%','15.2%'],
+      ['Sunrise Bloomington',  'OM',       '9.8%', '3.3%','1.1%','1.5%','15.2%'],
     ],
     rThresh:[null,null,17,5.0,18.0,10.0,21.0],
     gThresh:[null,null,13,3.5,13.0, 6.0,18.5],
@@ -434,18 +434,18 @@ const TABS = {
     label:'Regulatory & Survey', lag:'NH Provider Info: 1–3 mo | NH Health Deficiencies: 1–3 mo',
     cols:['Facility Name','Member Status','G+ Citations','IJ Citations','Citations/Qtr','Total Citations (3yr)','5-Star Overall','Health Inspection ★','Quality Measure ★','Staffing ★','Failed Revisit'],
     fRows:[
-      ['Sunrise Evanston',     'Non-Member','4','2','5.5','47','2','2','3','2','Yes'],
-      ['Sunrise Waukegan',     'Non-Member','3','1','4.8','42','2','2','3','3','No'],
+      ['Sunrise Evanston',     'Non-member','4','2','5.5','47','2','2','3','2','Yes'],
+      ['Sunrise Waukegan',     'Non-member','3','1','4.8','42','2','2','3','3','No'],
       ['Sunrise Hyde Park',    'OM',        '2','0','3.5','28','4','4','4','4','No'],
       ['Sunrise Lincoln Park', 'OM',        '1','0','2.2','18','4','5','4','4','No'],
-      ['Sunrise Oak Park',     'OM+',       '1','0','2.8','21','4','4','4','5','No'],
+      ['Sunrise Oak Park',     'OM',       '1','0','2.8','21','4','4','4','5','No'],
       ['Sunrise Naperville',   'OM',        '2','0','3.8','31','3','3','4','3','No'],
       ['Sunrise Schaumburg',   'OM',        '1','0','2.5','22','4','4','4','4','No'],
       ['Sunrise Rockford',     'OM',        '3','1','4.1','38','3','3','3','3','No'],
-      ['Sunrise Madison',      'Individual','2','0','3.2','27','3','3','3','3','No'],
-      ['Sunrise Kenosha',      'Individual','1','0','2.0','16','4','4','4','4','No'],
+      ['Sunrise Madison',      'OM','2','0','3.2','27','3','3','3','3','No'],
+      ['Sunrise Kenosha',      'OM','1','0','2.0','16','4','4','4','4','No'],
       ['Sunrise Indianapolis', 'OM',        '2','0','3.5','30','3','3','3','3','No'],
-      ['Sunrise Bloomington',  'OM+',       '0','0','1.8','14','5','5','5','5','No'],
+      ['Sunrise Bloomington',  'OM',       '0','0','1.8','14','5','5','5','5','No'],
     ],
     rThresh:[null,null,3,1,4.5,40,null,null,null,null,null],
     gThresh:[null,null,1,0,2.5,20,null,null,null,null,null],
@@ -455,18 +455,18 @@ const TABS = {
     label:'Workforce & Staffing', lag:'NH Provider Info: 1–3 mo | PBJ: ~3 mo | VRDC: 1–2 yr',
     cols:['Facility Name','Member Status','RN HPRD','Total Nursing HPRD\n(CM Adj)','Direct Care HPRD','Staff Turnover Rate %','Quality Mix %'],
     fRows:[
-      ['Sunrise Evanston',     'Non-Member','0.44','3.40','3.22','35.8%','31%'],
-      ['Sunrise Waukegan',     'Non-Member','0.47','3.52','3.35','38.2%','28%'],
+      ['Sunrise Evanston',     'Non-member','0.44','3.40','3.22','35.8%','31%'],
+      ['Sunrise Waukegan',     'Non-member','0.47','3.52','3.35','38.2%','28%'],
       ['Sunrise Hyde Park',    'OM',        '0.51','3.78','3.59','27.8%','34%'],
       ['Sunrise Lincoln Park', 'OM',        '0.60','4.08','3.92','21.5%','41%'],
-      ['Sunrise Oak Park',     'OM+',       '0.57','3.83','3.62','19.8%','38%'],
+      ['Sunrise Oak Park',     'OM',       '0.57','3.83','3.62','19.8%','38%'],
       ['Sunrise Naperville',   'OM',        '0.54','3.70','3.55','24.7%','36%'],
       ['Sunrise Schaumburg',   'OM',        '0.58','3.90','3.71','22.4%','39%'],
       ['Sunrise Rockford',     'OM',        '0.49','3.60','3.45','30.1%','31%'],
-      ['Sunrise Madison',      'Individual','0.54','3.72','3.58','25.3%','37%'],
-      ['Sunrise Kenosha',      'Individual','0.62','4.20','4.01','21.0%','44%'],
+      ['Sunrise Madison',      'OM','0.54','3.72','3.58','25.3%','37%'],
+      ['Sunrise Kenosha',      'OM','0.62','4.20','4.01','21.0%','44%'],
       ['Sunrise Indianapolis', 'OM',        '0.48','3.55','3.40','31.7%','28%'],
-      ['Sunrise Bloomington',  'OM+',       '0.67','4.02','3.88','18.5%','42%'],
+      ['Sunrise Bloomington',  'OM',       '0.67','4.02','3.88','18.5%','42%'],
     ],
     rThresh:[null,null,null,null,null,30.0,null],
     gThresh:[null,null,0.60,4.00,3.80,22.0,null],
@@ -476,18 +476,18 @@ const TABS = {
     label:'Financial', lag:'NH Provider Info: 1–3 mo',
     cols:['Facility Name','Member Status','Case Mix Index (CMI)','Occupancy Rate %'],
     fRows:[
-      ['Sunrise Evanston',     'Non-Member','1.02','68.5%'],
-      ['Sunrise Waukegan',     'Non-Member','0.91','65.2%'],
+      ['Sunrise Evanston',     'Non-member','1.02','68.5%'],
+      ['Sunrise Waukegan',     'Non-member','0.91','65.2%'],
       ['Sunrise Hyde Park',    'OM',        '1.06','81.5%'],
       ['Sunrise Lincoln Park', 'OM',        '1.20','87.4%'],
-      ['Sunrise Oak Park',     'OM+',       '0.98','79.5%'],
+      ['Sunrise Oak Park',     'OM',       '0.98','79.5%'],
       ['Sunrise Naperville',   'OM',        '1.03','78.8%'],
       ['Sunrise Schaumburg',   'OM',        '1.07','86.4%'],
       ['Sunrise Rockford',     'OM',        '0.92','70.5%'],
-      ['Sunrise Madison',      'Individual','1.05','79.6%'],
-      ['Sunrise Kenosha',      'Individual','1.28','91.0%'],
+      ['Sunrise Madison',      'OM','1.05','79.6%'],
+      ['Sunrise Kenosha',      'OM','1.28','91.0%'],
       ['Sunrise Indianapolis', 'OM',        '0.88','73.1%'],
-      ['Sunrise Bloomington',  'OM+',       '1.18','88.5%'],
+      ['Sunrise Bloomington',  'OM',       '1.18','88.5%'],
     ],
     rThresh:[null,null,null,70.0],
     gThresh:[null,null,null,85.0],
@@ -497,18 +497,18 @@ const TABS = {
     label:'Training & Certification', lag:'AAPACN ProTech: monthly | ⚠ <1/3 of certifications matched to facility CCN',
     cols:['Facility Name','Member Status','# For-Sale\nProducts','# On-Demand\nProducts','% Cert\nCompleted','% Cert\nStarted','Certification\nRate %','Conference\nParticipation'],
     fRows:[
-      ['Sunrise Evanston',     'Non-Member','0', '0', '—',  '—',  '—',  '—'],
-      ['Sunrise Waukegan',     'Non-Member','0', '0', '—',  '—',  '—',  '—'],
+      ['Sunrise Evanston',     'Non-member','0', '0', '—',  '—',  '—',  '—'],
+      ['Sunrise Waukegan',     'Non-member','0', '0', '—',  '—',  '—',  '—'],
       ['Sunrise Hyde Park',    'OM',        '5', '9', '21%','29%','18%','38%'],
       ['Sunrise Lincoln Park', 'OM',        '8', '14','38%','45%','32%','67%'],
-      ['Sunrise Oak Park',     'OM+',       '18','28','42%','51%','38%','72%'],
+      ['Sunrise Oak Park',     'OM',       '18','28','42%','51%','38%','72%'],
       ['Sunrise Naperville',   'OM',        '12','22','35%','43%','30%','58%'],
       ['Sunrise Schaumburg',   'OM',        '14','19','33%','41%','29%','54%'],
       ['Sunrise Rockford',     'OM',        '3', '5', '14%','20%','11%','28%'],
-      ['Sunrise Madison',      'Individual','3', '5', '28%','35%','24%','48%'],
-      ['Sunrise Kenosha',      'Individual','14','22','43%','53%','39%','74%'],
+      ['Sunrise Madison',      'OM','3', '5', '28%','35%','24%','48%'],
+      ['Sunrise Kenosha',      'OM','14','22','43%','53%','39%','74%'],
       ['Sunrise Indianapolis', 'OM',        '12','19','35%','44%','30%','56%'],
-      ['Sunrise Bloomington',  'OM+',       '87','142','34%','41%','29%','62%'],
+      ['Sunrise Bloomington',  'OM',       '87','142','34%','41%','29%','62%'],
     ],
     rThresh:[null,null,null,null,null,null,null,null],
     gThresh:[null,null,5,8,35,40,30,55],
@@ -722,7 +722,7 @@ function renderFacilitiesTable(tabKey) {
       if (i === 0) {
         row += `<td class="col-name name-f">${v}</td>`;
       } else if (i === 1) {
-        const mCls = (v==='OM'||v==='OM+'||v==='Individual') ? 'member-yes' : 'val-muted';
+        const mCls = v==='OM' ? 'member-yes' : 'val-muted';
         row += `<td class="${mCls}">${v}</td>`;
       } else {
         const metaIdx = i - 2;
@@ -753,17 +753,17 @@ function makeDotData(currentVal, min, max, count) {
 
 const DOT_PLOT_DATA = {
   clinical: [
-    { currentVal:15.5, min:8.1,  max:26.4, allVals:makeDotData(15.5,8.1,  26.4,200) },
-    { currentVal:6.1,  min:2.8,  max:11.2, allVals:makeDotData(6.1, 2.8,  11.2,200) },
+    { currentVal:15.5, min:8.1,  max:26.4, allVals:makeDotData(15.5,8.1,  26.4,100) },
+    { currentVal:6.1,  min:2.8,  max:11.2, allVals:makeDotData(6.1, 2.8,  11.2,100) },
     { currentVal:2.7,  min:0.9,  max:5.8,  allVals:makeDotData(2.7, 0.9,  5.8, 47) },
     { currentVal:3.2,  min:1.1,  max:8.4,  allVals:makeDotData(3.2, 1.1,  8.4, 47) },
-    { currentVal:18.8, min:14.2, max:24.1, allVals:makeDotData(18.8,14.2, 24.1,200) },
+    { currentVal:18.8, min:14.2, max:24.1, allVals:makeDotData(18.8,14.2, 24.1,100) },
   ],
   regulatory: [
     { currentVal:1.8,  min:0.0,  max:5.2,  allVals:makeDotData(1.8, 0.0,  5.2, 47) },
     { currentVal:0.3,  min:0.0,  max:2.1,  allVals:makeDotData(0.3, 0.0,  2.1, 47) },
     { currentVal:3.1,  min:1.2,  max:6.8,  allVals:makeDotData(3.1, 1.2,  6.8, 47) },
-    { currentVal:27.0, min:9.0,  max:58.0, allVals:makeDotData(27.0,9.0,  58.0,200) },
+    { currentVal:27.0, min:9.0,  max:58.0, allVals:makeDotData(27.0,9.0,  58.0,100) },
     { currentVal:3.1,  min:1.8,  max:4.8,  allVals:makeDotData(3.1, 1.8,  4.8, 47) },
     { currentVal:3.1,  min:1.5,  max:4.9,  allVals:makeDotData(3.1, 1.5,  4.9, 47) },
     { currentVal:3.4,  min:2.1,  max:4.8,  allVals:makeDotData(3.4, 2.1,  4.8, 47) },
@@ -771,19 +771,19 @@ const DOT_PLOT_DATA = {
     { currentVal:0.15, min:0.0,  max:0.8,  allVals:makeDotData(0.15,0.0,  0.8, 47) },
   ],
   staffing: [
-    { currentVal:0.54, min:0.38, max:0.82, allVals:makeDotData(0.54,0.38, 0.82,200) },
-    { currentVal:3.79, min:3.10, max:4.62, allVals:makeDotData(3.79,3.10, 4.62,200) },
-    { currentVal:3.61, min:2.95, max:4.41, allVals:makeDotData(3.61,2.95, 4.41,200) },
-    { currentVal:26.4, min:14.2, max:42.8, allVals:makeDotData(26.4,14.2, 42.8,200) },
-    { currentVal:36.0, min:21.0, max:54.0, allVals:makeDotData(36.0,21.0, 54.0,200) },
+    { currentVal:0.54, min:0.38, max:0.82, allVals:makeDotData(0.54,0.38, 0.82,100) },
+    { currentVal:3.79, min:3.10, max:4.62, allVals:makeDotData(3.79,3.10, 4.62,100) },
+    { currentVal:3.61, min:2.95, max:4.41, allVals:makeDotData(3.61,2.95, 4.41,100) },
+    { currentVal:26.4, min:14.2, max:42.8, allVals:makeDotData(26.4,14.2, 42.8,100) },
+    { currentVal:36.0, min:21.0, max:54.0, allVals:makeDotData(36.0,21.0, 54.0,100) },
   ],
   financial: [
-    { currentVal:1.03, min:0.78, max:1.42, allVals:makeDotData(1.03,0.78, 1.42,200) },
-    { currentVal:79.8, min:58.0, max:96.0, allVals:makeDotData(79.8,58.0, 96.0,200) },
+    { currentVal:1.03, min:0.78, max:1.42, allVals:makeDotData(1.03,0.78, 1.42,100) },
+    { currentVal:79.8, min:58.0, max:96.0, allVals:makeDotData(79.8,58.0, 96.0,100) },
   ],
   training: [
     { currentVal:12.4, min:0.0,  max:95.0,  allVals:makeDotData(12.4,0.0,  95.0, 47) },
-    { currentVal:20.0, min:0.0,  max:150.0, allVals:makeDotData(20.0,0.0,  150.0,200) },
+    { currentVal:20.0, min:0.0,  max:150.0, allVals:makeDotData(20.0,0.0,  150.0,100) },
     { currentVal:30.1, min:0.0,  max:52.0,  allVals:makeDotData(30.1,0.0,  52.0, 47) },
     { currentVal:37.8, min:0.0,  max:60.0,  allVals:makeDotData(37.8,0.0,  60.0, 47) },
     { currentVal:26.8, min:0.0,  max:48.0,  allVals:makeDotData(26.8,0.0,  48.0, 47) },
@@ -845,7 +845,7 @@ function renderDotPlot(tabKey) {
       <div class="dp-pct-line" style="left:98%"></div>
       <div class="dp-pct-label" style="left:98%">100th</div>`;
 
-    // Background distribution dots (200 national facilities, same vertical plane)
+    // Background distribution dots (100 national facilities, same vertical plane)
     const bgDots = allVals.map(v => {
       const p = Math.min(97, Math.max(3, ((v - allMin) / range) * 100));
       return `<div class="bdot" style="left:${p}%;top:50%;"></div>`;
@@ -866,7 +866,7 @@ function renderDotPlot(tabKey) {
       const betterPct = Math.round((betterCount / (allVals.length - 1)) * 100);
       const pctCls = betterPct >= 67 ? 'good' : betterPct >= 34 ? 'mid' : 'warn';
 
-      const isMember = (row[1] === 'OM' || row[1] === 'OM+' || row[1] === 'Individual');
+      const isMember = row[1] === 'OM';
       const dotColor = isMember ? '#444' : '#bbb';
 
       return `<div class="fdot"
