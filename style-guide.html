@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Style Guide — AAPACN Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+input, button, select, textarea { font-family: inherit; }
+
+:root {
+  --bg:       #f0ede8;
+  --chrome:   #e8e5df;
+  --surface:  #ffffff;
+  --border:   #d4d0c8;
+  --border2:  #b8b4ac;
+  --text:     #1c1b18;
+  --text2:    #5c5a54;
+  --text3:    #9c9a94;
+  --ph:       #dddad4;
+  --flag-bg:  #e2ded7;
+}
+
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); padding: 32px; font-size: 14px; }
+
+h1 { font-size: 22px; font-weight: 600; margin-bottom: 6px; }
+.subtitle { font-size: 13px; color: var(--text2); margin-bottom: 40px; }
+
+h2 { font-size: 15px; font-weight: 600; margin-bottom: 16px; margin-top: 40px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+h3 { font-size: 12px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 12px; }
+
+.section { margin-bottom: 48px; }
+
+/* Token grid */
+.token-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+.token-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.token-swatch { height: 64px; }
+.token-info { padding: 10px 12px; }
+.token-name { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+.token-hex  { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text2); }
+
+/* Typography */
+.type-specimen { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 24px; margin-bottom: 12px; }
+.type-label { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text3); margin-bottom: 8px; }
+.type-s1 { font-size: 22px; font-weight: 600; }
+.type-s2 { font-size: 16px; font-weight: 600; }
+.type-s3 { font-size: 14px; font-weight: 500; }
+.type-body { font-size: 14px; }
+.type-small { font-size: 12px; color: var(--text2); }
+.type-micro { font-size: 11px; color: var(--text3); }
+.type-mono-val { font-family: 'DM Mono', monospace; font-size: 22px; font-weight: 500; }
+.type-mono-sm  { font-family: 'DM Mono', monospace; font-size: 12px; }
+
+/* Components */
+.comp-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-start; margin-bottom: 16px; }
+
+/* Nav */
+.nav-demo { background: #1a2a4a; padding: 12px 20px; border-radius: 8px; display: flex; align-items: center; gap: 8px; }
+.nav-logo { color: #fff; font-size: 14px; font-weight: 600; margin-right: 16px; }
+.nav-pill { color: rgba(255,255,255,0.65); font-size: 13px; padding: 5px 12px; border-radius: 20px; cursor: pointer; }
+.nav-pill.active { background: #333; color: #fff; }
+
+/* Filter bar */
+.filter-demo { background: #f8f7f4; border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; display: flex; gap: 8px; align-items: center; }
+.filter-label { font-size: 11px; color: var(--text3); font-weight: 500; text-transform: uppercase; letter-spacing: .05em; }
+.filter-select { font-size: 13px; border: 1px solid var(--border); border-radius: 5px; padding: 4px 28px 4px 8px; background: var(--surface); color: var(--text); appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%239c9a94'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 8px center; }
+.filter-clear { font-size: 12px; padding: 4px 10px; background: none; border: 1px solid var(--border2); border-radius: 5px; color: var(--text2); cursor: pointer; }
+
+/* Page header */
+.page-header-demo { padding: 16px 0; }
+.page-title-demo { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.page-sub-demo { font-size: 12px; color: var(--text2); }
+
+/* KPI card */
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.kpi-card { background: var(--chrome); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.kpi-name { font-size: 11px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 6px; }
+.kpi-val  { font-family: 'DM Mono', monospace; font-size: 23px; font-weight: 500; color: var(--text); line-height: 1; margin-bottom: 4px; }
+.kpi-val.warn { color: #c0392b; }
+.kpi-sub  { font-size: 11px; color: var(--text3); }
+
+/* Panel */
+.panel-demo { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.panel-hdr { background: var(--chrome); border-bottom: 1px solid var(--border); padding: 10px 14px; font-size: 12px; font-weight: 600; color: var(--text2); }
+.panel-body { padding: 14px; font-size: 13px; color: var(--text2); }
+
+/* Domain tabs */
+.tabs-demo { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 0; }
+.tab { font-size: 13px; padding: 10px 16px; border: none; background: none; cursor: pointer; color: var(--text2); border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.tab.active { color: #444; border-bottom-color: #444; font-weight: 600; }
+
+/* Table */
+.table-demo { width: 100%; border-collapse: collapse; font-size: 13px; }
+.table-demo th { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: .04em; padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--border); background: var(--bg); }
+.table-demo td { padding: 8px 10px; border-bottom: 1px solid var(--border); color: var(--text); }
+.table-demo tr:hover td { background: #f7f6f2; }
+.val-red { color: #c0392b; font-family: 'DM Mono', monospace; font-weight: 500; }
+.val-mono { font-family: 'DM Mono', monospace; }
+
+/* Bar */
+.bar-demo { display: flex; align-items: center; gap: 8px; }
+.bar-fill { height: 8px; border-radius: 4px; background: #888; }
+.bar-fill.violation { background: #c0392b; }
+
+/* Violation red note */
+.note { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid #c0392b; border-radius: 8px; padding: 12px 16px; font-size: 13px; color: var(--text2); }
+.note strong { color: var(--text); }
+
+/* Nav links */
+.page-nav { display: flex; gap: 12px; margin-bottom: 32px; flex-wrap: wrap; }
+.page-link { font-size: 13px; color: #444; text-decoration: none; padding: 6px 14px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); }
+.page-link:hover { background: var(--chrome); }
+</style>
+</head>
+<body>
+
+<h1>AAPACN Dashboard — Style Guide</h1>
+<p class="subtitle">Design tokens, typography, and component reference for the db1 warm-neutral visual system</p>
+
+<div class="page-nav">
+  <a class="page-link" href="page1-tooltips.html">Page 1 — Portfolio Overview</a>
+  <a class="page-link" href="page2-om-view.html">Page 2 — OM Portfolio View</a>
+  <a class="page-link" href="page3-facility-detail.html">Page 3 — Facility Detail</a>
+  <a class="page-link" href="page4-domain-deep-dive.html">Page 4 — Domain Deep-Dive</a>
+</div>
+
+<!-- COLOR TOKENS -->
+<div class="section">
+<h2>Color Tokens</h2>
+<div class="token-grid">
+  <div class="token-card">
+    <div class="token-swatch" style="background:#f0ede8;"></div>
+    <div class="token-info"><div class="token-name">--bg</div><div class="token-hex">#f0ede8</div></div>
+  </div>
+  <div class="token-card">
+    <div class="token-swatch" style="background:#e8e5df;border-bottom:1px solid #d4d0c8;"></div>
+    <div class="token-info"><div class="token-name">--chrome</div><div class="token-hex">#e8e5df</div></div>
+  </div>
+  <div class="token-card">
+    <div class="token-swatch" style="background:#ffffff;border-bottom:1px solid #d4d0c8;"></div>
+    <div class="token-info"><div class="token-name">--surface</div><div class="token-hex">#ffffff</div></div>
+  </div>
+  <div class="token-card">
+    <div class="token-swatch" style="background:#d4d0c8;"></div>
+    <div class="token-info"><div class="token-name">--border</div><div class="token-hex">#d4d0c8</div></div>
+  </div>
+  <div class="token-card">
+    <div class="token-swatch" style="background:#b8b4ac;"></div>
+    <div class="token-info"><div class="token-name">--border2</div><div class="token-hex">#b8b4ac</div></div>
+  </div>
+  <div class="token-card">
+    <div class="token-swatch" style="background:#1c1b18;"></div>
+    <div class="token-info"><div class="token-name">--text</div><div class="token-hex">#1c1b18</div></div>
+  </div>
+  <div class="token-card">
+    <div class="token-swatch" style="background:#5c5a54;"></div>
+    <div class="token-info"><div class="token-name">--text2</div><div class="token-hex">#5c5a54</div></div>
+  </div>
+  <div class="token-card">
+    <div class="token-swatch" style="background:#9c9a94;"></div>
+    <div class="token-info"><div class="token-name">--text3</div><div class="token-hex">#9c9a94</div></div>
+  </div>
+  <div class="token-card">
+    <div class="token-swatch" style="background:#dddad4;border-bottom:1px solid #d4d0c8;"></div>
+    <div class="token-info"><div class="token-name">--ph</div><div class="token-hex">#dddad4</div></div>
+  </div>
+  <div class="token-card">
+    <div class="token-swatch" style="background:#e2ded7;border-bottom:1px solid #d4d0c8;"></div>
+    <div class="token-info"><div class="token-name">--flag-bg</div><div class="token-hex">#e2ded7</div></div>
+  </div>
+  <div class="token-card">
+    <div class="token-swatch" style="background:#c0392b;"></div>
+    <div class="token-info"><div class="token-name">violation red</div><div class="token-hex">#c0392b</div></div>
+  </div>
+  <div class="token-card">
+    <div class="token-swatch" style="background:#1a2a4a;"></div>
+    <div class="token-info"><div class="token-name">nav bar</div><div class="token-hex">#1a2a4a</div></div>
+  </div>
+</div>
+
+<div class="note" style="margin-top:16px;">
+  <strong>Color rules:</strong> --bg, --chrome, --surface for all UI chrome. <strong style="color:#c0392b;">#c0392b</strong> reserved exclusively for metric values that exceed threshold — nowhere else. Nav bar <strong>#1a2a4a</strong> is brand identity — preserved unchanged. Domain tab identity colors (clinical red, regulatory purple, etc.) are content identity — preserved unchanged.
+</div>
+</div>
+
+<!-- TYPOGRAPHY -->
+<div class="section">
+<h2>Typography</h2>
+<div class="type-specimen">
+  <div class="type-label">DM Sans 600 — Page title / Section heading</div>
+  <div class="type-s1">Portfolio Overview</div>
+</div>
+<div class="type-specimen">
+  <div class="type-label">DM Sans 600 16px — Page header</div>
+  <div class="type-s2">Portfolio Overview</div>
+</div>
+<div class="type-specimen">
+  <div class="type-label">DM Sans 500 14px — Panel title / Tab label</div>
+  <div class="type-s3">Clinical Quality</div>
+</div>
+<div class="type-specimen">
+  <div class="type-label">DM Sans 400 14px — Body / Table cells</div>
+  <div class="type-body">Elmwood Nursing &amp; Rehab · 142 beds · California</div>
+</div>
+<div class="type-specimen">
+  <div class="type-label">DM Sans 400 12px — Labels / Secondary text (--text2)</div>
+  <div class="type-small">State average · 47 facilities above threshold</div>
+</div>
+<div class="type-specimen">
+  <div class="type-label">DM Sans 400 11px — Micro labels / Captions (--text3)</div>
+  <div class="type-micro">Updated Q3 2025 · Source: CMS Five-Star</div>
+</div>
+<div class="type-specimen">
+  <div class="type-label">DM Mono 500 — KPI values / Metric numbers</div>
+  <div class="type-mono-val">84.2%</div>
+</div>
+<div class="type-specimen">
+  <div class="type-label">DM Mono 400 12px — Table metric cells / Hex codes</div>
+  <div class="type-mono-sm">3.2 · 78.1% · Q2 2025</div>
+</div>
+</div>
+
+<!-- COMPONENTS -->
+<div class="section">
+<h2>Components</h2>
+
+<h3>Navigation Bar</h3>
+<div class="nav-demo" style="margin-bottom:24px;">
+  <span class="nav-logo">AAPACN</span>
+  <span class="nav-pill active">Portfolio Overview</span>
+  <span class="nav-pill">OM Portfolio View</span>
+  <span class="nav-pill">Facility Detail</span>
+  <span class="nav-pill">Domain Deep-Dive</span>
+</div>
+
+<h3>Filter Bar</h3>
+<div class="filter-demo" style="margin-bottom:24px;">
+  <span class="filter-label">Filter:</span>
+  <select class="filter-select"><option>All States</option><option>California</option></select>
+  <select class="filter-select"><option>All Bed Sizes</option><option>Small (&lt;60)</option></select>
+  <div style="width:1px;height:16px;background:var(--border);"></div>
+  <button class="filter-clear">✕ Clear All</button>
+</div>
+
+<h3>Page Header</h3>
+<div class="page-header-demo" style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin-bottom:24px;">
+  <div class="page-title-demo">Portfolio Overview</div>
+  <div class="page-sub-demo">Monitor all facilities in your network · identify outliers and benchmark performance across domains</div>
+</div>
+
+<h3>KPI Cards</h3>
+<div class="kpi-grid" style="margin-bottom:24px;">
+  <div class="kpi-card">
+    <div class="kpi-name">Total Facilities</div>
+    <div class="kpi-val">1,284</div>
+    <div class="kpi-sub">in network</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-name">Above Threshold</div>
+    <div class="kpi-val warn">342</div>
+    <div class="kpi-sub">on ≥1 metric</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-name">AAPACN Members</div>
+    <div class="kpi-val">89</div>
+    <div class="kpi-sub">of 1,284</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-name">Avg Star Rating</div>
+    <div class="kpi-val">3.4</div>
+    <div class="kpi-sub">CMS Five-Star</div>
+  </div>
+</div>
+
+<h3>Panel</h3>
+<div class="panel-demo" style="margin-bottom:24px;">
+  <div class="panel-hdr">Clinical Quality — Metric Breakdown</div>
+  <div class="panel-body">Panel content goes here.</div>
+</div>
+
+<h3>Domain Tabs</h3>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:24px;">
+  <div class="tabs-demo">
+    <button class="tab active">Clinical</button>
+    <button class="tab">Regulatory</button>
+    <button class="tab">Staffing</button>
+    <button class="tab">Financial</button>
+    <button class="tab">Training</button>
+  </div>
+  <div style="padding:14px;font-size:13px;color:var(--text2);">Tab content area</div>
+</div>
+
+<h3>Table Row</h3>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:24px;">
+  <table class="table-demo" style="width:100%;">
+    <thead><tr>
+      <th>Facility</th><th>State</th><th>Beds</th><th>Star</th><th>Metric Value</th><th>Bar</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td>Elmwood Nursing &amp; Rehab</td><td>CA</td>
+        <td class="val-mono">142</td>
+        <td class="val-mono">3</td>
+        <td class="val-red">18.4%</td>
+        <td><div class="bar-demo"><div class="bar-fill violation" style="width:80px;"></div></div></td>
+      </tr>
+      <tr>
+        <td>Valley Care Center</td><td>TX</td>
+        <td class="val-mono">88</td>
+        <td class="val-mono">4</td>
+        <td class="val-mono">9.2%</td>
+        <td><div class="bar-demo"><div class="bar-fill" style="width:40px;"></div></div></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h3>Benchmark Bar (no background track)</h3>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:24px;">
+  <div style="font-size:13px;color:var(--text2);margin-bottom:12px;">Filled bar only — no gray track behind it. Background is transparent.</div>
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span style="font-size:12px;color:var(--text2);width:120px;">Within range</span>
+      <div style="height:10px;border-radius:5px;background:#aaa;width:140px;"></div>
+      <span class="val-mono" style="font-size:12px;">9.2%</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span style="font-size:12px;color:var(--text2);width:120px;">Above threshold</span>
+      <div style="height:10px;border-radius:5px;background:#c0392b;width:200px;"></div>
+      <span class="val-mono" style="font-size:12px;color:#c0392b;">18.4%</span>
+    </div>
+  </div>
+</div>
+</div>
+
+</body>
+</html>

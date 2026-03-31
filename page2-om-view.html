@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>AAPACN OM View — Sunrise Senior Living</title>
+<style>
+  :root {
+    --bg:      #f0ede8;
+    --chrome:  #e8e5df;
+    --surface: #ffffff;
+    --border:  #d4d0c8;
+    --border2: #b8b4ac;
+    --text:    #1c1b18;
+    --text2:   #5c5a54;
+    --text3:   #9c9a94;
+    --ph:      #dddad4;
+    --flag-bg: #e2ded7;
+  }
+  /* ── Reset & base ── */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  input, button, select, textarea { font-family: inherit; }
+  body { font-family: 'DM Sans', sans-serif; font-size: 13px; background: var(--bg); color: var(--text); }
+
+  /* ── Nav ── */
+  .nav { background: #1a2a4a; color: #fff; padding: 10px 20px; display: flex; align-items: center; justify-content: flex-start; }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-link { padding: 4px 12px; border-radius: 3px; font-size: 12px; cursor: pointer; opacity: 0.6; }
+  .nav-link.active { background: #333; opacity: 1; }
+
+  /* ── Filter bar ── */
+  .filters { background: #f8f7f4; padding: 8px 20px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; border-bottom: 1px solid var(--border); }
+  .filter-label { font-size: 11px; color: var(--text2); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .filter-select { background: var(--surface); border: 1px solid var(--border); padding: 4px 10px; border-radius: 3px; color: var(--text); font-size: 12px; cursor: pointer; appearance: none; padding-right: 20px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 6px center; }
+  .filter-select.highlight { border-color: var(--text3); color: var(--text); font-weight: 600; }
+  .back-btn { background: var(--surface); border: 1px solid var(--border2); padding: 4px 12px; border-radius: 3px; font-size: 12px; color: #444; font-weight: 600; cursor: pointer; white-space: nowrap; }
+  .filter-divider { width: 1px; height: 20px; background: var(--border); }
+
+  /* ── Page header ── */
+  .page-header { background: var(--surface); padding: 10px 20px 8px; border-bottom: 1px solid var(--border); }
+  .page-header-title { font-size: 16px; font-weight: 700; color: var(--text); line-height: 1.2; }
+  .page-header-sub { font-size: 10.5px; color: var(--text2); line-height: 1.5; margin-top: 3px; font-style: italic; }
+
+  /* ── OM Identity Banner (3 columns) ── */
+  .om-identity { display: flex; background: var(--surface); border-bottom: 2px solid var(--border); }
+  .om-id-left   { flex: 0 0 28%; padding: 16px 20px; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--border); }
+  .om-id-middle { flex: 0 0 30%; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .om-id-right  { flex: 1; padding: 16px 20px; }
+
+  /* Left column */
+  .om-card-name { font-size: 23px; font-weight: 700; color: var(--text); line-height: 1.15; margin-bottom: 4px; }
+  .om-card-sub  { font-size: 10.5px; color: #777; margin-bottom: 10px; line-height: 1.4; }
+  .om-tier-badge { display: inline-block; background: #1a2a4a; color: #fff; padding: 3px 10px; border-radius: 3px; font-size: 11px; font-weight: 700; letter-spacing: 0.3px; }
+
+  /* Section title (shared) */
+  .om-section-title { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text3); margin-bottom: 10px; }
+
+  /* Middle: org info 2×2 grid */
+  .om-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; }
+  .om-meta-item { display: flex; flex-direction: column; gap: 3px; }
+  .om-meta-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text3); }
+  .om-meta-val { font-size: 21px; font-weight: 700; color: var(--text); line-height: 1.1; }
+
+  /* Right: KPI 2×2 grid */
+  .om-kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; margin-bottom: 10px; }
+  .om-kpi-item { display: flex; flex-direction: column; gap: 2px; }
+  .om-kpi-label { font-size: 9px; color: var(--text3); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .om-kpi-val { font-size: 21px; font-weight: 700; color: var(--text); line-height: 1.1; }
+  .om-kpi-val.warn { color: #c0392b; }
+  .om-kpi-val.good { color: #444; }
+  .om-kpi-val.blue { color: #444; }
+  .om-kpi-sub { font-size: 8.5px; color: var(--text3); margin-top: 1px; }
+  .om-insight { font-size: 10px; color: var(--text2); background: var(--chrome); border-radius: 8px; padding: 5px 9px; line-height: 1.45; border-left: 3px solid #888; font-style: italic; }
+
+  /* ── Domain tabs ── */
+  .tabs-row { background: var(--surface); padding: 0 20px; display: flex; gap: 3px; border-bottom: 2px solid var(--border); margin-top: 0; }
+  .tab { padding: 8px 16px; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--text2); background: transparent; border: none; border-bottom: 3px solid transparent; margin-bottom: -2px; }
+  .tab:hover { color: var(--text); }
+  .tab[data-tab="clinical"].active   { color: #444; border-bottom-color: #444; }
+  .tab[data-tab="regulatory"].active { color: #444; border-bottom-color: #444; }
+  .tab[data-tab="staffing"].active   { color: #444; border-bottom-color: #444; }
+  .tab[data-tab="financial"].active  { color: #444; border-bottom-color: #444; }
+  .tab[data-tab="training"].active   { color: #444; border-bottom-color: #444; }
+
+  /* ── Table panel ── */
+  .tables-wrap { background: var(--surface); padding: 0 16px; }
+  .table-panel { margin-top: 16px; }
+  .panel-title { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 4px; border-bottom: 2px solid #e0e0e0; }
+  .panel-sub { font-size: 9.5px; color: var(--text3); margin-bottom: 10px; line-height: 1.5; }
+  .table-scroll { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 11px; white-space: nowrap; }
+  thead tr { background: #f0ede8; }
+  th { padding: 6px 10px; text-align: center; border-bottom: 2px solid var(--border); color: var(--text2); font-weight: 600; cursor: help; }
+  th:hover { background: var(--chrome); }
+  th.col-name { text-align: left; min-width: 200px; position: sticky; left: 0; background: #f0ede8; z-index: 1; cursor: default; }
+  th.col-name:hover { background: #f0ede8; }
+  td { padding: 6px 10px; border-bottom: 1px solid var(--border); text-align: center; }
+  td.col-name { text-align: left; font-weight: 600; position: sticky; left: 0; z-index: 1; }
+  td.data-cell { cursor: pointer; }
+  td.data-cell:hover { background: var(--chrome) !important; }
+  tr:hover td { background: #f7f6f2 !important; }
+  tr:hover td.col-name { background: #f7f6f2 !important; }
+  tr.outlier-row td { background: var(--surface); }
+  tr.outlier-row:hover td { background: #f7f6f2 !important; }
+  tr.outlier-row td.col-name { background: var(--surface); }
+  tr.outlier-row:hover td.col-name { background: #f7f6f2 !important; }
+  .name-f { color: #444; }
+  .val-red { color: #c0392b; font-weight: 600; }
+  .val-green { color: var(--text2); font-weight: 600; }
+  .val-muted { color: var(--text3); }
+  .member-yes { color: var(--text); font-weight: 700; }
+  .outlier-badge { margin-left: 5px; font-size: 9px; background: #666; color: #fff; padding: 1px 5px; border-radius: 8px; font-weight: 700; vertical-align: middle; }
+  .table-hint { margin-top: 6px; font-size: 11px; color: var(--text3); padding-bottom: 12px; }
+
+  /* ── Tab accent underlines ── */
+  .accent-clinical   th { border-bottom-color: #444; }
+  .accent-regulatory th { border-bottom-color: #444; }
+  .accent-staffing   th { border-bottom-color: #444; }
+  .accent-financial  th { border-bottom-color: #444; }
+  .accent-training   th { border-bottom-color: #444; }
+
+  /* ── Dot plot section ── */
+  .dotplot-section { background: var(--surface); border-top: 2px solid var(--border); padding: 14px 20px 18px; }
+  .dotplot-title { font-size: 12px; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: 0.5px; }
+  .dotplot-subtitle { font-size: 10px; color: var(--text3); margin-top: 3px; margin-bottom: 14px; }
+  .dotplot-axis-header { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .dotplot-metric-label { width: 170px; font-size: 9px; color: var(--text3); text-align: right; }
+  .dotplot-axis-labels { flex: 1; display: flex; justify-content: space-between; font-size: 9px; color: var(--text3); }
+  .dotplot-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; cursor: default; }
+  .dotplot-name { width: 170px; font-size: 10px; color: var(--text); font-weight: 600; text-align: right; flex-shrink: 0; }
+  .dotplot-track { flex: 1; position: relative; height: 26px; border-radius: 2px; overflow: visible; }
+  /* percentile zones */
+  .dp-zone { position: absolute; top: 0; height: 26px; width: 10%; }
+  .dp-zone-left-bad  { left: 0;   background: rgba(0,0,0,0.05); border-radius: 2px 0 0 2px; }
+  .dp-zone-right-bad { right: 0;  background: rgba(0,0,0,0.05); border-radius: 0 2px 2px 0; }
+  .dp-zone-left-good  { left: 0;  background: rgba(0,0,0,0.04); border-radius: 2px 0 0 2px; }
+  .dp-zone-right-good { right: 0; background: rgba(0,0,0,0.04); border-radius: 0 2px 2px 0; }
+  .dp-track-line { position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: #d8dde8; transform: translateY(-50%); }
+  /* avg + pct lines */
+  .dotplot-avg-line  { position: absolute; top: 2px; width: 2px; height: 22px; background: #888; border-radius: 1px; transform: translateX(-50%); z-index: 2; }
+  .dotplot-avg-label { position: absolute; top: 17px; font-size: 8px; color: var(--text2); white-space: nowrap; transform: translateX(-50%); z-index: 2; font-weight: 600; }
+  .dp-pct-line { position: absolute; top: 4px; width: 1px; height: 18px; border-left: 1px dashed rgba(0,0,0,0.2); transform: translateX(-50%); z-index: 2; }
+  .dp-pct-label { position: absolute; top: 17px; font-size: 8px; color: var(--text3); white-space: nowrap; transform: translateX(-50%); z-index: 2; }
+  /* facility dots */
+  .fdot { position: absolute; width: 10px; height: 10px; border-radius: 50%; transform: translateX(-50%) translateY(-50%); cursor: pointer; z-index: 3; border: 1.5px solid rgba(255,255,255,0.8); transition: transform 0.1s; }
+  .fdot:hover { transform: translateX(-50%) translateY(-50%) scale(1.5); z-index: 10; }
+  .bdot { position: absolute; width: 5px; height: 5px; border-radius: 50%; background: #c8c4bc; transform: translateX(-50%) translateY(-50%); opacity: 0.55; pointer-events: none; z-index: 1; }
+  .dotplot-legend { font-size: 8.5px; color: var(--text3); margin-top: 10px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+  .dp-legend-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; vertical-align: middle; margin-right: 3px; }
+
+  /* ── Status bar ── */
+  .status-bar { background: #f0ede8; padding: 6px 20px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 11px; color: var(--text3); }
+
+  /* ── Tooltip ── */
+  #tooltip { position: fixed; z-index: 9999; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.14); width: 270px; font-size: 12px; pointer-events: auto; display: none; }
+  .tt-header { padding: 10px 12px 8px; border-bottom: 1px solid var(--border); }
+  .tt-metric-name { font-weight: 700; color: var(--text); font-size: 13px; margin-bottom: 3px; }
+  .tt-entity { font-size: 11px; color: var(--text3); margin-bottom: 5px; }
+  .tt-definition { color: #444; line-height: 1.45; font-size: 10.5px; }
+  .tt-meta { margin-top: 5px; font-size: 9.5px; color: var(--text3); }
+  .tt-body { padding: 10px 12px; }
+  .tt-value-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 3px; }
+  .tt-value-label { color: var(--text2); }
+  .tt-value-num { font-weight: 700; color: var(--text); }
+  .tt-value-num.above { color: #c0392b; }
+  .tt-value-num.below { color: var(--text2); }
+  .tt-direction { font-size: 9.5px; font-weight: 700; padding: 1px 6px; border-radius: 8px; margin-left: 6px; }
+  .tt-direction.above { background: var(--chrome); color: #c0392b; }
+  .tt-direction.below { background: var(--chrome); color: var(--text2); }
+  .tt-direction.at    { background: #f0ede8; color: #777; }
+  .tt-bar-wrap { margin: 8px 0 4px; }
+  .tt-bar-track { background: transparent; border-radius: 3px; height: 8px; }
+  .tt-bar-fill { height: 8px; border-radius: 3px; }
+  .tt-bar-fill.bad  { background: #444; }
+  .tt-bar-fill.good { background: #999; }
+  .tt-bar-label { font-size: 9.5px; color: var(--text2); margin-top: 3px; text-align: right; }
+  .tt-divider { border: none; border-top: 1px solid var(--border); margin: 8px 0; }
+  .tt-trend-title { font-size: 9.5px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .tt-sparkline { display: block; }
+  .tt-trend-labels { display: flex; justify-content: space-between; font-size: 10px; color: var(--text3); margin-top: 2px; }
+  .tt-trend-direction { font-size: 9.5px; font-weight: 600; margin-top: 4px; }
+  .tt-trend-direction.worse  { color: #c0392b; }
+  .tt-trend-direction.better { color: var(--text2); }
+  .tt-trend-direction.stable { color: var(--text3); }
+  .tt-no-trend { font-size: 9.5px; color: var(--text3); font-style: italic; }
+
+  /* ── Dot plot tooltip extras ── */
+  .tt-dp-header { padding: 10px 12px 8px; border-bottom: 1px solid var(--border); }
+  .tt-dp-om { font-size: 10.5px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+  .tt-dp-val { font-size: 11px; color: var(--text2); margin-bottom: 2px; }
+  .tt-dp-pct { display: inline-block; font-size: 9.5px; font-weight: 700; padding: 1px 7px; border-radius: 8px; margin-top: 1px; }
+  .tt-dp-pct.good   { background: var(--chrome); color: var(--text2); }
+  .tt-dp-pct.mid    { background: #f0ede8; color: #777; }
+  .tt-dp-pct.warn   { background: var(--chrome); color: #c0392b; }
+  .tt-dp-section-title { font-size: 8.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text3); margin: 8px 0 4px; }
+  .tt-dp-row { display: flex; justify-content: space-between; align-items: center; font-size: 9.5px; padding: 2px 0; border-bottom: 1px solid var(--border); }
+  .tt-dp-row:last-child { border-bottom: none; }
+  .tt-dp-fname { color: var(--text); max-width: 155px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .tt-dp-fval  { font-weight: 700; margin-left: 8px; white-space: nowrap; }
+  .tt-dp-fval.good { color: var(--text2); }
+  .tt-dp-fval.bad  { color: #c0392b; }
+
+  /* ── Tooltip nav footer ── */
+  .tt-nav-footer { border-top: 1px solid var(--border); padding: 8px 12px; display: none; }
+  .tt-nav-btn { display: block; width: 100%; padding: 5px 0; background: #333; color: #fff; border: none; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; text-align: center; }
+  .tt-nav-btn:hover { background: #222; }
+
+</style>
+</head>
+<body>
+
+<div id="tooltip">
+  <div class="tt-header">
+    <div class="tt-metric-name" id="tt-name"></div>
+    <div class="tt-entity" id="tt-entity"></div>
+    <div class="tt-definition" id="tt-def"></div>
+    <div class="tt-meta" id="tt-meta"></div>
+  </div>
+  <div class="tt-body" id="tt-body"></div>
+  <div class="tt-nav-footer" id="tt-nav-footer">
+    <button class="tt-nav-btn" id="tt-nav-btn"></button>
+  </div>
+</div>
+
+<!-- Nav -->
+<div class="nav">
+  <div class="nav-links">
+    <div class="nav-link" onclick="window.location='page1-tooltips.html'" style="cursor:pointer">Portfolio Overview</div>
+    <div class="nav-link active">OM View</div>
+    <div class="nav-link" onclick="window.location='page3-facility-detail.html'" style="cursor:pointer">Facility Detail</div>
+    <div class="nav-link" onclick="window.location='page4-domain-deep-dive.html'" style="cursor:pointer">Domain Deep-Dive</div>
+  </div>
+</div>
+
+<!-- Back + Filters -->
+<div class="filters">
+  <div class="back-btn" onclick="window.location='page1-tooltips.html'">&#8592; Back to Portfolio</div>
+  <div class="filter-divider"></div>
+  <span class="filter-label">Parent Org:</span>
+  <select class="filter-select highlight" style="min-width:160px"><option>Sunrise Senior Living</option><option>Kindred Healthcare</option><option>Genesis HealthCare</option><option>Trilogy Health Services</option><option>ProMedica Senior Care</option></select>
+  <div class="filter-divider"></div>
+  <span class="filter-label">Filters:</span>
+  <select class="filter-select"><option>All States</option><option>IL</option><option>WI</option><option>IN</option></select>
+  <select class="filter-select"><option>Rural / Urban</option><option>Urban</option><option>Rural</option></select>
+  <select class="filter-select"><option>All Facilities</option><option>Sunrise Hyde Park</option><option>Sunrise Evanston</option><option>Sunrise Waukegan</option><option>Sunrise Lincoln Park</option><option>Sunrise Oak Park</option><option>Sunrise Naperville</option><option>Sunrise Schaumburg</option><option>Sunrise Rockford</option><option>Sunrise Madison</option><option>Sunrise Kenosha</option><option>Sunrise Indianapolis</option><option>Sunrise Bloomington</option></select>
+  <select id="filter-member" class="filter-select highlight"><option value="">AAPACN Member</option><option value="Yes">Yes</option><option value="No">No</option></select>
+  <select class="filter-select"><option>AAPACN Cert Status</option><option>Certified</option><option>Not Certified</option></select>
+  <select class="filter-select highlight"><option>Facility Size (Beds)</option><option>Small (&lt;90)</option><option>Medium (91–150)</option><option>Large (&gt;150)</option></select>
+  <div class="filter-divider"></div>
+  <button onclick="clearAllFilters()" style="background:var(--surface);border:1px solid var(--border2);padding:4px 12px;border-radius:3px;font-size:12px;color:var(--text2);cursor:pointer;font-weight:600;">&#10005; Clear All</button>
+</div>
+
+<!-- Page Header -->
+<div class="page-header">
+  <div class="page-header-title">OM Portfolio View</div>
+  <div class="page-header-sub">A consolidated view of all facilities within a single Organizational Member. Identify which facilities and domains need attention, compare performance to national benchmarks, and understand the OM's overall portfolio posture.</div>
+</div>
+
+<!-- OM Identity Banner -->
+<div class="om-identity">
+
+  <!-- Left: org name + badge -->
+  <div class="om-id-left">
+    <div class="om-card-name">Sunrise Senior Living</div>
+    <div class="om-card-sub">Multi-state operator &middot; IL, WI, IN</div>
+    <div><span class="om-tier-badge">Organizational Member (OM)</span></div>
+  </div>
+
+  <!-- Middle: organization info -->
+  <div class="om-id-middle">
+    <div class="om-section-title">Organization Info</div>
+    <div class="om-meta-grid">
+      <div class="om-meta-item">
+        <div class="om-meta-label">OM Tier</div>
+        <div class="om-meta-val">OM</div>
+      </div>
+      <div class="om-meta-item">
+        <div class="om-meta-label">Member Since</div>
+        <div class="om-meta-val">2018</div>
+      </div>
+      <div class="om-meta-item">
+        <div class="om-meta-label">States</div>
+        <div class="om-meta-val">3</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: portfolio snapshot KPIs -->
+  <div class="om-id-right">
+    <div class="om-section-title">Portfolio Snapshot</div>
+    <div class="om-kpi-grid">
+      <div class="om-kpi-item">
+        <div class="om-kpi-label">Total Facilities</div>
+        <div class="om-kpi-val">12</div>
+        <div class="om-kpi-sub">in this OM</div>
+      </div>
+      <div class="om-kpi-item">
+        <div class="om-kpi-label">Avg CMS 5-Star</div>
+        <div class="om-kpi-val warn">3.2 &#9733;</div>
+        <div class="om-kpi-sub">OM avg</div>
+      </div>
+      <div class="om-kpi-item">
+        <div class="om-kpi-label">Avg Turnover %</div>
+        <div class="om-kpi-val warn">26.2%</div>
+        <div class="om-kpi-sub">nat'l avg: 24.0%</div>
+      </div>
+      <div class="om-kpi-item">
+        <div class="om-kpi-label"># AAPACN Members</div>
+        <div class="om-kpi-val blue">9</div>
+        <div class="om-kpi-sub">75% of OM</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Domain Tabs + table + dot plot + status -->
+
+    <!-- Domain Tabs -->
+    <div class="tabs-row">
+      <div class="tab active" data-tab="clinical"  onclick="switchTab('clinical')">Clinical Quality</div>
+      <div class="tab" data-tab="regulatory"        onclick="switchTab('regulatory')">Regulatory &amp; Survey</div>
+      <div class="tab" data-tab="staffing"          onclick="switchTab('staffing')">Workforce &amp; Staffing</div>
+      <div class="tab" data-tab="financial"         onclick="switchTab('financial')">Financial</div>
+      <div class="tab" data-tab="training"          onclick="switchTab('training')">Training &amp; Certification</div>
+    </div>
+
+    <!-- Facilities table (rendered by JS) -->
+    <div class="tables-wrap">
+      <div class="table-panel">
+        <div class="panel-title" id="panel-title">Facilities — Sunrise Senior Living</div>
+        <div class="panel-sub" id="panel-sub">Showing all facilities in this OM for the selected domain. Hover column headers for metric definitions &nbsp;&middot;&nbsp; Hover cells for benchmarks &amp; trend history &nbsp;&middot;&nbsp; <span style="color:#c0392b">Red</span> = above alert threshold &nbsp;&middot;&nbsp; <span style="color:#27ae60">Green</span> = at or below target</div>
+        <div class="table-scroll">
+          <table id="facility-table" class="accent-clinical">
+            <thead id="facility-head"></thead>
+            <tbody id="facility-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+<!-- Dot plot (rendered by JS) -->
+<div class="dotplot-section" id="dotplot-section"></div>
+
+<!-- Status bar -->
+<div class="status-bar">
+  <span id="status-left">Domain: Clinical Quality | 12 facilities | 2 outliers flagged | 47 OMs in comparison</span>
+  <span id="status-right">MDS QM: 6&ndash;9 mo lag | &#9888; Star rating avg (rollup methodology TBD)</span>
+</div>
+
+<script>
+// ─── Tab accent colors ───────────────────────────────────────────────────────
+const TAB_COLORS = {
+  clinical:'#444', regulatory:'#444', staffing:'#444',
+  financial:'#444', training:'#444'
+};
+
+// ─── Tooltip metadata ────────────────────────────────────────────────────────
+const META = {
+  clinical: [
+    { name:'Antipsychotic Use %',             def:'% of long-stay residents who received an antipsychotic medication. High rates signal potential overuse — a liability and press-scrutiny risk.',               src:'MDS Quality Measures',   lag:'6–9 months', benchmarkNat:14.1, benchmarkState:15.8, highIsBad:true,  hasTrend:true,  trend:[[18.0,18.5,19.2,18.2],[12.0,12.4,12.6,12.7],[11.0,11.1,11.3,11.3],[13.5,13.8,14.1,14.0],[22.3,22.8,23.1,24.1],[16.0,16.2,16.4,16.8],[14.2,14.4,14.5,14.6],[10.9,11.0,11.1,11.2],[13.1,13.3,13.5,13.6],[15.7,15.9,16.0,16.2],[21.8,22.0,22.3,21.8],[9.8,9.9,10.1,10.2]] },
+    { name:'Exaggerated Wt Loss %',           def:'% of long-stay residents who experienced significant unplanned weight loss. Indicates nutrition and care quality gaps.',                                      src:'MDS Quality Measures',   lag:'6–9 months', benchmarkNat:4.8,  benchmarkState:5.1,  highIsBad:true,  hasTrend:true,  trend:[[3.9,4.0,4.1,4.1],[6.5,6.7,6.8,6.8],[3.7,3.8,3.9,3.9],[5.0,5.1,5.2,5.2],[9.8,9.9,10.1,9.8],[5.4,5.5,5.6,5.7],[4.1,4.2,4.3,4.3],[6.3,6.4,6.5,6.3],[4.8,4.9,5.0,5.1],[7.2,7.3,7.4,7.2],[5.2,5.3,5.4,5.3],[3.3,3.4,3.5,3.4]] },
+    { name:'Falls w/ Major Injury %',         def:'% of SNF residents who experienced one or more falls with major injury during their stay.',                                                                  src:'SNF QRP',                lag:'9 months',   benchmarkNat:13.5, benchmarkState:14.1, highIsBad:true,  hasTrend:true,  trend:[[15.1,15.3,15.4,15.5],[13.8,13.9,14.0,14.1],[12.3,12.4,12.5,12.6],[13.4,13.6,13.7,13.8],[2.3,2.3,2.4,2.3],[4.1,4.2,4.3,4.1],[18.2,18.4,18.6,18.2],[11.3,11.4,11.5,11.3],[9.8,9.9,10.0,9.8],[14.7,14.8,15.0,14.7],[3.8,3.9,4.0,3.8],[1.1,1.1,1.2,1.1]] },
+    { name:'Pressure Ulcer % (New/Worsening)',def:'% of residents with pressure ulcers or injuries that are new or worsened. Numerator/denominator available on drill-down.',                                  src:'SNF QRP',                lag:'9 months',   benchmarkNat:5.9,  benchmarkState:6.2,  highIsBad:true,  hasTrend:true,  trend:[[6.8,7.0,7.0,7.1],[6.2,6.3,6.4,6.4],[5.9,6.0,6.2,6.3],[6.7,6.8,6.9,6.9],[2.9,3.0,3.0,2.9],[5.1,5.2,5.3,5.1],[13.1,13.3,13.4,13.1],[3.8,3.9,4.0,3.8],[2.4,2.5,2.5,2.4],[7.8,7.9,8.0,7.8],[7.5,7.6,7.7,7.5],[2.4,2.5,2.5,2.4]] },
+    { name:'30-Day Readmission %',            def:'Risk-standardized rate of unplanned hospital readmissions within 30 days of SNF discharge. Core SNF VBP measure.',                                          src:'SNF VBP',                lag:'~2 years',   benchmarkNat:19.5, benchmarkState:20.1, highIsBad:true,  hasTrend:false, trend:null },
+  ],
+  regulatory: [
+    { name:'G+ Severity Citations',    def:'Count of survey deficiencies at severity G or higher — actual harm to one or more residents. Denise\'s top tracking priority.',         src:'NH Health Deficiencies', lag:'1–3 months', benchmarkNat:1.8, benchmarkState:2.1, highIsBad:true, hasTrend:true,  trend:[[2,3,3,3],[1,1,1,1],[3,4,4,4],[2,2,2,2],[0,0,0,0],[4,4,5,4],[1,1,1,0],[0,0,0,0],[2,2,2,1],[3,3,4,3],[1,1,1,0],[0,0,0,0]] },
+    { name:'IJ Citations',             def:'Immediate Jeopardy (J/K/L). Most serious deficiency — noncompliance likely to cause serious injury or death.',                          src:'NH Health Deficiencies', lag:'1–3 months', benchmarkNat:0.4, benchmarkState:0.5, highIsBad:true, hasTrend:true,  trend:[[0,1,1,1],[0,0,0,0],[1,2,2,2],[0,0,0,0],[0,0,0,0],[1,1,2,1],[0,0,0,0],[0,0,0,0],[0,0,0,0],[1,1,1,0],[0,0,0,0],[0,0,0,0]] },
+    { name:'Citations/Qtr',            def:'Average health citations (B–L) per survey quarter.',                                                                                    src:'NH Health Deficiencies', lag:'1–3 months', benchmarkNat:3.1, benchmarkState:3.3, highIsBad:true, hasTrend:true,  trend:[[4.0,4.1,4.2,4.2],[2.6,2.7,2.8,2.8],[4.8,4.9,5.0,5.1],[3.2,3.3,3.4,3.4],[1.8,1.9,2.0,1.8],[5.5,5.6,5.7,5.5],[2.1,2.2,2.3,2.1],[1.4,1.5,1.6,1.4],[2.8,2.9,3.0,2.8],[4.1,4.2,4.3,4.1],[2.0,2.1,2.2,2.0],[1.2,1.3,1.4,1.2]] },
+    { name:'Total Citations (3yr)',    def:'Total health citations (B–L) across all surveys in the last 3 years.',                                                                  src:'NH Health Deficiencies', lag:'1–3 months', benchmarkNat:28,  benchmarkState:30,  highIsBad:true, hasTrend:false, trend:null },
+    { name:'5-Star Overall',           def:'CMS composite rating (1–5 stars). Amy targets 2–3 star facilities for intervention.',                                                   src:'NH Provider Info',       lag:'1–3 months', benchmarkNat:3.1, benchmarkState:3.0, highIsBad:false, hasTrend:true,  trend:[[3.1,3.1,3.1,3.1],[3.5,3.6,3.6,3.6],[2.7,2.8,2.8,2.8],[3.2,3.3,3.3,3.3],[4.0,4.0,4.0,4.0],[2.0,2.0,2.0,2.0],[4.0,4.0,4.0,4.0],[5.0,5.0,5.0,5.0],[3.0,3.0,3.0,3.0],[2.0,2.0,2.0,2.0],[3.0,3.0,3.0,3.0],[4.0,4.0,4.0,4.0]] },
+    { name:'Health Inspection ★',     def:'Star rating based on number, severity, and scope of health inspection deficiencies.',                                                    src:'NH Provider Info',       lag:'1–3 months', benchmarkNat:3.0, benchmarkState:2.9, highIsBad:false, hasTrend:true,  trend:[[2.8,2.9,2.9,2.9],[3.6,3.7,3.8,3.8],[2.3,2.4,2.5,2.5],[3.0,3.1,3.1,3.1],[4,4,4,4],[2,2,2,2],[4,4,4,4],[5,5,5,5],[3,3,3,3],[2,2,2,2],[3,3,3,3],[4,4,4,4]] },
+    { name:'Quality Measure ★',       def:'Star rating derived from MDS-based quality measure performance.',                                                                        src:'NH Provider Info',       lag:'1–3 months', benchmarkNat:3.2, benchmarkState:3.1, highIsBad:false, hasTrend:true,  trend:[[3.2,3.3,3.3,3.3],[3.3,3.4,3.4,3.4],[2.9,3.0,3.0,3.0],[3.3,3.4,3.4,3.4],[4,4,4,4],[2,2,3,3],[4,4,4,4],[5,5,5,5],[3,3,3,3],[3,3,3,3],[4,4,4,4],[4,4,4,4]] },
+    { name:'Staffing ★',              def:'Star rating based on RN and total staffing HPRD relative to CMS thresholds.',                                                           src:'NH Provider Info',       lag:'1–3 months', benchmarkNat:3.1, benchmarkState:3.0, highIsBad:false, hasTrend:true,  trend:[[3.1,3.2,3.2,3.2],[3.4,3.5,3.5,3.5],[2.8,2.9,2.9,2.9],[3.1,3.2,3.2,3.2],[4,4,4,4],[2,2,2,2],[3,3,3,3],[4,4,4,4],[3,3,3,3],[2,2,2,2],[3,3,3,3],[4,4,4,4]] },
+    { name:'Failed Revisit',           def:'Facility failed a follow-up inspection after a prior deficiency — persistent compliance issues. Data source pending.',                   src:'TBD',                    lag:'TBD',        benchmarkNat:null, benchmarkState:null, highIsBad:true, hasTrend:false, trend:null },
+  ],
+  staffing: [
+    { name:'RN HPRD',                     def:'Registered nurse hours per resident per day. Key staffing adequacy indicator.',                                                                                src:'NH Provider Info',    lag:'1–3 months', benchmarkNat:0.55, benchmarkState:0.54, highIsBad:false, hasTrend:true,  trend:[[0.51,0.52,0.52,0.52],[0.60,0.61,0.61,0.61],[0.47,0.48,0.48,0.48],[0.54,0.55,0.55,0.55],[0.44,0.44,0.45,0.44],[0.58,0.59,0.59,0.58],[0.62,0.62,0.63,0.62],[0.71,0.72,0.72,0.71],[0.49,0.50,0.50,0.49],[0.45,0.46,0.46,0.45],[0.67,0.68,0.68,0.67],[0.57,0.58,0.58,0.57]] },
+    { name:'Total Nursing HPRD (CM Adj)', def:'Case-mix adjusted total nurse staffing (RN + LPN + Aide) HPRD. Adjusted for resident acuity for fair comparison.',                                           src:'NH Provider Info',    lag:'1–3 months', benchmarkNat:3.75, benchmarkState:3.70, highIsBad:false, hasTrend:true,  trend:[[3.78,3.80,3.81,3.81],[4.08,4.09,4.10,4.10],[3.52,3.53,3.55,3.55],[3.70,3.71,3.72,3.72],[3.40,3.41,3.42,3.40],[3.90,3.91,3.92,3.90],[4.20,4.21,4.22,4.20],[4.51,4.52,4.53,4.51],[3.61,3.62,3.63,3.61],[3.45,3.46,3.47,3.45],[4.02,4.03,4.04,4.02],[3.83,3.84,3.85,3.83]] },
+    { name:'Direct Care HPRD',            def:'Total direct care HPRD from PBJ payroll (RN + LPN + CNA + Nurse Aide + Med Aide). More comprehensive than reported HPRD.',                                   src:'PBJ Staffing',        lag:'~3 months',  benchmarkNat:3.55, benchmarkState:3.52, highIsBad:false, hasTrend:true,  trend:[[3.59,3.61,3.62,3.62],[3.92,3.93,3.95,3.95],[3.37,3.39,3.40,3.40],[3.55,3.57,3.58,3.58],[3.22,3.23,3.24,3.22],[3.71,3.72,3.73,3.71],[4.01,4.02,4.03,4.01],[4.32,4.33,4.34,4.32],[3.45,3.46,3.47,3.45],[3.28,3.29,3.30,3.28],[3.88,3.89,3.90,3.88],[3.62,3.63,3.64,3.62]] },
+    { name:'Staff Turnover Rate %',       def:'% of employment spells ending in departure in a 12-month window. RN, CNA, and administrator roles tracked.',                                                  src:'PBJ Employee Detail', lag:'~3 months',  benchmarkNat:24.0, benchmarkState:25.5, highIsBad:true,  hasTrend:true,  trend:[[27.8,28.1,28.3,28.4],[21.5,21.8,22.0,22.1],[30.9,31.2,31.5,31.7],[24.7,25.0,25.2,25.3],[35.8,36.1,36.3,35.8],[26.2,26.4,26.6,26.2],[21.0,21.2,21.4,21.0],[18.5,18.7,18.9,18.5],[30.1,30.3,30.5,30.1],[38.2,38.5,38.7,38.2],[22.4,22.6,22.8,22.4],[19.8,20.0,20.2,19.8]] },
+    { name:'Quality Mix %',               def:'Proportion of short-term vs. long-term stays. High short-stay = post-acute/rehab focus; high long-stay = custodial care.',                                    src:'VRDC',                lag:'1–2 years',  benchmarkNat:38,   benchmarkState:36,   highIsBad:false, hasTrend:false, trend:null },
+  ],
+  financial: [
+    { name:'Case Mix Index (CMI)',  def:'Clinical complexity and resource intensity of the resident population. Higher = sicker residents. Shown alongside national ratio.',  src:'NH Provider Info', lag:'1–3 months', benchmarkNat:1.04, benchmarkState:1.03, highIsBad:false, hasTrend:true,  trend:[[1.06,1.07,1.08,1.08],[1.20,1.21,1.22,1.22],[0.92,0.93,0.94,0.94],[1.03,1.04,1.05,1.05],[1.02,1.03,1.03,1.02],[1.28,1.29,1.30,1.28],[0.91,0.92,0.93,0.91],[1.11,1.12,1.13,1.11],[1.18,1.19,1.20,1.18],[0.88,0.89,0.90,0.88],[1.07,1.08,1.09,1.07],[0.98,0.99,1.00,0.98]] },
+    { name:'Occupancy Rate %',      def:'% of certified beds occupied on an average day. Low occupancy may signal performance or community trust issues.',                   src:'NH Provider Info', lag:'1–3 months', benchmarkNat:80.0, benchmarkState:79.5, highIsBad:false, hasTrend:true,  trend:[[81.5,82.0,82.3,82.4],[87.4,87.7,88.0,88.1],[70.5,70.8,71.0,71.2],[78.8,79.2,79.5,79.6],[68.5,68.8,69.0,68.5],[84.2,84.5,84.8,84.2],[91.0,91.2,91.4,91.0],[88.5,88.8,89.0,88.5],[73.1,73.4,73.6,73.1],[65.2,65.5,65.8,65.2],[86.4,86.7,87.0,86.4],[79.5,79.8,80.0,79.5]] },
+  ],
+  training: [
+    { name:'# For-Sale Products',    def:'Count of for-sale educational products purchased by members at this facility in the last 12 months.',               src:'AAPACN ProTech',    lag:'Monthly', benchmarkNat:null, benchmarkState:null, highIsBad:false, hasTrend:true,  trend:[[80,82,85,87],[28,29,30,31],[10,11,12,12],[600,610,618,624],[5,5,6,5],[8,8,9,8],[0,0,0,0],[0,0,0,0],[14,15,15,14],[3,3,4,3],[12,13,13,12],[18,19,20,18]] },
+    { name:'# On-Demand Products',   def:'Count of on-demand products accessed or purchased in the last 12 months.',                                          src:'AAPACN ProTech',    lag:'Monthly', benchmarkNat:null, benchmarkState:null, highIsBad:false, hasTrend:true,  trend:[[130,135,139,142],[52,54,56,58],[16,17,18,19],[995,1005,1025,1041],[9,9,10,9],[14,15,16,14],[0,0,0,0],[0,0,0,0],[22,23,24,22],[5,5,6,5],[19,20,21,19],[28,29,30,28]] },
+    { name:'% Cert Completed',       def:'% of AAPACN members at this facility who completed a certification. ⚠ <1/3 of certifications matched to facility CCN — directional only.', src:'AAPACN ProTech', lag:'Monthly', benchmarkNat:32, benchmarkState:null, highIsBad:false, hasTrend:true,  trend:[[31,32,33,34],[25,26,27,28],[17,18,19,19],[39,40,40,41],[21,22,23,21],[38,39,40,38],[0,0,0,0],[0,0,0,0],[28,29,30,28],[14,15,16,14],[35,36,37,35],[42,43,44,42]] },
+    { name:'% Cert Started',         def:'% of members who began a certification. In-progress tracking not yet in ProTech — only final completions write back from LMS.', src:'AAPACN ProTech/LMS', lag:'Monthly', benchmarkNat:40, benchmarkState:null, highIsBad:false, hasTrend:true, trend:[[38,39,40,41],[32,33,34,35],[24,25,26,27],[47,48,48,49],[29,30,31,29],[45,46,47,45],[0,0,0,0],[0,0,0,0],[35,36,37,35],[20,21,22,20],[43,44,45,43],[51,52,53,51]] },
+    { name:'Certification Rate %',   def:'Overall certification attainment rate across all AAPACN members at this facility.',                                  src:'AAPACN ProTech',    lag:'Monthly', benchmarkNat:28, benchmarkState:null, highIsBad:false, hasTrend:true,  trend:[[26,27,28,29],[21,22,23,24],[14,15,16,16],[34,35,35,36],[18,19,20,18],[33,34,35,33],[0,0,0,0],[0,0,0,0],[24,25,26,24],[11,12,13,11],[30,31,32,30],[38,39,40,38]] },
+    { name:'Conference Participation',def:'% of members who attended an AAPACN conference in the measurement period.',                                        src:'AAPACN ProTech',    lag:'Monthly', benchmarkNat:null, benchmarkState:null, highIsBad:false, hasTrend:false, trend:null },
+  ],
+};
+
+// ─── TABS data with OM-scoped facility rows ───────────────────────────────────
+const TABS = {
+  clinical: {
+    label:'Clinical Quality', lag:'MDS QM: 6–9 mo | SNF QRP: 9 mo | SNF VBP: 2 yr',
+    cols:['Facility Name','Member Status','Antipsychotic Use %','Exag. Wt Loss %','Falls w/ Major Injury %','Pressure Ulcer %\n(New/Worsening)','30-Day Readmit %'],
+    fRows:[
+      ['Sunrise Evanston',     'Non-Member','24.1%','9.8%','2.3%','2.9%','21.7%'],
+      ['Sunrise Waukegan',     'Non-Member','21.8%','7.2%','4.1%','5.1%','18.9%'],
+      ['Sunrise Hyde Park',    'OM',        '13.4%','6.8%','2.8%','2.4%','17.2%'],
+      ['Sunrise Lincoln Park', 'OM',        '13.4%','4.2%','1.9%','2.1%','16.4%'],
+      ['Sunrise Oak Park',     'OM+',       '11.2%','6.3%','1.1%','2.4%','15.8%'],
+      ['Sunrise Naperville',   'OM',        '15.8%','5.1%','3.2%','3.8%','19.4%'],
+      ['Sunrise Schaumburg',   'OM',        '12.9%','4.8%','2.5%','2.9%','17.8%'],
+      ['Sunrise Rockford',     'OM',        '16.2%','5.8%','3.9%','4.2%','20.1%'],
+      ['Sunrise Madison',      'Individual','14.7%','4.5%','2.8%','3.1%','18.5%'],
+      ['Sunrise Kenosha',      'Individual','13.1%','3.8%','1.8%','1.9%','16.9%'],
+      ['Sunrise Indianapolis', 'OM',        '15.7%','5.7%','3.8%','4.1%','19.8%'],
+      ['Sunrise Bloomington',  'OM+',       '9.8%', '3.3%','1.1%','1.5%','15.2%'],
+    ],
+    rThresh:[null,null,17,5.0,18.0,10.0,21.0],
+    gThresh:[null,null,13,3.5,13.0, 6.0,18.5],
+    lowBad:[],
+  },
+  regulatory: {
+    label:'Regulatory & Survey', lag:'NH Provider Info: 1–3 mo | NH Health Deficiencies: 1–3 mo',
+    cols:['Facility Name','Member Status','G+ Citations','IJ Citations','Citations/Qtr','Total Citations (3yr)','5-Star Overall','Health Inspection ★','Quality Measure ★','Staffing ★','Failed Revisit'],
+    fRows:[
+      ['Sunrise Evanston',     'Non-Member','4','2','5.5','47','2','2','3','2','Yes'],
+      ['Sunrise Waukegan',     'Non-Member','3','1','4.8','42','2','2','3','3','No'],
+      ['Sunrise Hyde Park',    'OM',        '2','0','3.5','28','4','4','4','4','No'],
+      ['Sunrise Lincoln Park', 'OM',        '1','0','2.2','18','4','5','4','4','No'],
+      ['Sunrise Oak Park',     'OM+',       '1','0','2.8','21','4','4','4','5','No'],
+      ['Sunrise Naperville',   'OM',        '2','0','3.8','31','3','3','4','3','No'],
+      ['Sunrise Schaumburg',   'OM',        '1','0','2.5','22','4','4','4','4','No'],
+      ['Sunrise Rockford',     'OM',        '3','1','4.1','38','3','3','3','3','No'],
+      ['Sunrise Madison',      'Individual','2','0','3.2','27','3','3','3','3','No'],
+      ['Sunrise Kenosha',      'Individual','1','0','2.0','16','4','4','4','4','No'],
+      ['Sunrise Indianapolis', 'OM',        '2','0','3.5','30','3','3','3','3','No'],
+      ['Sunrise Bloomington',  'OM+',       '0','0','1.8','14','5','5','5','5','No'],
+    ],
+    rThresh:[null,null,3,1,4.5,40,null,null,null,null,null],
+    gThresh:[null,null,1,0,2.5,20,null,null,null,null,null],
+    lowBad:[],
+  },
+  staffing: {
+    label:'Workforce & Staffing', lag:'NH Provider Info: 1–3 mo | PBJ: ~3 mo | VRDC: 1–2 yr',
+    cols:['Facility Name','Member Status','RN HPRD','Total Nursing HPRD\n(CM Adj)','Direct Care HPRD','Staff Turnover Rate %','Quality Mix %'],
+    fRows:[
+      ['Sunrise Evanston',     'Non-Member','0.44','3.40','3.22','35.8%','31%'],
+      ['Sunrise Waukegan',     'Non-Member','0.47','3.52','3.35','38.2%','28%'],
+      ['Sunrise Hyde Park',    'OM',        '0.51','3.78','3.59','27.8%','34%'],
+      ['Sunrise Lincoln Park', 'OM',        '0.60','4.08','3.92','21.5%','41%'],
+      ['Sunrise Oak Park',     'OM+',       '0.57','3.83','3.62','19.8%','38%'],
+      ['Sunrise Naperville',   'OM',        '0.54','3.70','3.55','24.7%','36%'],
+      ['Sunrise Schaumburg',   'OM',        '0.58','3.90','3.71','22.4%','39%'],
+      ['Sunrise Rockford',     'OM',        '0.49','3.60','3.45','30.1%','31%'],
+      ['Sunrise Madison',      'Individual','0.54','3.72','3.58','25.3%','37%'],
+      ['Sunrise Kenosha',      'Individual','0.62','4.20','4.01','21.0%','44%'],
+      ['Sunrise Indianapolis', 'OM',        '0.48','3.55','3.40','31.7%','28%'],
+      ['Sunrise Bloomington',  'OM+',       '0.67','4.02','3.88','18.5%','42%'],
+    ],
+    rThresh:[null,null,null,null,null,30.0,null],
+    gThresh:[null,null,0.60,4.00,3.80,22.0,null],
+    lowBad:[2,3,4],
+  },
+  financial: {
+    label:'Financial', lag:'NH Provider Info: 1–3 mo',
+    cols:['Facility Name','Member Status','Case Mix Index (CMI)','Occupancy Rate %'],
+    fRows:[
+      ['Sunrise Evanston',     'Non-Member','1.02','68.5%'],
+      ['Sunrise Waukegan',     'Non-Member','0.91','65.2%'],
+      ['Sunrise Hyde Park',    'OM',        '1.06','81.5%'],
+      ['Sunrise Lincoln Park', 'OM',        '1.20','87.4%'],
+      ['Sunrise Oak Park',     'OM+',       '0.98','79.5%'],
+      ['Sunrise Naperville',   'OM',        '1.03','78.8%'],
+      ['Sunrise Schaumburg',   'OM',        '1.07','86.4%'],
+      ['Sunrise Rockford',     'OM',        '0.92','70.5%'],
+      ['Sunrise Madison',      'Individual','1.05','79.6%'],
+      ['Sunrise Kenosha',      'Individual','1.28','91.0%'],
+      ['Sunrise Indianapolis', 'OM',        '0.88','73.1%'],
+      ['Sunrise Bloomington',  'OM+',       '1.18','88.5%'],
+    ],
+    rThresh:[null,null,null,70.0],
+    gThresh:[null,null,null,85.0],
+    lowBad:[3],
+  },
+  training: {
+    label:'Training & Certification', lag:'AAPACN ProTech: monthly | ⚠ <1/3 of certifications matched to facility CCN',
+    cols:['Facility Name','Member Status','# For-Sale\nProducts','# On-Demand\nProducts','% Cert\nCompleted','% Cert\nStarted','Certification\nRate %','Conference\nParticipation'],
+    fRows:[
+      ['Sunrise Evanston',     'Non-Member','0', '0', '—',  '—',  '—',  '—'],
+      ['Sunrise Waukegan',     'Non-Member','0', '0', '—',  '—',  '—',  '—'],
+      ['Sunrise Hyde Park',    'OM',        '5', '9', '21%','29%','18%','38%'],
+      ['Sunrise Lincoln Park', 'OM',        '8', '14','38%','45%','32%','67%'],
+      ['Sunrise Oak Park',     'OM+',       '18','28','42%','51%','38%','72%'],
+      ['Sunrise Naperville',   'OM',        '12','22','35%','43%','30%','58%'],
+      ['Sunrise Schaumburg',   'OM',        '14','19','33%','41%','29%','54%'],
+      ['Sunrise Rockford',     'OM',        '3', '5', '14%','20%','11%','28%'],
+      ['Sunrise Madison',      'Individual','3', '5', '28%','35%','24%','48%'],
+      ['Sunrise Kenosha',      'Individual','14','22','43%','53%','39%','74%'],
+      ['Sunrise Indianapolis', 'OM',        '12','19','35%','44%','30%','56%'],
+      ['Sunrise Bloomington',  'OM+',       '87','142','34%','41%','29%','62%'],
+    ],
+    rThresh:[null,null,null,null,null,null,null,null],
+    gThresh:[null,null,5,8,35,40,30,55],
+    lowBad:[2,3,4,5,6,7],
+  },
+};
+
+let currentTab = 'clinical';
+
+// ─── Threshold coloring ───────────────────────────────────────────────────────
+function colorClass(val, i, tab) {
+  const num = parseFloat(String(val).replace('%','').replace('x','').replace('+','').replace(',',''));
+  if (isNaN(num)) return '';
+  const rt = (tab.rThresh||[])[i], gt = (tab.gThresh||[])[i];
+  if ((tab.lowBad||[]).includes(i)) {
+    if (gt!=null && num>=gt) return 'val-green';
+    if (rt!=null && num<=rt) return 'val-red';
+  } else {
+    if (rt!=null && num>=rt) return 'val-red';
+    if (gt!=null && num<=gt) return 'val-green';
+  }
+  return '';
+}
+
+// ─── SVG sparkline ────────────────────────────────────────────────────────────
+function makeSpark(values, color) {
+  const W=220, H=52, pad=6;
+  const min=Math.min(...values), max=Math.max(...values);
+  const range = max-min || 1;
+  const xs = values.map((_,i)=> pad + i*(W-2*pad)/(values.length-1));
+  const ys = values.map(v=> H-pad - ((v-min)/range)*(H-2*pad));
+  const pts = xs.map((x,i)=>`${x},${ys[i]}`).join(' ');
+  const dots = xs.map((x,i)=>`<circle cx="${x}" cy="${ys[i]}" r="3" fill="${color}"/>`).join('');
+  return `<svg class="tt-sparkline" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
+    <polyline points="${pts}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round"/>
+    ${dots}
+  </svg>`;
+}
+
+function trendDirection(values, highIsBad) {
+  const delta = values[values.length-1] - values[0];
+  const pct = Math.abs(delta/values[0]*100).toFixed(1);
+  if (Math.abs(delta) < 0.01) return { label:'→ Stable', cls:'stable' };
+  const rising = delta > 0;
+  if (highIsBad) return rising ? { label:`↑ Worsening (+${pct}%)`, cls:'worse' } : { label:`↓ Improving (${pct}%)`, cls:'better' };
+  else           return rising ? { label:`↑ Improving (+${pct}%)`, cls:'better' } : { label:`↓ Declining (${pct}%)`, cls:'worse' };
+}
+
+function makeBenchmarkBar(facilVal, meta) {
+  const nat = meta.benchmarkNat;
+  if (nat == null) return '';
+  const num = parseFloat(String(facilVal).replace('%','').replace('x',''));
+  if (isNaN(num)) return '';
+  const unit = String(facilVal).includes('%') ? '%' : '';
+  const state = meta.benchmarkState;
+  const maxVal = Math.max(num, nat, state != null ? state : 0) * 1.15 || 1;
+
+  function bar(val) {
+    const pct = Math.min(100, Math.round((val / maxVal) * 100));
+    return `<div style="flex:1;height:8px;background:transparent;border-radius:3px;">
+      <div style="width:${pct}%;height:8px;background:#999;border-radius:3px;"></div>
+    </div>`;
+  }
+
+  const stateRow = state != null ? `
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+      <span style="width:95px;font-size:9.5px;color:var(--text2);text-align:right;flex-shrink:0;">State avg</span>
+      ${bar(state)}
+      <span style="width:36px;font-size:9.5px;color:#444;font-weight:600;text-align:right;flex-shrink:0;">${state}${unit}</span>
+    </div>` : '';
+
+  return `
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+      <span style="width:95px;font-size:9.5px;color:var(--text2);text-align:right;flex-shrink:0;">This facility</span>
+      ${bar(num)}
+      <span style="width:36px;font-size:9.5px;color:#444;font-weight:600;text-align:right;flex-shrink:0;">${facilVal}</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+      <span style="width:95px;font-size:9.5px;color:var(--text2);text-align:right;flex-shrink:0;">National avg</span>
+      ${bar(nat)}
+      <span style="width:36px;font-size:9.5px;color:#444;font-weight:600;text-align:right;flex-shrink:0;">${nat}${unit}</span>
+    </div>
+    ${stateRow}`;
+}
+
+function positionTip(e) {
+  const tip = document.getElementById('tooltip');
+  const W = tip.offsetWidth, H = tip.offsetHeight;
+  let x = e.clientX + 14, y = e.clientY + 14;
+  if (x + W > window.innerWidth  - 10) x = e.clientX - W - 10;
+  if (y + H > window.innerHeight - 10) y = e.clientY - H - 10;
+  tip.style.left = x + 'px';
+  tip.style.top  = y + 'px';
+}
+
+function showHeaderTip(e, metaIdx) {
+  clearTimeout(_tipTimer);
+  const meta = (META[currentTab]||[])[metaIdx];
+  if (!meta) return;
+  document.getElementById('tt-name').textContent   = meta.name;
+  document.getElementById('tt-entity').textContent = '';
+  document.getElementById('tt-def').textContent    = meta.def;
+  document.getElementById('tt-meta').textContent   = `Source: ${meta.src} · Refresh lag: ${meta.lag}`;
+  document.getElementById('tt-body').innerHTML     = '';
+  setNavFooter(null, null);
+  const tip = document.getElementById('tooltip');
+  tip.style.display = 'block';
+  positionTip(e);
+}
+
+function showCellTip(e, entityName, metaIdx, facilVal, rowIdx) {
+  clearTimeout(_tipTimer);
+  const meta = (META[currentTab]||[])[metaIdx];
+  if (!meta) return;
+  const color = TAB_COLORS[currentTab] || '#444';
+  document.getElementById('tt-name').textContent   = meta.name;
+  document.getElementById('tt-entity').textContent = entityName;
+  document.getElementById('tt-def').textContent    = meta.def;
+  document.getElementById('tt-meta').textContent   = `Source: ${meta.src} · Lag: ${meta.lag}`;
+  let bodyHTML = '';
+  if (meta.benchmarkNat != null) {
+    bodyHTML += makeBenchmarkBar(facilVal, meta);
+    bodyHTML += '<hr class="tt-divider">';
+  } else {
+    bodyHTML += `<div class="tt-value-row"><span class="tt-value-label">This facility:</span><span class="tt-value-num">${facilVal}</span></div>`;
+    bodyHTML += '<hr class="tt-divider">';
+  }
+  if (meta.hasTrend && meta.trend && meta.trend[rowIdx]) {
+    const vals = meta.trend[rowIdx];
+    const dir  = trendDirection(vals, meta.highIsBad);
+    bodyHTML += `<div class="tt-trend-title">Trend — last 4 quarters</div>`;
+    bodyHTML += makeSpark(vals, color);
+    bodyHTML += `<div class="tt-trend-labels"><span>Q1 '25</span><span>Q2 '25</span><span>Q3 '25</span><span>Q4 '25</span></div>`;
+    bodyHTML += `<div class="tt-trend-direction ${dir.cls}">${dir.label}</div>`;
+  } else {
+    bodyHTML += `<div class="tt-no-trend">Trend not available for this metric</div>`;
+  }
+  document.getElementById('tt-body').innerHTML = bodyHTML;
+  setNavFooter('→ Open Facility Detail', 'page3-facility-detail.html');
+  document.getElementById('tooltip').style.display = 'block';
+  positionTip(e);
+}
+
+let _tipTimer = null;
+function scheduleTipHide() { _tipTimer = setTimeout(hideTip, 180); }
+function hideTip() { document.getElementById('tooltip').style.display = 'none'; }
+
+function setNavFooter(label, url) {
+  const footer = document.getElementById('tt-nav-footer');
+  const btn    = document.getElementById('tt-nav-btn');
+  if (url) { btn.textContent = label; btn.onclick = () => window.location = url; footer.style.display = 'block'; }
+  else { footer.style.display = 'none'; }
+}
+
+document.getElementById('tooltip').addEventListener('mouseenter', () => clearTimeout(_tipTimer));
+document.getElementById('tooltip').addEventListener('mouseleave', scheduleTipHide);
+
+// Tooltip is positioned once on show — no cursor-tracking so nav buttons remain clickable.
+
+// ─── Outlier detection: ≥2 metrics exceed red threshold ──────────────────────
+function isOutlier(rowIdx, tab) {
+  let count = 0;
+  (tab.rThresh || []).forEach((thresh, colIdx) => {
+    if (thresh == null) return;
+    const val = tab.fRows[rowIdx][colIdx];
+    const num = parseFloat(String(val).replace('%','').replace('x','').replace(',',''));
+    if (isNaN(num)) return;
+    if ((tab.lowBad || []).includes(colIdx)) {
+      if (num <= thresh) count++;
+    } else {
+      if (num >= thresh) count++;
+    }
+  });
+  return count >= 2;
+}
+
+// ─── Facilities table renderer ────────────────────────────────────────────────
+function renderFacilitiesTable(tabKey) {
+  const tab = TABS[tabKey];
+
+  // Sort outliers to top
+  let indices = tab.fRows.map((_, i) => i);
+  const outlierIdxs = indices.filter(i => isOutlier(i, tab));
+  const normalIdxs  = indices.filter(i => !isOutlier(i, tab));
+  const sortedIdxs  = [...outlierIdxs, ...normalIdxs];
+
+  // Head
+  const headHTML = '<tr>' + tab.cols.map((c, i) => {
+    if (i === 0) return `<th class="col-name">${c}</th>`;
+    if (i === 1) return `<th>Member Status</th>`;
+    const metaIdx = i - 2;
+    return `<th onmouseenter="showHeaderTip(event,${metaIdx})" onmouseleave="scheduleTipHide()">${c.replace('\n','<br>')}</th>`;
+  }).join('') + '</tr>';
+  document.getElementById('facility-head').innerHTML = headHTML;
+
+  // Body
+  const bodyHTML = sortedIdxs.map(rowIdx => {
+    const cells = tab.fRows[rowIdx];
+    const outlier = isOutlier(rowIdx, tab);
+    let row = `<tr class="${outlier ? 'outlier-row' : ''}" style="cursor:pointer">`;
+    cells.forEach((v, i) => {
+      if (i === 0) {
+        row += `<td class="col-name name-f">${v}</td>`;
+      } else if (i === 1) {
+        const mCls = (v==='OM'||v==='OM+'||v==='Individual') ? 'member-yes' : 'val-muted';
+        row += `<td class="${mCls}">${v}</td>`;
+      } else {
+        const metaIdx = i - 2;
+        const cls = colorClass(v, i, tab);
+        row += `<td class="data-cell ${cls}" onmouseenter="showCellTip(event,'${cells[0]}',${metaIdx},'${v}',${rowIdx})" onmouseleave="scheduleTipHide()">${v}</td>`;
+      }
+    });
+    row += '</tr>';
+    return row;
+  }).join('');
+  document.getElementById('facility-body').innerHTML = bodyHTML;
+
+  // Accent class on table
+  document.getElementById('facility-table').className = `accent-${tabKey}`;
+}
+
+// ─── Dot plot data ────────────────────────────────────────────────────────────
+function makeDotData(currentVal, min, max, count) {
+  const vals = [currentVal];
+  const step = (max - min) / (count - 1);
+  for (let i = 0; i < count - 1; i++) {
+    const base = min + step * i;
+    const jitter = ((Math.sin(i * 2.3 + currentVal) + 1) / 2) * step * 0.7;
+    vals.push(parseFloat((base + jitter).toFixed(2)));
+  }
+  return vals.sort((a, b) => a - b);
+}
+
+const DOT_PLOT_DATA = {
+  clinical: [
+    { currentVal:15.5, min:8.1,  max:26.4, allVals:makeDotData(15.5,8.1,  26.4,200) },
+    { currentVal:6.1,  min:2.8,  max:11.2, allVals:makeDotData(6.1, 2.8,  11.2,200) },
+    { currentVal:2.7,  min:0.9,  max:5.8,  allVals:makeDotData(2.7, 0.9,  5.8, 47) },
+    { currentVal:3.2,  min:1.1,  max:8.4,  allVals:makeDotData(3.2, 1.1,  8.4, 47) },
+    { currentVal:18.8, min:14.2, max:24.1, allVals:makeDotData(18.8,14.2, 24.1,200) },
+  ],
+  regulatory: [
+    { currentVal:1.8,  min:0.0,  max:5.2,  allVals:makeDotData(1.8, 0.0,  5.2, 47) },
+    { currentVal:0.3,  min:0.0,  max:2.1,  allVals:makeDotData(0.3, 0.0,  2.1, 47) },
+    { currentVal:3.1,  min:1.2,  max:6.8,  allVals:makeDotData(3.1, 1.2,  6.8, 47) },
+    { currentVal:27.0, min:9.0,  max:58.0, allVals:makeDotData(27.0,9.0,  58.0,200) },
+    { currentVal:3.1,  min:1.8,  max:4.8,  allVals:makeDotData(3.1, 1.8,  4.8, 47) },
+    { currentVal:3.1,  min:1.5,  max:4.9,  allVals:makeDotData(3.1, 1.5,  4.9, 47) },
+    { currentVal:3.4,  min:2.1,  max:4.8,  allVals:makeDotData(3.4, 2.1,  4.8, 47) },
+    { currentVal:3.2,  min:1.8,  max:4.7,  allVals:makeDotData(3.2, 1.8,  4.7, 47) },
+    { currentVal:0.15, min:0.0,  max:0.8,  allVals:makeDotData(0.15,0.0,  0.8, 47) },
+  ],
+  staffing: [
+    { currentVal:0.54, min:0.38, max:0.82, allVals:makeDotData(0.54,0.38, 0.82,200) },
+    { currentVal:3.79, min:3.10, max:4.62, allVals:makeDotData(3.79,3.10, 4.62,200) },
+    { currentVal:3.61, min:2.95, max:4.41, allVals:makeDotData(3.61,2.95, 4.41,200) },
+    { currentVal:26.4, min:14.2, max:42.8, allVals:makeDotData(26.4,14.2, 42.8,200) },
+    { currentVal:36.0, min:21.0, max:54.0, allVals:makeDotData(36.0,21.0, 54.0,200) },
+  ],
+  financial: [
+    { currentVal:1.03, min:0.78, max:1.42, allVals:makeDotData(1.03,0.78, 1.42,200) },
+    { currentVal:79.8, min:58.0, max:96.0, allVals:makeDotData(79.8,58.0, 96.0,200) },
+  ],
+  training: [
+    { currentVal:12.4, min:0.0,  max:95.0,  allVals:makeDotData(12.4,0.0,  95.0, 47) },
+    { currentVal:20.0, min:0.0,  max:150.0, allVals:makeDotData(20.0,0.0,  150.0,200) },
+    { currentVal:30.1, min:0.0,  max:52.0,  allVals:makeDotData(30.1,0.0,  52.0, 47) },
+    { currentVal:37.8, min:0.0,  max:60.0,  allVals:makeDotData(37.8,0.0,  60.0, 47) },
+    { currentVal:26.8, min:0.0,  max:48.0,  allVals:makeDotData(26.8,0.0,  48.0, 47) },
+    { currentVal:54.0, min:12.0, max:88.0,  allVals:makeDotData(54.0,12.0, 88.0, 47) },
+  ],
+};
+
+// ─── Dot plot renderer ────────────────────────────────────────────────────────
+function renderDotPlot(tabKey) {
+  const tab     = TABS[tabKey];
+  const meta    = META[tabKey];
+  const dpData  = DOT_PLOT_DATA[tabKey];
+  const color   = TAB_COLORS[tabKey];
+  const section = document.getElementById('dotplot-section');
+
+  let html = `
+    <div class="dotplot-title">Facility Performance vs. National Benchmarks &mdash; ${tab.label}</div>
+    <div class="dotplot-subtitle">Each dot represents one facility nationally. OM facilities shown in dark. &nbsp;<strong style="color:var(--text2);font-weight:600">|</strong> = national average &nbsp;&middot;&nbsp; Vertical lines = 25th, 50th, 75th, 100th percentile &nbsp;&middot;&nbsp; Hover any dark dot to see details.</div>
+    <div class="dotplot-axis-header">
+      <div class="dotplot-metric-label"></div>
+      <div class="dotplot-axis-labels"><span>0th</span><span>25th</span><span>50th</span><span>75th</span><span>100th</span></div>
+    </div>`;
+
+  meta.forEach((m, metaIdx) => {
+    const dp = dpData[metaIdx];
+    if (!dp) return;
+
+    const { allVals } = dp;
+    const allSorted = [...allVals].sort((a, b) => a - b);
+    const allMin = allSorted[0];
+    const allMax = allSorted[allSorted.length - 1];
+    const range  = allMax - allMin || 1;
+
+    // 25th / 50th / 75th percentile positions
+    const p25val = allSorted[Math.floor(allSorted.length * 0.25)];
+    const p50val = allSorted[Math.floor(allSorted.length * 0.50)];
+    const p75val = allSorted[Math.floor(allSorted.length * 0.75)];
+    const p25pct = Math.min(97, Math.max(3, ((p25val - allMin) / range) * 100));
+    const p50pct = Math.min(97, Math.max(3, ((p50val - allMin) / range) * 100));
+    const p75pct = Math.min(97, Math.max(3, ((p75val - allMin) / range) * 100));
+
+    // National avg line position
+    const natPct = m.benchmarkNat != null
+      ? Math.min(98, Math.max(2, ((m.benchmarkNat - allMin) / range) * 100))
+      : null;
+
+    const avgLine = natPct != null
+      ? `<div class="dotplot-avg-line" style="left:${natPct}%"></div>
+         <div class="dotplot-avg-label" style="left:${natPct}%">nat'l avg</div>`
+      : '';
+
+    const pctLines = `
+      <div class="dp-pct-line" style="left:${p25pct}%"></div>
+      <div class="dp-pct-label" style="left:${p25pct}%">25th</div>
+      <div class="dp-pct-line" style="left:${p50pct}%"></div>
+      <div class="dp-pct-label" style="left:${p50pct}%">50th</div>
+      <div class="dp-pct-line" style="left:${p75pct}%"></div>
+      <div class="dp-pct-label" style="left:${p75pct}%">75th</div>
+      <div class="dp-pct-line" style="left:98%"></div>
+      <div class="dp-pct-label" style="left:98%">100th</div>`;
+
+    // Background distribution dots (200 national facilities, same vertical plane)
+    const bgDots = allVals.map(v => {
+      const p = Math.min(97, Math.max(3, ((v - allMin) / range) * 100));
+      return `<div class="bdot" style="left:${p}%;top:50%;"></div>`;
+    }).join('');
+
+    // Facility dots — same vertical plane (top:50%), no jitter
+    const colIdx = metaIdx + 2;
+    const dots = tab.fRows.map((row, rowIdx) => {
+      const raw = row[colIdx];
+      const num = parseFloat(String(raw).replace('%','').replace('x','').replace(',',''));
+      if (isNaN(num)) return '';
+
+      const pos = Math.min(97, Math.max(3, ((num - allMin) / range) * 100));
+
+      const betterCount = m.highIsBad
+        ? allVals.filter(v => v > num).length
+        : allVals.filter(v => v < num).length;
+      const betterPct = Math.round((betterCount / (allVals.length - 1)) * 100);
+      const pctCls = betterPct >= 67 ? 'good' : betterPct >= 34 ? 'mid' : 'warn';
+
+      const isMember = (row[1] === 'OM' || row[1] === 'OM+' || row[1] === 'Individual');
+      const dotColor = isMember ? '#444' : '#bbb';
+
+      return `<div class="fdot"
+        style="left:${pos}%;top:50%;background:${dotColor};"
+        data-name="${row[0]}"
+        data-status="${row[1]}"
+        data-raw="${raw}"
+        data-better="${betterPct}"
+        data-pctcls="${pctCls}"
+        data-metaidx="${metaIdx}"
+        data-tabkey="${tabKey}"></div>`;
+    }).join('');
+
+    html += `
+      <div class="dotplot-row">
+        <div class="dotplot-name">${m.name}</div>
+        <div class="dotplot-track">
+          <div class="dp-track-line"></div>
+          ${pctLines}
+          ${avgLine}
+          ${bgDots}
+          ${dots}
+        </div>
+      </div>`;
+  });
+
+  html += `
+    <div class="dotplot-legend">
+      <span><span class="dp-legend-dot" style="background:#444"></span> OM Member facility</span>
+      <span><span class="dp-legend-dot" style="background:#bbb"></span> Non-member facility</span>
+      <span><span class="dp-legend-dot" style="background:#c8c4bc;opacity:0.6"></span> National distribution</span>
+      <span style="color:var(--text2); font-weight:700">|</span> National avg
+      <span style="color:var(--text3)">· Hover dark dot for details</span>
+    </div>`;
+
+  section.innerHTML = html;
+  attachDotTooltips();
+}
+
+// ─── Facility dot tooltips ────────────────────────────────────────────────────
+function attachDotTooltips() {
+  document.querySelectorAll('.fdot').forEach(dot => {
+    dot.addEventListener('mouseenter', function(e) {
+      clearTimeout(_tipTimer);
+      const tabKey  = this.dataset.tabkey;
+      const metaIdx = parseInt(this.dataset.metaidx);
+      const meta    = META[tabKey][metaIdx];
+
+      document.getElementById('tt-name').textContent   = this.dataset.name;
+      document.getElementById('tt-entity').textContent = this.dataset.status;
+      document.getElementById('tt-def').textContent    = meta ? meta.name : '';
+      document.getElementById('tt-meta').textContent   = meta ? `Source: ${meta.src} · Lag: ${meta.lag}` : '';
+
+      const betterPct = this.dataset.better;
+      const pctCls    = this.dataset.pctcls;
+
+      document.getElementById('tt-body').innerHTML = `
+        <div class="tt-value-row" style="margin-bottom:6px">
+          <span class="tt-value-label">${meta ? meta.name : 'Value'}:</span>
+          <span class="tt-value-num">${this.dataset.raw}</span>
+        </div>
+        <span class="tt-dp-pct ${pctCls}">Better than ${betterPct}% of facilities nationally</span>
+      `;
+
+      setNavFooter('→ Open Facility Detail', 'page3-facility-detail.html');
+      document.getElementById('tooltip').style.display = 'block';
+      positionTip(e);
+    });
+    dot.addEventListener('mouseleave', scheduleTipHide);
+    dot.addEventListener('mousemove',  positionTip);
+  });
+}
+
+// ─── switchTab — drives tab highlight, table, dot plot, status bar ────────────
+function switchTab(tabKey) {
+  currentTab = tabKey;
+
+  document.querySelectorAll('.tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.tab === tabKey);
+  });
+
+  renderFacilitiesTable(tabKey);
+  renderDotPlot(tabKey);
+
+  const tab = TABS[tabKey];
+  const outlierCount = tab.fRows.filter((_, i) => isOutlier(i, tab)).length;
+  document.getElementById('status-left').textContent =
+    `Domain: ${tab.label} | 12 facilities | ${outlierCount} outlier${outlierCount !== 1 ? 's' : ''} flagged | 47 OMs in comparison`;
+  document.getElementById('status-right').textContent =
+    `${tab.lag} | ⚠ Star rating avg (rollup methodology TBD)`;
+}
+
+function clearAllFilters() {
+  document.querySelectorAll('.filters select').forEach(s => s.selectedIndex = 0);
+  renderFacilitiesTable(currentTab);
+}
+
+// ─── Initial render ───────────────────────────────────────────────────────────
+switchTab('clinical');
+</script>
+</body>
+</html>

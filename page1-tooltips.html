@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>AAPACN Portfolio Overview — With Tooltips</title>
+<style>
+  :root {
+    --bg:      #f0ede8;
+    --chrome:  #e8e5df;
+    --surface: #ffffff;
+    --border:  #d4d0c8;
+    --border2: #b8b4ac;
+    --text:    #1c1b18;
+    --text2:   #5c5a54;
+    --text3:   #9c9a94;
+    --ph:      #dddad4;
+    --flag-bg: #e2ded7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  input, button, select, textarea { font-family: inherit; }
+  body { font-family: 'DM Sans', sans-serif; font-size: 13px; background: var(--bg); color: var(--text); }
+
+  .nav { background: #1a2a4a; color: #fff; padding: 10px 20px; display: flex; align-items: center; justify-content: flex-start; }
+  .nav-title { font-weight: 700; font-size: 15px; }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-link { padding: 4px 12px; border-radius: 3px; font-size: 12px; cursor: pointer; opacity: 0.6; }
+  .nav-link.active { background: #333; opacity: 1; }
+
+  .filters { background: #f8f7f4; padding: 8px 20px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; border-bottom: 1px solid var(--border); }
+  .filter-label { font-size: 11px; color: var(--text2); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .filter-select { background: var(--surface); border: 1px solid var(--border); padding: 4px 10px; border-radius: 3px; color: var(--text); font-size: 12px; cursor: pointer; appearance: none; padding-right: 20px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 6px center; }
+  .filter-select.highlight { border-color: var(--text3); color: var(--text); font-weight: 600; }
+
+  .kpi-bar { display: grid; grid-template-columns: repeat(6, 1fr); background: var(--surface); border-bottom: 1px solid var(--border); }
+  .kpi-card { padding: 12px; text-align: center; border-right: 1px solid var(--border); }
+  .kpi-card:last-child { border-right: none; }
+  .kpi-card.placeholder { background: var(--chrome); }
+  .kpi-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 4px; }
+  .kpi-value { font-family: 'DM Mono', monospace; font-size: 23px; font-weight: 700; color: var(--text); line-height: 1; }
+  .kpi-value.blue { color: var(--text); }
+  .kpi-value.red { font-family: 'DM Mono', monospace; color: #c0392b; }
+  .kpi-value.muted { font-family: 'DM Mono', monospace; color: var(--text3); }
+  .kpi-sub { font-size: 11px; color: var(--text3); margin-top: 3px; }
+  .kpi-sub.blue { color: var(--text); }
+  .kpi-sub.red { color: #c0392b; }
+
+  /* Side-by-side layout */
+  .content-row { display: flex; gap: 0; align-items: flex-start; background: var(--bg); padding: 12px 16px; gap: 12px; }
+  .om-panel { flex: 0 0 38%; min-width: 0; background: var(--surface); border-radius: 8px; border: 1px solid var(--border); overflow: hidden; }
+  .fac-panel { flex: 1; min-width: 0; background: var(--surface); border-radius: 8px; border: 1px solid var(--border); overflow: hidden; }
+
+  .panel-header { padding: 10px 14px 8px; border-bottom: 1px solid var(--border); }
+  .panel-header-top { display: flex; align-items: center; justify-content: space-between; }
+  .panel-title { font-size: 12px; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: 0.5px; }
+  .panel-hint { font-size: 10px; color: var(--text3); }
+  .panel-sub { font-size: 11px; color: var(--text2); margin-top: 3px; }
+
+  .tabs-row { padding: 0 14px; display: flex; gap: 3px; border-bottom: 2px solid var(--border); background: var(--surface); }
+  .tab { padding: 7px 13px; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--text2); background: transparent; border: none; border-bottom: 3px solid transparent; margin-bottom: -2px; white-space: nowrap; }
+  .tab:hover { color: var(--text); }
+  .tab[data-tab="clinical"].active   { color: #444; border-bottom-color: #444; }
+  .tab[data-tab="regulatory"].active { color: #444; border-bottom-color: #444; }
+  .tab[data-tab="staffing"].active   { color: #444; border-bottom-color: #444; }
+  .tab[data-tab="financial"].active  { color: #444; border-bottom-color: #444; }
+  .tab[data-tab="training"].active   { color: #444; border-bottom-color: #444; }
+
+  .table-scroll { overflow-x: auto; }
+  .table-hint { padding: 5px 14px 8px; font-size: 10px; color: var(--text3); border-top: 1px solid var(--border); }
+
+  /* OM row selected state */
+  tr.om-selected td { background: #ede9e3 !important; }
+  tr.om-selected td.col-name { border-left: 3px solid #444; padding-left: 7px; }
+
+
+  table { width: 100%; border-collapse: collapse; font-size: 11px; white-space: nowrap; }
+  thead tr { background: #f0ede8; }
+  th { padding: 6px 10px; text-align: center; border-bottom: 2px solid var(--border); color: var(--text2); font-weight: 600; cursor: help; }
+  th:hover { background: var(--chrome); }
+  th.col-name { text-align: left; min-width: 180px; position: sticky; left: 0; background: #f0ede8; z-index: 1; cursor: default; }
+  th.col-name:hover { background: #f0ede8; }
+  td { padding: 6px 10px; border-bottom: 1px solid var(--border); text-align: center; }
+  td.col-name { text-align: left; font-weight: 600; position: sticky; left: 0; background: var(--surface); z-index: 1; }
+  td.data-cell { cursor: pointer; }
+  td.data-cell:hover { background: var(--chrome) !important; }
+  tr:hover td { background: #f7f6f2 !important; }
+  tr:hover td.col-name { background: #f7f6f2 !important; }
+
+  .name-p { color: var(--text); }
+  .name-f { color: #444; }
+  .val-red { color: #c0392b; font-weight: 600; }
+  .val-green { color: var(--text2); font-weight: 600; }
+  .val-muted { color: var(--text3); }
+  .member-yes { color: var(--text); font-weight: 700; }
+
+  .accent-clinical   th { border-bottom-color: #444; }
+  .accent-regulatory th { border-bottom-color: #444; }
+  .accent-staffing   th { border-bottom-color: #444; }
+  .accent-financial  th { border-bottom-color: #444; }
+  .accent-training   th { border-bottom-color: #444; }
+
+  .table-hint { margin-top: 6px; font-size: 11px; color: var(--text3); }
+  .status-bar { background: #f0ede8; padding: 6px 20px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 11px; color: var(--text3); }
+
+  /* ── Tooltip ── */
+  #tooltip {
+    position: fixed;
+    z-index: 9999;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.14);
+    width: 270px;
+    font-size: 12px;
+    pointer-events: auto;
+    display: none;
+  }
+  .tt-nav-footer {
+    border-top: 1px solid var(--border);
+    padding: 8px 12px;
+    display: none;
+  }
+  .tt-nav-btn {
+    display: block; width: 100%; text-align: center;
+    background: #333; color: #fff; font-size: 11px; font-weight: 700;
+    padding: 6px 0; border-radius: 8px; cursor: pointer;
+    border: none;
+  }
+  .tt-nav-btn:hover { background: #222; }
+
+  /* Facility row selected state */
+  tr.fac-selected td { background: #ede9e3 !important; }
+  tr.fac-selected td.col-name { border-left: 3px solid #444; padding-left: 7px; }
+  .tt-header {
+    padding: 10px 12px 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .tt-metric-name { font-weight: 700; color: var(--text); font-size: 13px; margin-bottom: 3px; }
+  .tt-entity { font-size: 11px; color: var(--text3); margin-bottom: 5px; }
+  .tt-definition { color: #444; line-height: 1.45; font-size: 10.5px; }
+  .tt-meta { margin-top: 5px; font-size: 9.5px; color: var(--text3); }
+
+  .tt-body { padding: 10px 12px; }
+
+  .tt-value-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 3px; }
+  .tt-value-label { color: var(--text2); }
+  .tt-value-num { font-weight: 700; color: var(--text); }
+  .tt-value-num.above { color: #c0392b; }
+  .tt-value-num.below { color: var(--text2); }
+
+  .tt-divider { border: none; border-top: 1px solid var(--border); margin: 8px 0; }
+
+  .tt-trend-title { font-size: 9.5px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .tt-sparkline { display: block; }
+  .tt-trend-labels { display: flex; justify-content: space-between; font-size: 10px; color: var(--text3); margin-top: 2px; }
+  .tt-trend-direction { font-size: 9.5px; font-weight: 600; margin-top: 4px; }
+  .tt-trend-direction.worse  { color: #c0392b; }
+  .tt-trend-direction.better { color: var(--text2); }
+  .tt-trend-direction.stable { color: var(--text3); }
+
+  .tt-no-trend { font-size: 9.5px; color: var(--text3); font-style: italic; }
+
+  /* ── Star Rating Chart ── */
+  .star-section { background: var(--surface); border-top: 2px solid var(--border); padding: 20px 24px 24px; }
+  .star-section-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 16px; }
+  .star-group { cursor: pointer; transition: opacity 0.15s; }
+  .star-group:hover { opacity: 0.75; }
+  .star-section.has-selection .star-group:not(.selected) { opacity: 0.25; }
+  .star-section.has-selection .star-group.selected { opacity: 1; }
+  .star-legend { display: flex; gap: 20px; align-items: center; margin-bottom: 20px; }
+  .star-legend-item { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--text2); }
+  .star-legend-dot { width: 13px; height: 13px; border-radius: 3px; flex-shrink: 0; }
+  .star-chart { display: flex; align-items: flex-end; gap: 20px; padding-bottom: 32px; border-bottom: 2px solid var(--border); position: relative; }
+  .star-group { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0; }
+  .star-bars { display: flex; align-items: flex-end; gap: 4px; }
+  .star-bar-col { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .star-bar-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text2); font-weight: 500; }
+  .star-bar { border-radius: 3px 3px 0 0; }
+  .star-bar.mem { background: #444; }
+  .star-bar.non { background: #c4c0b8; }
+  .star-x-label { font-size: 13px; font-weight: 700; color: var(--text); margin-top: 10px; letter-spacing: .02em; }
+  .star-axis-line { position: absolute; bottom: 32px; left: 0; right: 0; height: 2px; background: var(--border); }
+  .star-gridline { position: absolute; left: 0; right: 0; border-top: 1px dashed var(--border); pointer-events: none; }
+  .star-gridline-label { position: absolute; left: 0; font-size: 9px; font-family: 'DM Mono', monospace; color: var(--text3); transform: translateY(-50%); }
+  .star-insight { margin-top: 16px; display: flex; gap: 24px; }
+  .star-insight-item { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+  .star-insight-val { font-family: 'DM Mono', monospace; font-size: 20px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .star-insight-val.accent { color: #444; }
+  .star-insight-label { font-size: 11px; color: var(--text2); line-height: 1.4; }
+</style>
+</head>
+<body>
+
+<!-- Tooltip container -->
+<div id="tooltip">
+  <div class="tt-header">
+    <div class="tt-metric-name" id="tt-name"></div>
+    <div class="tt-entity" id="tt-entity"></div>
+    <div class="tt-definition" id="tt-def"></div>
+    <div class="tt-meta" id="tt-meta"></div>
+  </div>
+  <div class="tt-body" id="tt-body"></div>
+  <div class="tt-nav-footer" id="tt-nav-footer">
+    <button class="tt-nav-btn" id="tt-nav-btn" onclick=""></button>
+  </div>
+</div>
+
+<div class="nav">
+  <div class="nav-links">
+    <div class="nav-link active">Portfolio Overview</div>
+    <div class="nav-link" onclick="window.location='page2-om-view.html'" style="cursor:pointer">OM View</div>
+    <div class="nav-link" onclick="window.location='page3-facility-detail.html'" style="cursor:pointer">Facility Detail</div>
+    <div class="nav-link" onclick="window.location='page4-domain-deep-dive.html'" style="cursor:pointer">Domain Deep-Dive</div>
+  </div>
+</div>
+
+<div class="filters">
+  <span class="filter-label">Filters:</span>
+  <select class="filter-select"><option>All States</option><option>IL</option><option>TX</option><option>CA</option></select>
+  <select class="filter-select"><option>Rural / Urban</option><option>Urban</option><option>Rural</option></select>
+  <select class="filter-select"><option>All Parent Companies</option><option>Sunrise Senior Living</option></select>
+  <select class="filter-select"><option>All Facilities</option><option>Sunrise Hyde Park</option><option>Sunrise Evanston</option><option>Sunrise Waukegan</option><option>Sunrise Lincoln Park</option><option>Sunrise Oak Park</option><option>Sunrise Naperville</option><option>Sunrise Schaumburg</option><option>Sunrise Rockford</option><option>Sunrise Madison</option><option>Sunrise Kenosha</option><option>Sunrise Indianapolis</option><option>Sunrise Bloomington</option></select>
+  <select id="filter-member" class="filter-select highlight" onchange="renderFacilityTable()"><option value="">AAPACN Member</option><option value="Yes">Yes</option><option value="No">No</option></select>
+  <select class="filter-select"><option>AAPACN Cert Status</option><option>Certified</option><option>Not Certified</option></select>
+  <select class="filter-select highlight"><option>Facility Size (Beds)</option><option>Small (&lt;90)</option><option>Medium (91–150)</option><option>Large (&gt;150)</option></select>
+  <div class="filter-divider"></div>
+  <button onclick="clearAllFilters()" style="background:var(--surface);border:1px solid var(--border2);padding:4px 12px;border-radius:3px;font-size:12px;color:var(--text2);cursor:pointer;font-weight:600;">✕ Clear All</button>
+</div>
+
+<div style="background:var(--surface);border-bottom:1px solid var(--border);padding:10px 20px 8px;">
+  <div style="font-size:16px;font-weight:700;color:var(--text);">Portfolio Overview</div>
+  <div style="font-size:12px;color:var(--text3);margin-top:3px;">A high-level view of facility performance across all Organizational Members. Use filters to narrow by state, facility size, or membership status. Click any facility row to drill into OM or facility-level detail.</div>
+</div>
+
+<div class="kpi-bar">
+  <div class="kpi-card"><div class="kpi-label"># of Organizations</div><div class="kpi-value">47</div><div class="kpi-sub">parent orgs in view</div></div>
+  <div class="kpi-card"><div class="kpi-label">Total Facilities</div><div class="kpi-value">14,302</div><div class="kpi-sub">across all orgs</div></div>
+  <div class="kpi-card"><div class="kpi-label">Avg CMS 5-Star</div><div class="kpi-value">3.2 ★</div><div class="kpi-sub">portfolio avg</div></div>
+  <div class="kpi-card"><div class="kpi-label">Avg Turnover %</div><div class="kpi-value red">25.3%</div><div class="kpi-sub red">nat'l avg: 24.0%</div></div>
+  <div class="kpi-card"><div class="kpi-label"># AAPACN Members</div><div class="kpi-value blue">2,841</div><div class="kpi-sub blue">19.9% of facilities</div></div>
+  <div class="kpi-card placeholder"><div class="kpi-label">BD Metric 6</div><div class="kpi-value muted">—</div><div class="kpi-sub">placeholder</div></div>
+</div>
+
+<div class="content-row">
+
+  <!-- Left: OM / Parent Company summary table -->
+  <div class="om-panel">
+    <div class="panel-header">
+      <div class="panel-header-top">
+        <div class="panel-title">Parent Organizations / OMs</div>
+        <div class="panel-hint">Click a row to filter →</div>
+      </div>
+      <div class="panel-sub">Organization-level summary — avg performance across all facilities in each Parent Org</div>
+    </div>
+    <div class="table-scroll">
+      <table id="parent-table"><thead id="parent-head"></thead><tbody id="parent-body"></tbody></table>
+    </div>
+    <div class="table-hint">Click row to filter facilities · Hover name or cells for details &amp; OM View link</div>
+  </div>
+
+  <!-- Right: Domain tabs + Facility table -->
+  <div class="fac-panel">
+    <div class="panel-header">
+      <div class="panel-header-top">
+        <div class="panel-title" id="fac-panel-title">All Facilities</div>
+        <div class="panel-hint" id="fac-panel-hint">14,302 facilities</div>
+      </div>
+      <div class="panel-sub" id="fac-panel-sub">Individual facility metrics — select a domain tab to change measures · Click a row to open Facility Detail</div>
+    </div>
+    <div class="tabs-row">
+      <div class="tab active" data-tab="clinical"   onclick="switchTab('clinical')">Clinical Quality</div>
+      <div class="tab" data-tab="regulatory"         onclick="switchTab('regulatory')">Regulatory &amp; Survey</div>
+      <div class="tab" data-tab="staffing"           onclick="switchTab('staffing')">Workforce &amp; Staffing</div>
+      <div class="tab" data-tab="financial"          onclick="switchTab('financial')">Financial</div>
+      <div class="tab" data-tab="training"           onclick="switchTab('training')">Training &amp; Certification</div>
+    </div>
+    <div class="table-scroll">
+      <table id="facility-table" class="accent-clinical"><thead id="facility-head"></thead><tbody id="facility-body"></tbody></table>
+    </div>
+    <div class="table-hint">Click row for Facility Detail &nbsp;|&nbsp; <span style="color:#c0392b">Red</span> = above threshold &nbsp;|&nbsp; <span style="color:#27ae60">Green</span> = below threshold</div>
+  </div>
+
+</div>
+
+<!-- ── Star Rating Distribution ── -->
+<div class="star-section">
+
+  <div class="star-section-title">Distribution of CMS Star Ratings across all facilities</div>
+
+  <div class="star-legend">
+    <div class="star-legend-item"><div class="star-legend-dot" style="background:#444;"></div>AAPACN Members &nbsp;<span style="font-family:'DM Mono',monospace;color:var(--text3);">(2,841 facilities)</span></div>
+    <div class="star-legend-item"><div class="star-legend-dot" style="background:#c4c0b8;"></div>Non-Members &nbsp;<span style="font-family:'DM Mono',monospace;color:var(--text3);">(11,461 facilities)</span></div>
+  </div>
+
+  <!-- Chart: bar height = value/40 * 140px -->
+  <div style="position:relative;">
+    <!-- Gridlines -->
+    <div class="star-gridline" style="bottom:calc(32px + 105px);"><span class="star-gridline-label" style="bottom:calc(32px + 105px);">30%</span></div>
+    <div class="star-gridline" style="bottom:calc(32px + 70px);"><span class="star-gridline-label" style="bottom:calc(32px + 70px);">20%</span></div>
+    <div class="star-gridline" style="bottom:calc(32px + 35px);"><span class="star-gridline-label" style="bottom:calc(32px + 35px);">10%</span></div>
+
+    <div class="star-chart">
+      <div style="width:28px;flex-shrink:0;"></div><!-- spacer for y-axis labels -->
+
+      <!-- 1★ -->
+      <div class="star-group" data-star="1" onclick="selectStarFilter(1)">
+        <div class="star-bars">
+          <div class="star-bar-col"><span class="star-bar-label">4%</span><div class="star-bar mem" style="width:36px;height:14px;"></div></div>
+          <div class="star-bar-col"><span class="star-bar-label">13%</span><div class="star-bar non" style="width:36px;height:46px;"></div></div>
+        </div>
+        <div class="star-x-label">1★</div>
+      </div>
+
+      <!-- 2★ -->
+      <div class="star-group" data-star="2" onclick="selectStarFilter(2)">
+        <div class="star-bars">
+          <div class="star-bar-col"><span class="star-bar-label">11%</span><div class="star-bar mem" style="width:36px;height:39px;"></div></div>
+          <div class="star-bar-col"><span class="star-bar-label">21%</span><div class="star-bar non" style="width:36px;height:74px;"></div></div>
+        </div>
+        <div class="star-x-label">2★</div>
+      </div>
+
+      <!-- 3★ -->
+      <div class="star-group" data-star="3" onclick="selectStarFilter(3)">
+        <div class="star-bars">
+          <div class="star-bar-col"><span class="star-bar-label">26%</span><div class="star-bar mem" style="width:36px;height:91px;"></div></div>
+          <div class="star-bar-col"><span class="star-bar-label">33%</span><div class="star-bar non" style="width:36px;height:116px;"></div></div>
+        </div>
+        <div class="star-x-label">3★</div>
+      </div>
+
+      <!-- 4★ -->
+      <div class="star-group" data-star="4" onclick="selectStarFilter(4)">
+        <div class="star-bars">
+          <div class="star-bar-col"><span class="star-bar-label">36%</span><div class="star-bar mem" style="width:36px;height:126px;"></div></div>
+          <div class="star-bar-col"><span class="star-bar-label">23%</span><div class="star-bar non" style="width:36px;height:81px;"></div></div>
+        </div>
+        <div class="star-x-label">4★</div>
+      </div>
+
+      <!-- 5★ -->
+      <div class="star-group" data-star="5" onclick="selectStarFilter(5)">
+        <div class="star-bars">
+          <div class="star-bar-col"><span class="star-bar-label">23%</span><div class="star-bar mem" style="width:36px;height:81px;"></div></div>
+          <div class="star-bar-col"><span class="star-bar-label">10%</span><div class="star-bar non" style="width:36px;height:35px;"></div></div>
+        </div>
+        <div class="star-x-label">5★</div>
+      </div>
+
+      <div class="star-axis-line"></div>
+    </div>
+  </div>
+
+
+</div>
+
+<div class="status-bar">
+  <span id="status-left">Showing Clinical Quality metrics | 14,302 facilities</span>
+  <span>Hover column headers for definitions · Hover cells for benchmarks &amp; trends</span>
+</div>
+
+<script>
+// ─── Tab accent colors ───────────────────────────────────────
+const TAB_COLORS = { clinical:'#444', regulatory:'#444', staffing:'#444', financial:'#444', training:'#444' };
+
+// ─── OM summary table data ────────────────────────────────────────────────────
+const OM_COLS = ['Parent Organization', 'Avg Star Rating', '# Facilities', 'Avg Age (yrs)', 'Avg Turnover %', '# AAPACN Members'];
+const OM_META_COLS = [
+  null,
+  { name:'Avg Star Rating',     def:'CMS 5-Star Overall rating averaged across all facilities in this Parent Organization. Composite of health inspection, staffing, and quality measure sub-ratings.', src:'NH Provider Info', lag:'1–3 months' },
+  { name:'# Facilities',        def:'Number of SNF facilities operating under this Parent Organization in the current filtered view.',                                                                     src:'CMS Provider Info', lag:'Monthly' },
+  { name:'Avg Age (yrs)',       def:'Average number of years since certification/opening across all facilities in this Parent Organization. Older facilities may have differing infrastructure challenges.', src:'CMS Provider Info', lag:'Annual' },
+  { name:'Avg Turnover %',      def:'Average staff turnover rate across all facilities in this Parent Organization over the trailing 12-month window. High turnover is the top predictor of care quality decline.',   src:'PBJ Employee Detail', lag:'~3 months' },
+  { name:'# AAPACN Members',    def:'Number of individual AAPACN member staff (RN, DON, Administrator, etc.) associated with facilities in this Parent Organization.',                                    src:'AAPACN ProTech', lag:'Monthly' },
+];
+// rThresh / gThresh for OM summary columns (index matches OM_COLS)
+const OM_R_THRESH = [null, null, null, null, 30.0, null];
+const OM_G_THRESH = [null, 3.5,  null, null, 22.0, null];
+const OM_LOW_BAD  = [1]; // star rating: higher is better
+
+const OM_ROWS = [
+  { name:'Sunrise Senior Living', vals:[3.2, 42,  14, '28.4%', 186] },
+  { name:'Genesis HealthCare',    vals:[3.6, 18,  22, '22.1%',  94] },
+  { name:'Kindred Healthcare',    vals:[2.8,  7,  18, '31.7%',  28] },
+  { name:'Beverly Healthcare',    vals:[3.1, 31,  28, '26.5%', 112] },
+  { name:'Consulate Health Care', vals:[2.9, 24,  16, '29.8%',  67] },
+  { name:'Ensign Group',          vals:[3.7, 12,  11, '20.8%',  58] },
+  { name:'Independent',           vals:[3.3, 312, 31, '25.3%', 842] },
+];
+
+// Facility → OM mapping (parallel to fRows per tab — same order)
+const FAC_OM = [
+  'Sunrise Senior Living',  // Sunrise of Lincoln Park
+  'Sunrise Senior Living',  // Sunrise of Hyde Park
+  'Genesis HealthCare',     // Valley Care Center
+  'Kindred Healthcare',     // Elmwood Nursing & Rehab
+];
+
+// Facility CMS 5-Star Overall rating (parallel to fRows)
+const FAC_STARS = [4, 2, 4, 3];
+
+// ─── Tooltip metadata — 1 entry per metric column (col index 2+) ─────────────
+// hasTrend: false → no sparkline. benchmarkNat: null → no benchmark bar.
+// highIsBad: true → high value = red; false → high value = green
+const META = {
+  clinical: [
+    { name:'Antipsychotic Use %',             def:'% of long-stay residents who received an antipsychotic medication. High rates signal potential overuse — a liability and press-scrutiny risk.',               src:'MDS Quality Measures', lag:'6–9 months', benchmarkNat:14.1, benchmarkState:15.8, highIsBad:true,  hasTrend:true,  trend:[[18.0,18.5,19.2,18.2],[12.0,12.4,12.6,12.7],[11.0,11.1,11.3,11.3],[13.5,13.8,14.1,14.0]] },
+    { name:'Exaggerated Wt Loss %',           def:'% of long-stay residents who experienced significant unplanned weight loss. Indicates nutrition and care quality gaps.',                                      src:'MDS Quality Measures', lag:'6–9 months', benchmarkNat:4.8,  benchmarkState:5.1, highIsBad:true,  hasTrend:true,  trend:[[3.9,4.0,4.1,4.1],[6.5,6.7,6.8,6.8],[3.7,3.8,3.9,3.9],[5.0,5.1,5.2,5.2]] },
+    { name:'Falls w/ Major Injury %',         def:'% of SNF residents who experienced one or more falls with major injury during their stay. Also a trigger for Special Focus Facility status.',               src:'SNF QRP',              lag:'9 months',   benchmarkNat:13.5, benchmarkState:14.1,highIsBad:true,  hasTrend:true,  trend:[[15.1,15.3,15.4,15.5],[13.8,13.9,14.0,14.1],[12.3,12.4,12.5,12.6],[13.4,13.6,13.7,13.8]] },
+    { name:'Pressure Ulcer % (New/Worsening)',def:'% of residents with pressure ulcers or injuries that are new or worsened. Numerator/denominator available on drill-down for transparency.',                 src:'SNF QRP',              lag:'9 months',   benchmarkNat:5.9,  benchmarkState:6.2, highIsBad:true,  hasTrend:true,  trend:[[6.8,7.0,7.0,7.1],[6.2,6.3,6.4,6.4],[5.9,6.0,6.2,6.3],[6.7,6.8,6.9,6.9]] },
+    { name:'30-Day Readmission %',            def:'Risk-standardized rate of unplanned hospital readmissions within 30 days of SNF discharge. Core SNF VBP measure — impacts both quality scores and revenue.',src:'SNF VBP',              lag:'~2 years',   benchmarkNat:19.5, benchmarkState:20.1,highIsBad:true,  hasTrend:false, trend:null },
+  ],
+  regulatory: [
+    { name:'G+ Severity Citations',     def:'Count of survey deficiencies at severity G or higher — indicating actual harm to one or more residents. Denise\'s top tracking priority.',          src:'NH Health Deficiencies', lag:'1–3 months', benchmarkNat:1.8, benchmarkState:2.1, highIsBad:true, hasTrend:true,  trend:[[2,3,3,3],[1,1,1,1],[3,4,4,4],[2,2,2,2]] },
+    { name:'IJ Citations',              def:'Immediate Jeopardy citations (severity J, K, L). Most serious deficiency level — noncompliance likely to cause serious injury or death.',          src:'NH Health Deficiencies', lag:'1–3 months', benchmarkNat:0.4, benchmarkState:0.5, highIsBad:true, hasTrend:true,  trend:[[0,1,1,1],[0,0,0,0],[1,2,2,2],[0,0,0,0]] },
+    { name:'Citations/Qtr',             def:'Average number of health citations (severity B–L) received per survey quarter. Tracks citation frequency over time.',                              src:'NH Health Deficiencies', lag:'1–3 months', benchmarkNat:3.1, benchmarkState:3.3, highIsBad:true, hasTrend:true,  trend:[[4.0,4.1,4.2,4.2],[2.6,2.7,2.8,2.8],[4.8,4.9,5.0,5.1],[3.2,3.3,3.4,3.4]] },
+    { name:'Total Citations (3yr)',     def:'Total count of health citations (B–L) across all surveys in the last 3 years. Provides a cumulative compliance picture.',                         src:'NH Health Deficiencies', lag:'1–3 months', benchmarkNat:28,  benchmarkState:30,  highIsBad:true, hasTrend:false, trend:null },
+    { name:'5-Star Overall',            def:'CMS composite rating (1–5 stars) combining health inspection, staffing, and quality measure sub-ratings. Amy targets 2–3 star facilities for intervention.', src:'NH Provider Info', lag:'1–3 months', benchmarkNat:3.1, benchmarkState:3.0, highIsBad:false, hasTrend:true, trend:[[3.1,3.1,3.1,3.1],[3.5,3.6,3.6,3.6],[2.7,2.8,2.8,2.8],[3.2,3.3,3.3,3.3]] },
+    { name:'Health Inspection ★',      def:'Star rating based on number, severity, and scope of health inspection deficiencies. Lower = more citations.',                                       src:'NH Provider Info',       lag:'1–3 months', benchmarkNat:3.0, benchmarkState:2.9, highIsBad:false, hasTrend:true,  trend:[[2.8,2.9,2.9,2.9],[3.6,3.7,3.8,3.8],[2.3,2.4,2.5,2.5],[3.0,3.1,3.1,3.1]] },
+    { name:'Quality Measure ★',        def:'Star rating derived from MDS-based quality measure performance across clinical domains.',                                                            src:'NH Provider Info',       lag:'1–3 months', benchmarkNat:3.2, benchmarkState:3.1, highIsBad:false, hasTrend:true,  trend:[[3.2,3.3,3.3,3.3],[3.3,3.4,3.4,3.4],[2.9,3.0,3.0,3.0],[3.3,3.4,3.4,3.4]] },
+    { name:'Staffing ★',               def:'Star rating based on RN and total staffing hours per resident per day relative to CMS thresholds.',                                                src:'NH Provider Info',       lag:'1–3 months', benchmarkNat:3.1, benchmarkState:3.0, highIsBad:false, hasTrend:true,  trend:[[3.1,3.2,3.2,3.2],[3.4,3.5,3.5,3.5],[2.8,2.9,2.9,2.9],[3.1,3.2,3.2,3.2]] },
+    { name:'Failed Revisit',            def:'Facility failed a follow-up inspection after a prior deficiency was cited — suggests the problem was not corrected. Data source pending.',         src:'TBD',                    lag:'TBD',        benchmarkNat:null,benchmarkState:null,highIsBad:true, hasTrend:false, trend:null },
+  ],
+  staffing: [
+    { name:'RN HPRD',                       def:'Reported registered nurse hours per resident per day. A key staffing adequacy indicator; state-specific mandates vary.',                                       src:'NH Provider Info', lag:'1–3 months', benchmarkNat:0.55, benchmarkState:0.54, highIsBad:false, hasTrend:true,  trend:[[0.51,0.52,0.52,0.52],[0.60,0.61,0.61,0.61],[0.47,0.48,0.48,0.48],[0.54,0.55,0.55,0.55]] },
+    { name:'Total Nursing HPRD (CM Adj)',   def:'Case-mix adjusted total nurse staffing hours per resident per day (RN + LPN + Aide). Adjusted for resident acuity to enable fair comparisons.',              src:'NH Provider Info', lag:'1–3 months', benchmarkNat:3.75, benchmarkState:3.70,highIsBad:false, hasTrend:true,  trend:[[3.78,3.80,3.81,3.81],[4.08,4.09,4.10,4.10],[3.52,3.53,3.55,3.55],[3.70,3.71,3.72,3.72]] },
+    { name:'Direct Care HPRD',              def:'Total direct care hours per resident per day from PBJ payroll data (RN + LPN + CNA + Nurse Aide + Med Aide). More comprehensive than reported HPRD.',       src:'PBJ Staffing',     lag:'~3 months',  benchmarkNat:3.55, benchmarkState:3.52,highIsBad:false, hasTrend:true,  trend:[[3.59,3.61,3.62,3.62],[3.92,3.93,3.95,3.95],[3.37,3.39,3.40,3.40],[3.55,3.57,3.58,3.58]] },
+    { name:'Staff Turnover Rate %',         def:'% of employment spells ending in departure in a 12-month window. Tracked for all staff, RN, CNA, and administrator roles. Amy identifies DON/Admin turnover as the top predictor of facility failure.', src:'PBJ Employee Detail', lag:'~3 months', benchmarkNat:24.0, benchmarkState:25.5, highIsBad:true, hasTrend:true, trend:[[27.8,28.1,28.3,28.4],[21.5,21.8,22.0,22.1],[30.9,31.2,31.5,31.7],[24.7,25.0,25.2,25.3]] },
+    { name:'Quality Mix %',                 def:'Proportion of short-term vs. long-term resident stays. High short-stay = post-acute/rehab focus; high long-stay = custodial care. Shapes payer mix and quality benchmarks.', src:'VRDC', lag:'1–2 years', benchmarkNat:38, benchmarkState:36, highIsBad:false, hasTrend:false, trend:null },
+  ],
+  financial: [
+    { name:'Case Mix Index (CMI)',  def:'Reflects the clinical complexity and resource intensity of the resident population. Higher CMI = sicker residents. Also shown as ratio vs. national avg to contextualize peer comparisons.', src:'NH Provider Info', lag:'1–3 months', benchmarkNat:1.04, benchmarkState:1.03, highIsBad:false, hasTrend:true,  trend:[[1.06,1.07,1.08,1.08],[1.20,1.21,1.22,1.22],[0.92,0.93,0.94,0.94],[1.03,1.04,1.05,1.05]] },
+    { name:'Occupancy Rate %',      def:'% of certified beds occupied on an average day. Low occupancy may signal performance or community trust issues. Calculated as avg residents per day ÷ certified beds.',                src:'NH Provider Info', lag:'1–3 months', benchmarkNat:80.0, benchmarkState:79.5,highIsBad:false, hasTrend:true,  trend:[[81.5,82.0,82.3,82.4],[87.4,87.7,88.0,88.1],[70.5,70.8,71.0,71.2],[78.8,79.2,79.5,79.6]] },
+  ],
+  training: [
+    { name:'# For-Sale Products',     def:'Count of individual for-sale educational products purchased by members associated with this facility in the last 12 months.', src:'AAPACN ProTech', lag:'Monthly', benchmarkNat:null, benchmarkState:null, highIsBad:false, hasTrend:true,  trend:[[80,82,85,87],[28,29,30,31],[10,11,12,12],[600,610,618,624]] },
+    { name:'# On-Demand Products',    def:'Count of on-demand products accessed or purchased in the last 12 months by members at this facility.',                        src:'AAPACN ProTech', lag:'Monthly', benchmarkNat:null, benchmarkState:null, highIsBad:false, hasTrend:true,  trend:[[130,135,139,142],[52,54,56,58],[16,17,18,19],[995,1005,1025,1041]] },
+    { name:'% Cert Completed',        def:'% of AAPACN members at this facility who completed a certification. ⚠ <1/3 of certifications can be matched to facility CCN — treat as directional.', src:'AAPACN ProTech', lag:'Monthly', benchmarkNat:32, benchmarkState:null, highIsBad:false, hasTrend:true,  trend:[[31,32,33,34],[25,26,27,28],[17,18,19,19],[39,40,40,41]] },
+    { name:'% Cert Started',          def:'% of AAPACN members who began a certification program. In-progress tracking not yet available in ProTech — only final completions write back from LMS.', src:'AAPACN ProTech/LMS', lag:'Monthly', benchmarkNat:40, benchmarkState:null, highIsBad:false, hasTrend:true, trend:[[38,39,40,41],[32,33,34,35],[24,25,26,27],[47,48,48,49]] },
+    { name:'Certification Rate %',    def:'Overall certification attainment rate across all AAPACN members linked to this facility. Segmentation by role (DON, RN, CNA) available on drill-down.',   src:'AAPACN ProTech', lag:'Monthly', benchmarkNat:28, benchmarkState:null, highIsBad:false, hasTrend:true,  trend:[[26,27,28,29],[21,22,23,24],[14,15,16,16],[34,35,35,36]] },
+    { name:'Conference Participation',def:'% of members who attended an AAPACN conference in the measurement period. Tracks broad organizational engagement beyond online products.',                  src:'AAPACN ProTech', lag:'Monthly', benchmarkNat:null, benchmarkState:null, highIsBad:false, hasTrend:false, trend:null },
+  ],
+};
+
+// ─── Table data (1 metric = 1 column, anchored to confirmed list) ────────────
+const TABS = {
+  clinical: {
+    label:'Clinical Quality', lag:'MDS QM: 6–9 mo | SNF QRP: 9 mo | SNF VBP: 2 yr',
+    cols:['Name','AAPACN Members','Antipsychotic Use %','Exaggerated Wt Loss %','Falls w/ Major Injury %','Pressure Ulcer %\n(New/Worsening)','30-Day Readmission %'],
+    pRows:[['Sunrise Senior Living','42','18.2%','4.1%','15.5%','7.1%','18.2%'],['Genesis Healthcare','18','12.7%','6.8%','14.1%','6.4%','19.1%'],['Kindred Health','7','11.3%','3.9%','12.6%','6.3%','18.6%'],['Independent','312','14.0%','5.2%','13.8%','6.9%','19.7%']],
+    fRows:[['Sunrise of Lincoln Park','Yes','14.1%','3.8%','15.5%','6.9%','19.8%'],['Sunrise of Hyde Park','Yes','22.3%','4.5%','23.0%','13.1%','23.1%'],['Valley Care Center','No','11.9%','2.1%','6.9%','4.2%','18.4%'],['Elmwood Nursing & Rehab','No','16.7%','5.9%','16.7%','10.6%','22.0%']],
+    rThresh:[null,null,17,5.0,18.0,10.0,21.0], gThresh:[null,null,13,3.5,13.0,6.0,18.5], lowBad:[],
+  },
+  regulatory: {
+    label:'Regulatory & Survey', lag:'NH Provider Info: 1–3 mo | NH Health Deficiencies: 1–3 mo',
+    cols:['Name','AAPACN Members','G+ Citations','IJ Citations','Citations/Qtr','Total Citations (3yr)','5-Star Overall','Health Inspection ★','Quality Measure ★','Staffing ★','Failed Revisit'],
+    pRows:[['Sunrise Senior Living','42','3','1','4.2','38','3.1','2.9','3.3','3.2','—'],['Genesis Healthcare','18','1','0','2.8','24','3.6','3.8','3.4','3.5','—'],['Kindred Health','7','4','2','5.1','47','2.8','2.5','3.0','2.9','—'],['Independent','312','2','0','3.4','29','3.3','3.1','3.4','3.2','—']],
+    fRows:[['Sunrise of Lincoln Park','Yes','2','0','3.5','28','4','4','4','4','No'],['Sunrise of Hyde Park','Yes','5','2','6.1','55','2','2','3','2','Yes'],['Valley Care Center','No','1','0','2.2','18','4','5','4','4','No'],['Elmwood Nursing & Rehab','No','3','1','4.8','42','3','3','3','3','No']],
+    rThresh:[null,null,3,1,4.5,40,null,null,null,null,null], gThresh:[null,null,1,0,2.5,20,null,null,null,null,null], lowBad:[],
+  },
+  staffing: {
+    label:'Workforce & Staffing', lag:'NH Provider Info: 1–3 mo | PBJ: ~3 mo | VRDC: 1–2 yr',
+    cols:['Name','AAPACN Members','RN HPRD','Total Nursing HPRD\n(CM Adj)','Direct Care HPRD','Staff Turnover Rate %','Quality Mix %'],
+    pRows:[['Sunrise Senior Living','42','0.52','3.81','3.62','28.4%','34%'],['Genesis Healthcare','18','0.61','4.10','3.95','22.1%','41%'],['Kindred Health','7','0.48','3.55','3.40','31.7%','28%'],['Independent','312','0.55','3.72','3.58','25.3%','38%']],
+    fRows:[['Sunrise of Lincoln Park','Yes','0.54','3.90','3.71','26.2%','36%'],['Sunrise of Hyde Park','Yes','0.44','3.40','3.22','35.8%','29%'],['Valley Care Center','No','0.62','4.20','4.01','21.0%','44%'],['Elmwood Nursing & Rehab','No','0.49','3.60','3.45','30.1%','31%']],
+    rThresh:[null,null,null,null,null,30.0,null], gThresh:[null,null,0.60,4.00,3.80,22.0,null], lowBad:[2,3,4],
+  },
+  financial: {
+    label:'Financial', lag:'NH Provider Info: 1–3 mo',
+    cols:['Name','AAPACN Members','Case Mix Index (CMI)','Occupancy Rate %'],
+    pRows:[['Sunrise Senior Living','42','1.08','82.4%'],['Genesis Healthcare','18','1.22','88.1%'],['Kindred Health','7','0.94','71.2%'],['Independent','312','1.05','79.6%']],
+    fRows:[['Sunrise of Lincoln Park','Yes','1.11','84.2%'],['Sunrise of Hyde Park','Yes','1.02','68.5%'],['Valley Care Center','No','1.28','91.0%'],['Elmwood Nursing & Rehab','No','0.98','73.1%']],
+    rThresh:[null,null,null,70.0], gThresh:[null,null,null,85.0], lowBad:[],
+  },
+  training: {
+    label:'Training & Certification', lag:'AAPACN ProTech: monthly | ⚠ <1/3 of certifications matched to facility CCN',
+    cols:['Name','AAPACN Members','# For-Sale\nProducts','# On-Demand\nProducts','% Cert\nCompleted','% Cert\nStarted','Certification\nRate %','Conference\nParticipation'],
+    pRows:[['Sunrise Senior Living','42','87','142','34%','41%','29%','62%'],['Genesis Healthcare','18','31','58','28%','35%','24%','44%'],['Kindred Health','7','12','19','19%','27%','16%','31%'],['Independent','312','624','1,041','41%','49%','36%','58%']],
+    fRows:[['Sunrise of Lincoln Park','Yes','8','14','38%','45%','32%','67%'],['Sunrise of Hyde Park','Yes','5','9','21%','29%','18%','38%'],['Valley Care Center','No','0','0','—','—','—','—'],['Elmwood Nursing & Rehab','No','0','2','—','—','—','—']],
+    rThresh:[null,null,null,null,null,null,null,null], gThresh:[null,null,5,8,35,40,30,55], lowBad:[2,3,4,5,6,7],
+  },
+};
+
+let currentTab = 'clinical';
+
+// ─── Threshold coloring ──────────────────────────────────────────────────────
+function colorClass(val, i, tab) {
+  const num = parseFloat(String(val).replace('%','').replace('x','').replace('+','').replace(',',''));
+  if (isNaN(num)) return '';
+  const rt = (tab.rThresh||[])[i], gt = (tab.gThresh||[])[i];
+  if ((tab.lowBad||[]).includes(i)) {
+    if (gt!=null && num>=gt) return 'val-green';
+    if (rt!=null && num<=rt) return 'val-red';
+  } else {
+    if (rt!=null && num>=rt) return 'val-red';
+    if (gt!=null && num<=gt) return 'val-green';
+  }
+  return '';
+}
+
+// ─── SVG sparkline ───────────────────────────────────────────────────────────
+function makeSpark(values, color) {
+  const W=220, H=52, pad=6;
+  const min=Math.min(...values), max=Math.max(...values);
+  const range = max-min || 1;
+  const xs = values.map((_,i)=> pad + i*(W-2*pad)/(values.length-1));
+  const ys = values.map(v=> H-pad - ((v-min)/range)*(H-2*pad));
+  const pts = xs.map((x,i)=>`${x},${ys[i]}`).join(' ');
+  // dots
+  const dots = xs.map((x,i)=>`<circle cx="${x}" cy="${ys[i]}" r="3" fill="${color}"/>`).join('');
+  return `<svg class="tt-sparkline" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
+    <polyline points="${pts}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round"/>
+    ${dots}
+  </svg>`;
+}
+
+function trendDirection(values, highIsBad) {
+  const delta = values[values.length-1] - values[0];
+  const pct = Math.abs(delta/values[0]*100).toFixed(1);
+  if (Math.abs(delta) < 0.01) return { label:'→ Stable', cls:'stable' };
+  const rising = delta > 0;
+  if (highIsBad) return rising ? { label:`↑ Worsening (+${pct}%)`, cls:'worse' } : { label:`↓ Improving (${pct}%)`, cls:'better' };
+  else           return rising ? { label:`↑ Improving (+${pct}%)`, cls:'better' } : { label:`↓ Declining (${pct}%)`, cls:'worse' };
+}
+
+// ─── Benchmark bar (grayscale, no flags) ─────────────────────────────────────
+function makeBenchmarkBar(facilVal, meta) {
+  const nat = meta.benchmarkNat;
+  if (nat == null) return '';
+  const num = parseFloat(String(facilVal).replace('%','').replace('x',''));
+  if (isNaN(num)) return '';
+  const unit = String(facilVal).includes('%') ? '%' : '';
+  const state = meta.benchmarkState;
+  // Scale bars relative to the largest of the three values
+  const maxVal = Math.max(num, nat, state != null ? state : 0) * 1.15 || 1;
+
+  function bar(val) {
+    const pct = Math.min(100, Math.round((val / maxVal) * 100));
+    return `<div style="flex:1;height:8px;background:transparent;border-radius:3px;">
+      <div style="width:${pct}%;height:8px;background:#888;border-radius:3px;"></div>
+    </div>`;
+  }
+
+  const stateRow = state != null ? `
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+      <span style="width:95px;font-size:9.5px;color:var(--text2);text-align:right;flex-shrink:0;">State avg</span>
+      ${bar(state)}
+      <span style="width:36px;font-size:9.5px;color:#444;font-weight:600;text-align:right;flex-shrink:0;">${state}${unit}</span>
+    </div>` : '';
+
+  return `
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+      <span style="width:95px;font-size:9.5px;color:var(--text2);text-align:right;flex-shrink:0;">This facility</span>
+      ${bar(num)}
+      <span style="width:36px;font-size:9.5px;color:#444;font-weight:600;text-align:right;flex-shrink:0;">${facilVal}</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+      <span style="width:95px;font-size:9.5px;color:var(--text2);text-align:right;flex-shrink:0;">National avg</span>
+      ${bar(nat)}
+      <span style="width:36px;font-size:9.5px;color:#444;font-weight:600;text-align:right;flex-shrink:0;">${nat}${unit}</span>
+    </div>
+    ${stateRow}`;
+}
+
+// ─── Tooltip positioning ──────────────────────────────────────────────────────
+function positionTip(e) {
+  const tip = document.getElementById('tooltip');
+  const W = tip.offsetWidth, H = tip.offsetHeight;
+  let x = e.clientX + 14, y = e.clientY + 14;
+  if (x + W > window.innerWidth  - 10) x = e.clientX - W - 10;
+  if (y + H > window.innerHeight - 10) y = e.clientY - H - 10;
+  tip.style.left = x + 'px';
+  tip.style.top  = y + 'px';
+}
+
+// ─── Show/hide tooltip ────────────────────────────────────────────────────────
+function showHeaderTip(e, metaIdx) {
+  const meta = (META[currentTab]||[])[metaIdx];
+  if (!meta) return;
+  document.getElementById('tt-name').textContent   = meta.name;
+  document.getElementById('tt-entity').textContent = '';
+  document.getElementById('tt-def').textContent    = meta.def;
+  document.getElementById('tt-meta').textContent   = `Source: ${meta.src} · Refresh lag: ${meta.lag}`;
+  document.getElementById('tt-body').innerHTML     = '';
+  setNavFooter(null, null);
+  showTip(); positionTip(e);
+}
+
+function showCellTip(e, entityName, metaIdx, facilVal, rowIdx) {
+  const meta = (META[currentTab]||[])[metaIdx];
+  if (!meta) return;
+  const color = TAB_COLORS[currentTab] || '#444';
+
+  document.getElementById('tt-name').textContent   = meta.name;
+  document.getElementById('tt-entity').textContent = entityName;
+  document.getElementById('tt-def').textContent    = meta.def;
+  document.getElementById('tt-meta').textContent   = `Source: ${meta.src} · Lag: ${meta.lag}`;
+
+  let bodyHTML = '';
+
+  // Benchmark section
+  if (meta.benchmarkNat != null) {
+    bodyHTML += makeBenchmarkBar(facilVal, meta);
+    bodyHTML += '<hr class="tt-divider">';
+  } else {
+    bodyHTML += `<div class="tt-value-row"><span class="tt-value-label">This facility:</span><span class="tt-value-num">${facilVal}</span></div>`;
+    bodyHTML += '<hr class="tt-divider">';
+  }
+
+  // Trend section
+  if (meta.hasTrend && meta.trend && meta.trend[rowIdx]) {
+    const vals = meta.trend[rowIdx];
+    const dir  = trendDirection(vals, meta.highIsBad);
+    bodyHTML += `<div class="tt-trend-title">Trend — last 4 quarters</div>`;
+    bodyHTML += makeSpark(vals, color);
+    bodyHTML += `<div class="tt-trend-labels"><span>Q1 '25</span><span>Q2 '25</span><span>Q3 '25</span><span>Q4 '25</span></div>`;
+    bodyHTML += `<div class="tt-trend-direction ${dir.cls}">${dir.label}</div>`;
+  } else {
+    bodyHTML += `<div class="tt-no-trend">Trend not available for this metric</div>`;
+  }
+
+  document.getElementById('tt-body').innerHTML = bodyHTML;
+  setNavFooter('→ Open Facility Detail', 'page3-facility-detail.html');
+  showTip(); positionTip(e);
+}
+
+let _tipTimer = null;
+
+function hideTip() {
+  document.getElementById('tooltip').style.display = 'none';
+  document.getElementById('tt-nav-footer').style.display = 'none';
+}
+
+function scheduleTipHide() {
+  _tipTimer = setTimeout(hideTip, 180);
+}
+
+function showTip() {
+  clearTimeout(_tipTimer);
+  document.getElementById('tooltip').style.display = 'block';
+}
+
+function setNavFooter(label, url) {
+  const footer = document.getElementById('tt-nav-footer');
+  const btn    = document.getElementById('tt-nav-btn');
+  if (url) {
+    btn.textContent = label;
+    btn.onclick = () => window.location = url;
+    footer.style.display = 'block';
+  } else {
+    footer.style.display = 'none';
+  }
+}
+
+document.getElementById('tooltip').addEventListener('mouseenter', () => clearTimeout(_tipTimer));
+document.getElementById('tooltip').addEventListener('mouseleave', scheduleTipHide);
+
+// Tooltip is positioned once on show — no cursor-tracking so nav buttons remain clickable.
+
+// ─── OM table coloring ────────────────────────────────────────────────────────
+function omColorClass(val, colIdx) {
+  const num = parseFloat(String(val).replace('%',''));
+  if (isNaN(num)) return '';
+  const rt = OM_R_THRESH[colIdx + 1]; // +1 because OM_COLS[0] = name
+  const gt = OM_G_THRESH[colIdx + 1];
+  if (OM_LOW_BAD.includes(colIdx)) { // higher is better (star rating)
+    if (gt != null && num >= gt) return 'val-green';
+    if (rt != null && num <= rt) return 'val-red';
+  } else {
+    if (rt != null && num >= rt) return 'val-red';
+    if (gt != null && num <= gt) return 'val-green';
+  }
+  return '';
+}
+
+// ─── OM table rendering ───────────────────────────────────────────────────────
+let selectedOM = null;
+let selectedStarFilter = null;
+
+function selectStarFilter(star) {
+  selectedStarFilter = (selectedStarFilter === star) ? null : star;
+  const section = document.querySelector('.star-section');
+  section.classList.toggle('has-selection', selectedStarFilter !== null);
+  document.querySelectorAll('.star-group').forEach(g => {
+    g.classList.toggle('selected', parseInt(g.dataset.star) === selectedStarFilter);
+  });
+  renderOMTable();
+  renderFacilityTable();
+}
+
+function renderOMTable() {
+  // Header
+  document.getElementById('parent-head').innerHTML = '<tr>' +
+    OM_COLS.map((c, i) => {
+      if (i === 0) return `<th class="col-name">${c}</th>`;
+      const mi = i;
+      return `<th onmouseenter="showOMHeaderTip(event,${mi})" onmouseleave="scheduleTipHide()" style="cursor:help;">${c}</th>`;
+    }).join('') + '</tr>';
+
+  // Filter OM rows by star rating if active
+  let visibleOMs = OM_ROWS;
+  if (selectedStarFilter !== null) {
+    const eligible = new Set(FAC_STARS.map((s, i) => s === selectedStarFilter ? FAC_OM[i] : null).filter(Boolean));
+    visibleOMs = OM_ROWS.filter(r => eligible.has(r.name));
+  }
+
+  // Rows
+  document.getElementById('parent-body').innerHTML = visibleOMs.map((row, ri) => {
+    const isSelected = row.name === selectedOM;
+    const cells = [row.name, ...row.vals];
+    let html = `<tr class="${isSelected ? 'om-selected' : ''}" style="cursor:pointer"
+      onclick="selectOM('${row.name.replace(/'/g,"\\'")}')">`;
+    cells.forEach((v, ci) => {
+      if (ci === 0) {
+        const hasOMView = row.name !== 'Independent';
+        html += `<td class="col-name name-p"
+          onmouseenter="showOMNameTip(event,'${row.name.replace(/'/g,"\\'")}',${hasOMView})"
+          onmouseleave="scheduleTipHide()">${v}</td>`;
+      } else {
+        const cls = omColorClass(v, ci - 1);
+        const metaIdx = ci;
+        html += `<td class="data-cell ${cls}"
+          onmouseenter="showOMCellTip(event,'${row.name.replace(/'/g,"\\'")}',${metaIdx},'${v}')"
+          onmouseleave="scheduleTipHide()">${v}</td>`;
+      }
+    });
+    html += '</tr>';
+    return html;
+  }).join('');
+}
+
+function showOMNameTip(e, omName, hasOMView) {
+  document.getElementById('tt-name').textContent   = omName;
+  document.getElementById('tt-entity').textContent = 'Parent Organization';
+  document.getElementById('tt-def').textContent    = 'Click row to filter the facility table to this organization\'s facilities.';
+  document.getElementById('tt-meta').textContent   = '';
+  document.getElementById('tt-body').innerHTML     = '';
+  setNavFooter(hasOMView ? '→ Open OM View' : null, hasOMView ? 'page2-om-view.html' : null);
+  showTip();
+  positionTip(e);
+}
+
+function showFacNameTip(e, facName) {
+  document.getElementById('tt-name').textContent   = facName;
+  document.getElementById('tt-entity').textContent = 'Facility';
+  document.getElementById('tt-def').textContent    = 'Click row to select this facility. Open Facility Detail to see full performance across all domains.';
+  document.getElementById('tt-meta').textContent   = '';
+  document.getElementById('tt-body').innerHTML     = '';
+  setNavFooter('→ Open Facility Detail', 'page3-facility-detail.html');
+  showTip(); positionTip(e);
+}
+
+function showOMHeaderTip(e, colIdx) {
+  const meta = OM_META_COLS[colIdx];
+  if (!meta) return;
+  document.getElementById('tt-name').textContent   = meta.name;
+  document.getElementById('tt-entity').textContent = '';
+  document.getElementById('tt-def').textContent    = meta.def;
+  document.getElementById('tt-meta').textContent   = `Source: ${meta.src} · Refresh lag: ${meta.lag}`;
+  document.getElementById('tt-body').innerHTML     = '';
+  setNavFooter(null, null);
+  showTip(); positionTip(e);
+}
+
+function showOMCellTip(e, omName, colIdx, val) {
+  const meta = OM_META_COLS[colIdx];
+  if (!meta) return;
+  document.getElementById('tt-name').textContent   = meta.name;
+  document.getElementById('tt-entity').textContent = omName;
+  document.getElementById('tt-def').textContent    = meta.def;
+  document.getElementById('tt-meta').textContent   = `Source: ${meta.src} · Lag: ${meta.lag}`;
+  document.getElementById('tt-body').innerHTML     =
+    `<div class="tt-value-row"><span class="tt-value-label">${omName}:</span><span class="tt-value-num">${val}</span></div>`;
+  setNavFooter('→ Open OM View', 'page2-om-view.html');
+  showTip(); positionTip(e);
+}
+
+function selectOM(name) {
+  selectedOM = (selectedOM === name) ? null : name; // toggle
+  renderOMTable();
+  renderFacilityTable();
+}
+
+// ─── Facility table rendering ─────────────────────────────────────────────────
+function renderHead(cols) {
+  return '<tr>' + cols.map((c, i) => {
+    if (i === 0) return `<th class="col-name">${c}</th>`;
+    if (i === 1) return `<th>${c.replace('\n','<br>')}</th>`;
+    const metaIdx = i - 2;
+    return `<th onmouseenter="showHeaderTip(event,${metaIdx})" onmouseleave="scheduleTipHide()" style="cursor:help;">${c.replace('\n','<br>')}</th>`;
+  }).join('') + '</tr>';
+}
+
+let selectedFacility = null;
+
+function getOMForFacility(name) {
+  const idx = TABS[currentTab].fRows.findIndex(r => r[0] === name);
+  return idx >= 0 ? (FAC_OM[idx] || null) : null;
+}
+
+function selectFacility(name) {
+  if (selectedFacility === name) {
+    selectedFacility = null;
+    selectedOM = null;
+  } else {
+    selectedFacility = name;
+    selectedOM = getOMForFacility(name);
+  }
+  renderOMTable();
+  renderFacilityTable();
+}
+
+function renderFacRows(rows, tab) {
+  return rows.map((cells, rowIdx) => {
+    const facName = cells[0];
+    const isSelected = facName === selectedFacility;
+    let html = `<tr class="${isSelected ? 'fac-selected' : ''}" style="cursor:pointer"
+      onclick="selectFacility('${facName.replace(/'/g,"\\'")}')">`;
+    cells.forEach((v, i) => {
+      if (i === 0) {
+        html += `<td class="col-name name-f"
+          onmouseenter="showFacNameTip(event,'${facName.replace(/'/g,"\\'")}') "
+          onmouseleave="scheduleTipHide()">${v}</td>`;
+      } else if (i === 1) {
+        html += `<td class="${v==='Yes'?'member-yes':'val-muted'}">${v}</td>`;
+      } else {
+        const metaIdx = i - 2;
+        const name = cells[0];
+        html += `<td class="data-cell ${colorClass(v,i,tab)}"
+          onmouseenter="showCellTip(event,'${name.replace(/'/g,"\\'")}',${metaIdx},'${v}',${rowIdx})"
+          onmouseleave="scheduleTipHide()">${v}</td>`;
+      }
+    });
+    html += '</tr>';
+    return html;
+  }).join('');
+}
+
+function renderFacilityTable() {
+  const t = TABS[currentTab];
+  // Index-based filtering so star + OM + member filters all compose
+  let indices = t.fRows.map((_, i) => i);
+  if (selectedStarFilter !== null)  indices = indices.filter(i => FAC_STARS[i] === selectedStarFilter);
+  if (selectedOM)                   indices = indices.filter(i => FAC_OM[i] === selectedOM);
+  const memberFilter = document.getElementById('filter-member').value;
+  if (memberFilter)                 indices = indices.filter(i => t.fRows[i][1] === memberFilter);
+  const rows = indices.map(i => t.fRows[i]);
+
+  let countLabel = '14,302 facilities';
+  if (selectedStarFilter !== null) countLabel = `Filtered: ${selectedStarFilter}★ CMS rating`;
+  if (selectedOM) {
+    const omRow = OM_ROWS.find(r => r.name === selectedOM);
+    const num = omRow ? omRow.vals[1] : rows.length;
+    countLabel = `${num} facilities · ${selectedOM}`;
+  }
+  document.getElementById('fac-panel-title').textContent = selectedOM ? selectedOM : 'All Facilities';
+  document.getElementById('fac-panel-hint').textContent  = countLabel;
+  document.getElementById('fac-panel-sub').textContent   = selectedOM
+    ? `Showing facilities within ${selectedOM} — select a domain tab to change measures · Click a row to open Facility Detail`
+    : 'Individual facility metrics — select a domain tab to change measures · Click a row to open Facility Detail';
+  document.getElementById('facility-head').innerHTML = renderHead(t.cols);
+  document.getElementById('facility-body').innerHTML = renderFacRows(rows, t);
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(el => el.classList.toggle('active', el.dataset.tab === tab));
+  document.getElementById('facility-table').className = `accent-${tab}`;
+  renderFacilityTable();
+  document.getElementById('status-left').textContent =
+    `Showing ${TABS[tab].label} metrics | 14,302 facilities | ${TABS[tab].lag}`;
+}
+
+function clearAllFilters() {
+  selectedOM = null;
+  selectedFacility = null;
+  selectedStarFilter = null;
+  document.querySelectorAll('.filters select').forEach(s => s.selectedIndex = 0);
+  document.querySelector('.star-section').classList.remove('has-selection');
+  document.querySelectorAll('.star-group').forEach(g => g.classList.remove('selected'));
+  renderOMTable();
+  renderFacilityTable();
+}
+
+// ─── Init ─────────────────────────────────────────────────────────────────────
+renderOMTable();
+switchTab('clinical');
+</script>
+</body>
+</html>
