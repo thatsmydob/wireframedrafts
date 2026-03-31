@@ -5,27 +5,28 @@
 <title>AAPACN Domain Deep-Dive — Sunrise Senior Living</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 12px; background: #f0f2f5; color: #333; }
+  input, button, select, textarea { font-family: inherit; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; background: #f0f2f5; color: #333; }
 
 /* Nav */
 .nav { background: #1a2a4a; color: #fff; padding: 10px 20px; display: flex; align-items: center; justify-content: flex-start; }
 .nav-links { display: flex; gap: 4px; }
-.nav-link { padding: 4px 12px; border-radius: 3px; font-size: 11px; cursor: pointer; opacity: 0.6; }
+.nav-link { padding: 4px 12px; border-radius: 3px; font-size: 12px; cursor: pointer; opacity: 0.6; }
 .nav-link:hover { opacity: 0.9; }
-.nav-link.active { background: #4f6ef7; opacity: 1; }
+.nav-link.active { background: #333; opacity: 1; }
 
 /* Filter bar */
 .filters { background: #eef1f7; padding: 8px 20px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; border-bottom: 1px solid #d0d5e0; }
-.filter-label { font-size: 10px; color: #666; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
-.filter-select { background: #fff; border: 1px solid #ccc; padding: 4px 10px; border-radius: 3px; color: #333; font-size: 11px; cursor: pointer; }
-.filter-input { background: #fff; border: 1px solid #ccc; padding: 4px 10px; border-radius: 3px; color: #333; font-size: 11px; width: 160px; }
-.back-btn { background: #fff; border: 1px solid #c0c8dc; padding: 4px 12px; border-radius: 3px; font-size: 11px; color: #4f6ef7; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.filter-label { font-size: 11px; color: #666; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
+.filter-select { background: #fff; border: 1px solid #ccc; padding: 4px 10px; border-radius: 3px; color: #333; font-size: 12px; cursor: pointer; appearance: none; padding-right: 20px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 6px center; }
+.filter-input { background: #fff; border: 1px solid #ccc; padding: 4px 10px; border-radius: 3px; color: #333; font-size: 12px; width: 160px; }
+.back-btn { background: #fff; border: 1px solid #c0c8dc; padding: 4px 12px; border-radius: 3px; font-size: 12px; color: #444; font-weight: 600; cursor: pointer; white-space: nowrap; }
 .filter-divider { width: 1px; height: 20px; background: #d0d5e0; flex-shrink: 0; }
-.fac-count { font-size: 10px; color: #888; margin-left: auto; white-space: nowrap; }
+.fac-count { font-size: 11px; color: #888; margin-left: auto; white-space: nowrap; }
 
 /* Page header */
 .page-header { background: #fff; padding: 10px 20px 8px; border-bottom: 1px solid #e0e4ef; }
-.page-header-title { font-size: 15px; font-weight: 700; color: #1a2a4a; line-height: 1.2; }
+.page-header-title { font-size: 16px; font-weight: 700; color: #1a2a4a; line-height: 1.2; }
 .page-header-sub { font-size: 10.5px; color: #555; line-height: 1.5; margin-top: 3px; font-style: italic; }
 
 /* OM Identity Banner */
@@ -33,45 +34,45 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; f
 .om-id-left   { flex: 0 0 28%; padding: 16px 20px; display: flex; flex-direction: column; justify-content: center; }
 .om-id-middle { flex: 0 0 30%; padding: 16px 20px; }
 .om-id-right  { flex: 1; padding: 16px 20px; }
-.om-card-name { font-size: 22px; font-weight: 700; color: #1a2a4a; line-height: 1.15; margin-bottom: 4px; }
+.om-card-name { font-size: 23px; font-weight: 700; color: #1a2a4a; line-height: 1.15; margin-bottom: 4px; }
 .om-card-sub  { font-size: 10.5px; color: #777; margin-bottom: 10px; line-height: 1.4; }
-.om-tier-badge { display: inline-block; background: #1a2a4a; color: #fff; padding: 3px 10px; border-radius: 3px; font-size: 10px; font-weight: 700; letter-spacing: 0.3px; }
-.om-section-title { font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #aaa; margin-bottom: 10px; }
+.om-tier-badge { display: inline-block; background: #1a2a4a; color: #fff; padding: 3px 10px; border-radius: 3px; font-size: 11px; font-weight: 700; letter-spacing: 0.3px; }
+.om-section-title { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #aaa; margin-bottom: 10px; }
 .om-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; }
 .om-meta-item { display: flex; flex-direction: column; gap: 3px; }
-.om-meta-label { font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: #aaa; }
-.om-meta-val { font-size: 20px; font-weight: 700; color: #1a2a4a; line-height: 1.1; }
+.om-meta-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: #aaa; }
+.om-meta-val { font-size: 21px; font-weight: 700; color: #1a2a4a; line-height: 1.1; }
 .om-kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; }
 .om-kpi-item { display: flex; flex-direction: column; gap: 2px; }
-.om-kpi-label { font-size: 8px; color: #aaa; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-.om-kpi-val { font-size: 20px; font-weight: 700; color: #1a2a4a; line-height: 1.1; }
+.om-kpi-label { font-size: 9px; color: #aaa; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+.om-kpi-val { font-size: 21px; font-weight: 700; color: #1a2a4a; line-height: 1.1; }
 .om-kpi-val.warn { color: #c0392b; }
-.om-kpi-val.good { color: #27ae60; }
-.om-kpi-val.blue { color: #4f6ef7; }
+.om-kpi-val.good { color: #444; }
+.om-kpi-val.blue { color: #444; }
 .om-kpi-sub { font-size: 8.5px; color: #999; margin-top: 1px; }
 
 /* Domain tabs */
 .domain-tabs { display: flex; background: #fff; border-bottom: 2px solid #e0e4ef; padding: 0 20px; }
-.domain-tab { padding: 10px 18px; font-size: 11px; font-weight: 600; color: #666; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; white-space: nowrap; display: flex; align-items: center; gap: 6px; }
+.domain-tab { padding: 10px 18px; font-size: 12px; font-weight: 600; color: #666; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; white-space: nowrap; display: flex; align-items: center; gap: 6px; }
 .domain-tab:hover { color: #333; }
 .domain-tab.active { border-bottom-color: var(--tab-color); color: var(--tab-color); }
-.domain-tab-badge { font-size: 9px; font-weight: 700; background: #c0392b; color: #fff; border-radius: 8px; padding: 1px 5px; line-height: 1.4; }
+.domain-tab-badge { font-size: 10px; font-weight: 700; background: #666; color: #fff; border-radius: 8px; padding: 1px 5px; line-height: 1.4; }
 
 /* Domain section header */
 .domain-section-header { padding: 9px 20px; background: #fff; border-bottom: 1px solid #e0e4ef; display: flex; align-items: center; gap: 10px; }
-.domain-section-name { font-size: 13px; font-weight: 700; color: var(--tab-color, #333); }
-.domain-section-badge { font-size: 10px; font-weight: 700; border-radius: 4px; padding: 2px 8px; }
+.domain-section-name { font-size: 14px; font-weight: 700; color: var(--tab-color, #333); }
+.domain-section-badge { font-size: 11px; font-weight: 700; border-radius: 4px; padding: 2px 8px; }
 
 /* Layout: table + side panel */
 .layout-wrap { display: flex; align-items: flex-start; }
 .table-wrap { flex: 1; min-width: 0; overflow-x: hidden; }
 
 /* Sort/legend strip */
-.sort-strip { background: #f7f7f7; padding: 4px 20px; font-size: 10px; color: #888; border-bottom: 1px solid #e8e8e8; display: flex; align-items: center; gap: 12px; }
+.sort-strip { background: #f7f7f7; padding: 4px 20px; font-size: 11px; color: #888; border-bottom: 1px solid #e8e8e8; display: flex; align-items: center; gap: 12px; }
 .sort-strip strong { color: #444; }
 
 /* Column headers */
-.col-header-row { display: flex; background: #ebebeb; border-bottom: 1px solid #d0d0d0; padding: 5px 20px; font-size: 10px; font-weight: 700; color: #555; }
+.col-header-row { display: flex; background: #ebebeb; border-bottom: 1px solid #d0d0d0; padding: 5px 20px; font-size: 11px; font-weight: 700; color: #555; }
 .col-fac { flex: 0 0 180px; }
 .col-metric { flex: 1; text-align: center; }
 
@@ -80,39 +81,39 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; f
 .fac-row:hover { background: #f5f5f5; }
 .fac-row.selected { background: #e8eaf0; border-left: 3px solid #555; padding-left: 17px; }
 .fac-name-cell { flex: 0 0 180px; }
-.fac-name { font-size: 11px; font-weight: 700; color: #222; }
-.fac-sub  { font-size: 9px; color: #999; margin-top: 1px; }
+.fac-name { font-size: 12px; font-weight: 700; color: #222; }
+.fac-sub  { font-size: 10px; color: #999; margin-top: 1px; }
 
 /* Metric cells & bars */
 .metric-cell { flex: 1; padding: 0 8px; }
-.metric-val { font-size: 10px; font-weight: 700; color: #222; text-align: center; margin-bottom: 3px; }
+.metric-val { font-size: 11px; font-weight: 700; color: #222; text-align: center; margin-bottom: 3px; }
 .metric-val.ok { font-weight: 400; color: #666; }
-.bar-wrap { position: relative; height: 8px; background: #ddd; border-radius: 2px; }
+.bar-wrap { position: relative; height: 8px; background: transparent; border-radius: 2px; }
 .bar-fill { height: 100%; border-radius: 2px; }
 .bar-fill.viol { background: #444; }
 .bar-fill.ok   { background: #aaa; }
 .bench-mark { position: absolute; top: 0; width: 2px; height: 100%; background: #111; }
 .bench-mark.ok { background: #888; }
-.bench-arrow { position: absolute; top: -9px; font-size: 7px; color: #111; transform: translateX(-50%); line-height: 1; }
+.bench-arrow { position: absolute; top: -9px; font-size: 8px; color: #111; transform: translateX(-50%); line-height: 1; }
 .bench-arrow.ok { color: #888; }
 
 /* Side panel */
 .side-panel { width: 224px; flex-shrink: 0; border-left: 1px solid #d0d0d0; background: #fff; display: flex; flex-direction: column; }
 .panel-hdr { padding: 10px 12px; background: #ebebeb; border-bottom: 1px solid #d0d0d0; flex-shrink: 0; }
-.panel-fac-name { font-size: 12px; font-weight: 700; color: #1a2a4a; }
-.panel-fac-sub  { font-size: 10px; color: #888; margin-top: 2px; }
-.panel-detail-btn { display: inline-block; margin-top: 7px; font-size: 10px; background: #1a2a4a; color: #fff; padding: 3px 9px; border-radius: 3px; cursor: pointer; }
+.panel-fac-name { font-size: 13px; font-weight: 700; color: #1a2a4a; }
+.panel-fac-sub  { font-size: 11px; color: #888; margin-top: 2px; }
+.panel-detail-btn { display: inline-block; margin-top: 7px; font-size: 11px; background: #1a2a4a; color: #fff; padding: 3px 9px; border-radius: 3px; cursor: pointer; }
 .panel-detail-btn:hover { background: #2c3e6b; }
 .panel-body { overflow-y: auto; }
 .spark-section { padding: 8px 12px; border-bottom: 1px solid #ececec; }
-.spark-label { font-size: 10px; font-weight: 700; color: #333; margin-bottom: 4px; line-height: 1.3; }
-.spark-qtrs  { display: flex; justify-content: space-between; font-size: 8px; color: #bbb; margin-top: 2px; }
-.spark-vals  { display: flex; justify-content: space-between; font-size: 9px; margin-top: 3px; }
+.spark-label { font-size: 11px; font-weight: 700; color: #333; margin-bottom: 4px; line-height: 1.3; }
+.spark-qtrs  { display: flex; justify-content: space-between; font-size: 9px; color: #bbb; margin-top: 2px; }
+.spark-vals  { display: flex; justify-content: space-between; font-size: 10px; margin-top: 3px; }
 .spark-current { font-weight: 700; color: #222; }
 .spark-bench   { color: #aaa; }
 
 /* Status bar */
-.status-bar { background: #f5f5f5; padding: 6px 20px; border-top: 1px solid #ddd; display: flex; justify-content: space-between; font-size: 10px; color: #888; }
+.status-bar { background: #f5f5f5; padding: 6px 20px; border-top: 1px solid #ddd; display: flex; justify-content: space-between; font-size: 11px; color: #888; }
 </style>
 </head>
 <body>
@@ -125,12 +126,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; f
     <div class="nav-link" onclick="window.location='page3-facility-detail.html'">Facility Detail</div>
     <div class="nav-link active">Domain Deep-Dive</div>
   </div>
-</div>
-
-<!-- Page Header -->
-<div class="page-header">
-  <div class="page-header-title">Domain Deep-Dive</div>
-  <div class="page-header-sub">Compare all facilities within this OM on a single domain&rsquo;s metrics. Select a domain tab to view facility performance side-by-side. Facilities with above-threshold values are ranked first. Click any row to view 8-quarter trend detail.</div>
 </div>
 
 <!-- Filters -->
@@ -150,6 +145,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; f
     <option value="large">Large (&gt;130 beds)</option>
   </select>
   <span class="fac-count" id="fac-count">8 facilities</span>
+  <div class="filter-divider"></div>
+  <button onclick="clearAllFilters()" style="background:#fff;border:1px solid #c0c8dc;padding:4px 12px;border-radius:3px;font-size:12px;color:#666;cursor:pointer;font-weight:600;">&#10005; Clear All</button>
+</div>
+
+<!-- Page Header -->
+<div class="page-header">
+  <div class="page-header-title">Domain Deep-Dive</div>
+  <div class="page-header-sub">Compare all facilities within this OM on a single domain&rsquo;s metrics. Select a domain tab to view facility performance side-by-side. Facilities with above-threshold values are ranked first. Click any row to view 8-quarter trend detail.</div>
 </div>
 
 <!-- OM Identity Banner -->
@@ -199,8 +202,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; f
 </div>
 
 <script>
-const TAB_COLORS = { clinical:'#e74c3c', regulatory:'#8e44ad', staffing:'#2980b9', financial:'#27ae60', training:'#f39c12' };
-const TAB_TINTS  = { clinical:'#fdf0ef', regulatory:'#f5f0f8', staffing:'#eef5fb', financial:'#edf7f2', training:'#fef9ee' };
+const TAB_COLORS = { clinical:'#444', regulatory:'#444', staffing:'#444', financial:'#444', training:'#444' };
+const TAB_TINTS  = { clinical:'#f5f5f5', regulatory:'#f5f5f5', staffing:'#f5f5f5', financial:'#f5f5f5', training:'#f5f5f5' };
 const DOMAIN_ORDER  = ['clinical','regulatory','staffing','financial','training'];
 const DOMAIN_LABELS = { clinical:'Clinical Quality', regulatory:'Regulatory / Survey', staffing:'Workforce & Staffing', financial:'Financial', training:'Training & Certification' };
 
@@ -421,9 +424,9 @@ function showPanelBlank() {
   document.getElementById('side-panel').innerHTML =
     `<div style="flex:1;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center">
        <div>
-         <div style="font-size:28px;color:#ddd;margin-bottom:12px">&#9700;</div>
-         <div style="font-size:11px;font-weight:600;color:#bbb;margin-bottom:6px">No facility selected</div>
-         <div style="font-size:10px;color:#ccc;line-height:1.5">Click a facility row to<br>visualize metric trends</div>
+         <div style="font-size:29px;color:#ddd;margin-bottom:12px">&#9700;</div>
+         <div style="font-size:12px;font-weight:600;color:#bbb;margin-bottom:6px">No facility selected</div>
+         <div style="font-size:11px;color:#ccc;line-height:1.5">Click a facility row to<br>visualize metric trends</div>
        </div>
      </div>`;
 }
@@ -444,7 +447,7 @@ function renderColHeaders(domainKey) {
 function renderFacRows(facilities, domainKey) {
   if (!facilities.length) {
     document.getElementById('fac-rows').innerHTML =
-      `<div style="padding:24px;text-align:center;color:#aaa;font-size:11px">No facilities match the current filters.</div>`;
+      `<div style="padding:24px;text-align:center;color:#aaa;font-size:12px">No facilities match the current filters.</div>`;
     return;
   }
   document.getElementById('fac-rows').innerHTML = facilities.map(fac => {
@@ -471,6 +474,13 @@ function applyFilters() {
     `${facilities.length} facilit${facilities.length === 1 ? 'y' : 'ies'}`;
   renderFacRows(facilities, activeDomain);
   if (selectedFacId && !facilities.find(f => f.id === selectedFacId)) closePanel();
+}
+
+function clearAllFilters() {
+  document.getElementById('filter-name').value = '';
+  document.getElementById('filter-state').selectedIndex = 0;
+  document.getElementById('filter-size').selectedIndex = 0;
+  applyFilters();
 }
 
 // ─── Domain tabs & header ─────────────────────────────────────────────────────

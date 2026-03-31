@@ -5,30 +5,31 @@
 <title>AAPACN Portfolio Overview — With Tooltips</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 12px; background: #f0f2f5; color: #333; }
+  input, button, select, textarea { font-family: inherit; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; background: #f0f2f5; color: #333; }
 
   .nav { background: #1a2a4a; color: #fff; padding: 10px 20px; display: flex; align-items: center; justify-content: flex-start; }
-  .nav-title { font-weight: 700; font-size: 14px; }
+  .nav-title { font-weight: 700; font-size: 15px; }
   .nav-links { display: flex; gap: 4px; }
-  .nav-link { padding: 4px 12px; border-radius: 3px; font-size: 11px; cursor: pointer; opacity: 0.6; }
-  .nav-link.active { background: #4f6ef7; opacity: 1; }
+  .nav-link { padding: 4px 12px; border-radius: 3px; font-size: 12px; cursor: pointer; opacity: 0.6; }
+  .nav-link.active { background: #333; opacity: 1; }
 
   .filters { background: #eef1f7; padding: 8px 20px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; border-bottom: 1px solid #d0d5e0; }
-  .filter-label { font-size: 10px; color: #666; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-  .filter-select { background: #fff; border: 1px solid #ccc; padding: 4px 10px; border-radius: 3px; color: #333; font-size: 11px; cursor: pointer; appearance: none; padding-right: 20px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 6px center; }
-  .filter-select.highlight { border-color: #4f6ef7; color: #4f6ef7; font-weight: 600; }
+  .filter-label { font-size: 11px; color: #666; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .filter-select { background: #fff; border: 1px solid #ccc; padding: 4px 10px; border-radius: 3px; color: #333; font-size: 12px; cursor: pointer; appearance: none; padding-right: 20px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 6px center; }
+  .filter-select.highlight { border-color: #888; color: #333; font-weight: 600; }
 
   .kpi-bar { display: grid; grid-template-columns: repeat(6, 1fr); background: #fff; border-bottom: 1px solid #ddd; }
   .kpi-card { padding: 12px; text-align: center; border-right: 1px solid #ddd; }
   .kpi-card:last-child { border-right: none; }
   .kpi-card.placeholder { background: #f8f8f8; }
-  .kpi-label { font-size: 9px; color: #888; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 4px; }
-  .kpi-value { font-size: 22px; font-weight: 700; color: #1a2a4a; line-height: 1; }
-  .kpi-value.blue { color: #4f6ef7; }
+  .kpi-label { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 4px; }
+  .kpi-value { font-size: 23px; font-weight: 700; color: #1a2a4a; line-height: 1; }
+  .kpi-value.blue { color: #333; }
   .kpi-value.red { color: #c0392b; }
   .kpi-value.muted { color: #bbb; }
-  .kpi-sub { font-size: 10px; color: #888; margin-top: 3px; }
-  .kpi-sub.blue { color: #4f6ef7; }
+  .kpi-sub { font-size: 11px; color: #888; margin-top: 3px; }
+  .kpi-sub.blue { color: #333; }
   .kpi-sub.red { color: #c0392b; }
 
   /* Side-by-side layout */
@@ -38,55 +39,55 @@
 
   .panel-header { padding: 10px 14px 8px; border-bottom: 1px solid #eee; }
   .panel-header-top { display: flex; align-items: center; justify-content: space-between; }
-  .panel-title { font-size: 11px; font-weight: 700; color: #1a2a4a; text-transform: uppercase; letter-spacing: 0.5px; }
-  .panel-hint { font-size: 9px; color: #aaa; }
-  .panel-sub { font-size: 10px; color: #666; margin-top: 3px; }
+  .panel-title { font-size: 12px; font-weight: 700; color: #1a2a4a; text-transform: uppercase; letter-spacing: 0.5px; }
+  .panel-hint { font-size: 10px; color: #aaa; }
+  .panel-sub { font-size: 11px; color: #666; margin-top: 3px; }
 
   .tabs-row { padding: 0 14px; display: flex; gap: 3px; border-bottom: 2px solid #ddd; background: #fff; }
   .tab { padding: 7px 13px; font-size: 10.5px; font-weight: 600; cursor: pointer; color: #666; background: transparent; border: none; border-bottom: 3px solid transparent; margin-bottom: -2px; white-space: nowrap; }
   .tab:hover { color: #333; }
-  .tab[data-tab="clinical"].active   { color: #e74c3c; border-bottom-color: #e74c3c; }
-  .tab[data-tab="regulatory"].active { color: #8e44ad; border-bottom-color: #8e44ad; }
-  .tab[data-tab="staffing"].active   { color: #2980b9; border-bottom-color: #2980b9; }
-  .tab[data-tab="financial"].active  { color: #27ae60; border-bottom-color: #27ae60; }
-  .tab[data-tab="training"].active   { color: #f39c12; border-bottom-color: #f39c12; }
+  .tab[data-tab="clinical"].active   { color: #444; border-bottom-color: #444; }
+  .tab[data-tab="regulatory"].active { color: #444; border-bottom-color: #444; }
+  .tab[data-tab="staffing"].active   { color: #444; border-bottom-color: #444; }
+  .tab[data-tab="financial"].active  { color: #444; border-bottom-color: #444; }
+  .tab[data-tab="training"].active   { color: #444; border-bottom-color: #444; }
 
   .table-scroll { overflow-x: auto; }
-  .table-hint { padding: 5px 14px 8px; font-size: 9px; color: #aaa; border-top: 1px solid #f5f5f5; }
+  .table-hint { padding: 5px 14px 8px; font-size: 10px; color: #aaa; border-top: 1px solid #f5f5f5; }
 
   /* OM row selected state */
-  tr.om-selected td { background: #e8ecff !important; }
-  tr.om-selected td.col-name { border-left: 3px solid #4f6ef7; padding-left: 7px; }
+  tr.om-selected td { background: #f0f0f0 !important; }
+  tr.om-selected td.col-name { border-left: 3px solid #444; padding-left: 7px; }
 
 
-  table { width: 100%; border-collapse: collapse; font-size: 10px; white-space: nowrap; }
+  table { width: 100%; border-collapse: collapse; font-size: 11px; white-space: nowrap; }
   thead tr { background: #f5f5f5; }
   th { padding: 6px 10px; text-align: center; border-bottom: 2px solid #ddd; color: #555; font-weight: 600; cursor: help; }
-  th:hover { background: #e8ecf7; }
+  th:hover { background: #ebebeb; }
   th.col-name { text-align: left; min-width: 180px; position: sticky; left: 0; background: #f5f5f5; z-index: 1; cursor: default; }
   th.col-name:hover { background: #f5f5f5; }
   td { padding: 6px 10px; border-bottom: 1px solid #eee; text-align: center; }
   td.col-name { text-align: left; font-weight: 600; position: sticky; left: 0; background: #fff; z-index: 1; }
   td.data-cell { cursor: pointer; }
-  td.data-cell:hover { background: #e8ecf7 !important; }
-  tr:hover td { background: #f7f9ff !important; }
-  tr:hover td.col-name { background: #f7f9ff !important; }
+  td.data-cell:hover { background: #ebebeb !important; }
+  tr:hover td { background: #f5f5f5 !important; }
+  tr:hover td.col-name { background: #f5f5f5 !important; }
 
-  .name-p { color: #4f6ef7; }
-  .name-f { color: #1a8f6f; }
+  .name-p { color: #333; }
+  .name-f { color: #444; }
   .val-red { color: #c0392b; font-weight: 600; }
-  .val-green { color: #27ae60; font-weight: 600; }
+  .val-green { color: #555; font-weight: 600; }
   .val-muted { color: #aaa; }
-  .member-yes { color: #27ae60; font-weight: 700; }
+  .member-yes { color: #333; font-weight: 700; }
 
-  .accent-clinical   th { border-bottom-color: #e74c3c; }
-  .accent-regulatory th { border-bottom-color: #8e44ad; }
-  .accent-staffing   th { border-bottom-color: #2980b9; }
-  .accent-financial  th { border-bottom-color: #27ae60; }
-  .accent-training   th { border-bottom-color: #f39c12; }
+  .accent-clinical   th { border-bottom-color: #444; }
+  .accent-regulatory th { border-bottom-color: #444; }
+  .accent-staffing   th { border-bottom-color: #444; }
+  .accent-financial  th { border-bottom-color: #444; }
+  .accent-training   th { border-bottom-color: #444; }
 
-  .table-hint { margin-top: 6px; font-size: 10px; color: #999; }
-  .status-bar { background: #f5f5f5; padding: 6px 20px; border-top: 1px solid #ddd; display: flex; justify-content: space-between; font-size: 10px; color: #888; }
+  .table-hint { margin-top: 6px; font-size: 11px; color: #999; }
+  .status-bar { background: #f5f5f5; padding: 6px 20px; border-top: 1px solid #ddd; display: flex; justify-content: space-between; font-size: 11px; color: #888; }
 
   /* ── Tooltip ── */
   #tooltip {
@@ -97,7 +98,7 @@
     border-radius: 6px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.14);
     width: 270px;
-    font-size: 11px;
+    font-size: 12px;
     pointer-events: auto;
     display: none;
   }
@@ -108,21 +109,21 @@
   }
   .tt-nav-btn {
     display: block; width: 100%; text-align: center;
-    background: #4f6ef7; color: #fff; font-size: 10px; font-weight: 700;
+    background: #333; color: #fff; font-size: 11px; font-weight: 700;
     padding: 6px 0; border-radius: 4px; cursor: pointer;
     border: none;
   }
-  .tt-nav-btn:hover { background: #3a5ce0; }
+  .tt-nav-btn:hover { background: #222; }
 
   /* Facility row selected state */
-  tr.fac-selected td { background: #edf7f2 !important; }
-  tr.fac-selected td.col-name { border-left: 3px solid #1a8f6f; padding-left: 7px; }
+  tr.fac-selected td { background: #f0f0f0 !important; }
+  tr.fac-selected td.col-name { border-left: 3px solid #444; padding-left: 7px; }
   .tt-header {
     padding: 10px 12px 8px;
     border-bottom: 1px solid #eee;
   }
-  .tt-metric-name { font-weight: 700; color: #1a2a4a; font-size: 12px; margin-bottom: 3px; }
-  .tt-entity { font-size: 10px; color: #888; margin-bottom: 5px; }
+  .tt-metric-name { font-weight: 700; color: #1a2a4a; font-size: 13px; margin-bottom: 3px; }
+  .tt-entity { font-size: 11px; color: #888; margin-bottom: 5px; }
   .tt-definition { color: #444; line-height: 1.45; font-size: 10.5px; }
   .tt-meta { margin-top: 5px; font-size: 9.5px; color: #999; }
 
@@ -132,16 +133,16 @@
   .tt-value-label { color: #666; }
   .tt-value-num { font-weight: 700; color: #1a2a4a; }
   .tt-value-num.above { color: #c0392b; }
-  .tt-value-num.below { color: #27ae60; }
+  .tt-value-num.below { color: #555; }
 
   .tt-divider { border: none; border-top: 1px solid #eee; margin: 8px 0; }
 
   .tt-trend-title { font-size: 9.5px; font-weight: 700; color: #666; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
   .tt-sparkline { display: block; }
-  .tt-trend-labels { display: flex; justify-content: space-between; font-size: 9px; color: #aaa; margin-top: 2px; }
+  .tt-trend-labels { display: flex; justify-content: space-between; font-size: 10px; color: #aaa; margin-top: 2px; }
   .tt-trend-direction { font-size: 9.5px; font-weight: 600; margin-top: 4px; }
   .tt-trend-direction.worse  { color: #c0392b; }
-  .tt-trend-direction.better { color: #27ae60; }
+  .tt-trend-direction.better { color: #555; }
   .tt-trend-direction.stable { color: #888; }
 
   .tt-no-trend { font-size: 9.5px; color: #aaa; font-style: italic; }
@@ -182,12 +183,12 @@
   <select class="filter-select"><option>AAPACN Cert Status</option><option>Certified</option><option>Not Certified</option></select>
   <select class="filter-select highlight"><option>Facility Size (Beds)</option><option>Small (&lt;90)</option><option>Medium (91–150)</option><option>Large (&gt;150)</option></select>
   <div class="filter-divider"></div>
-  <button onclick="clearAllFilters()" style="background:#fff;border:1px solid #c0c8dc;padding:4px 12px;border-radius:3px;font-size:11px;color:#666;cursor:pointer;font-weight:600;">✕ Clear All</button>
+  <button onclick="clearAllFilters()" style="background:#fff;border:1px solid #c0c8dc;padding:4px 12px;border-radius:3px;font-size:12px;color:#666;cursor:pointer;font-weight:600;">✕ Clear All</button>
 </div>
 
 <div style="background:#fff;border-bottom:1px solid #e0e4ef;padding:10px 20px 8px;">
-  <div style="font-size:15px;font-weight:700;color:#1a2a4a;">Portfolio Overview</div>
-  <div style="font-size:11px;color:#888;margin-top:3px;">A high-level view of facility performance across all Organizational Members. Use filters to narrow by state, facility size, or membership status. Click any facility row to drill into OM or facility-level detail.</div>
+  <div style="font-size:16px;font-weight:700;color:#1a2a4a;">Portfolio Overview</div>
+  <div style="font-size:12px;color:#888;margin-top:3px;">A high-level view of facility performance across all Organizational Members. Use filters to narrow by state, facility size, or membership status. Click any facility row to drill into OM or facility-level detail.</div>
 </div>
 
 <div class="kpi-bar">
@@ -247,7 +248,7 @@
 
 <script>
 // ─── Tab accent colors ───────────────────────────────────────
-const TAB_COLORS = { clinical:'#e74c3c', regulatory:'#8e44ad', staffing:'#2980b9', financial:'#27ae60', training:'#f39c12' };
+const TAB_COLORS = { clinical:'#444', regulatory:'#444', staffing:'#444', financial:'#444', training:'#444' };
 
 // ─── OM summary table data ────────────────────────────────────────────────────
 const OM_COLS = ['Parent Organization', 'Avg Star Rating', '# Facilities', 'Avg Age (yrs)', 'Avg Turnover %', '# AAPACN Members'];
@@ -329,37 +330,37 @@ const META = {
 const TABS = {
   clinical: {
     label:'Clinical Quality', lag:'MDS QM: 6–9 mo | SNF QRP: 9 mo | SNF VBP: 2 yr',
-    cols:['Name','Members','Antipsychotic Use %','Exaggerated Wt Loss %','Falls w/ Major Injury %','Pressure Ulcer %\n(New/Worsening)','30-Day Readmission %'],
+    cols:['Name','AAPACN Members','Antipsychotic Use %','Exaggerated Wt Loss %','Falls w/ Major Injury %','Pressure Ulcer %\n(New/Worsening)','30-Day Readmission %'],
     pRows:[['Sunrise Senior Living','42','18.2%','4.1%','15.5%','7.1%','18.2%'],['Genesis Healthcare','18','12.7%','6.8%','14.1%','6.4%','19.1%'],['Kindred Health','7','11.3%','3.9%','12.6%','6.3%','18.6%'],['Independent','312','14.0%','5.2%','13.8%','6.9%','19.7%']],
-    fRows:[['Sunrise of Lincoln Park','✅','14.1%','3.8%','15.5%','6.9%','19.8%'],['Sunrise of Hyde Park','✅','22.3%','4.5%','23.0%','13.1%','23.1%'],['Valley Care Center','—','11.9%','2.1%','6.9%','4.2%','18.4%'],['Elmwood Nursing & Rehab','—','16.7%','5.9%','16.7%','10.6%','22.0%']],
+    fRows:[['Sunrise of Lincoln Park','Yes','14.1%','3.8%','15.5%','6.9%','19.8%'],['Sunrise of Hyde Park','Yes','22.3%','4.5%','23.0%','13.1%','23.1%'],['Valley Care Center','No','11.9%','2.1%','6.9%','4.2%','18.4%'],['Elmwood Nursing & Rehab','No','16.7%','5.9%','16.7%','10.6%','22.0%']],
     rThresh:[null,null,17,5.0,18.0,10.0,21.0], gThresh:[null,null,13,3.5,13.0,6.0,18.5], lowBad:[],
   },
   regulatory: {
     label:'Regulatory & Survey', lag:'NH Provider Info: 1–3 mo | NH Health Deficiencies: 1–3 mo',
-    cols:['Name','Members','G+ Citations','IJ Citations','Citations/Qtr','Total Citations (3yr)','5-Star Overall','Health Inspection ★','Quality Measure ★','Staffing ★','Failed Revisit'],
+    cols:['Name','AAPACN Members','G+ Citations','IJ Citations','Citations/Qtr','Total Citations (3yr)','5-Star Overall','Health Inspection ★','Quality Measure ★','Staffing ★','Failed Revisit'],
     pRows:[['Sunrise Senior Living','42','3','1','4.2','38','3.1','2.9','3.3','3.2','—'],['Genesis Healthcare','18','1','0','2.8','24','3.6','3.8','3.4','3.5','—'],['Kindred Health','7','4','2','5.1','47','2.8','2.5','3.0','2.9','—'],['Independent','312','2','0','3.4','29','3.3','3.1','3.4','3.2','—']],
-    fRows:[['Sunrise of Lincoln Park','✅','2','0','3.5','28','4','4','4','4','No'],['Sunrise of Hyde Park','✅','5','2','6.1','55','2','2','3','2','Yes'],['Valley Care Center','—','1','0','2.2','18','4','5','4','4','No'],['Elmwood Nursing & Rehab','—','3','1','4.8','42','3','3','3','3','No']],
+    fRows:[['Sunrise of Lincoln Park','Yes','2','0','3.5','28','4','4','4','4','No'],['Sunrise of Hyde Park','Yes','5','2','6.1','55','2','2','3','2','Yes'],['Valley Care Center','No','1','0','2.2','18','4','5','4','4','No'],['Elmwood Nursing & Rehab','No','3','1','4.8','42','3','3','3','3','No']],
     rThresh:[null,null,3,1,4.5,40,null,null,null,null,null], gThresh:[null,null,1,0,2.5,20,null,null,null,null,null], lowBad:[],
   },
   staffing: {
     label:'Workforce & Staffing', lag:'NH Provider Info: 1–3 mo | PBJ: ~3 mo | VRDC: 1–2 yr',
-    cols:['Name','Members','RN HPRD','Total Nursing HPRD\n(CM Adj)','Direct Care HPRD','Staff Turnover Rate %','Quality Mix %'],
+    cols:['Name','AAPACN Members','RN HPRD','Total Nursing HPRD\n(CM Adj)','Direct Care HPRD','Staff Turnover Rate %','Quality Mix %'],
     pRows:[['Sunrise Senior Living','42','0.52','3.81','3.62','28.4%','34%'],['Genesis Healthcare','18','0.61','4.10','3.95','22.1%','41%'],['Kindred Health','7','0.48','3.55','3.40','31.7%','28%'],['Independent','312','0.55','3.72','3.58','25.3%','38%']],
-    fRows:[['Sunrise of Lincoln Park','✅','0.54','3.90','3.71','26.2%','36%'],['Sunrise of Hyde Park','✅','0.44','3.40','3.22','35.8%','29%'],['Valley Care Center','—','0.62','4.20','4.01','21.0%','44%'],['Elmwood Nursing & Rehab','—','0.49','3.60','3.45','30.1%','31%']],
+    fRows:[['Sunrise of Lincoln Park','Yes','0.54','3.90','3.71','26.2%','36%'],['Sunrise of Hyde Park','Yes','0.44','3.40','3.22','35.8%','29%'],['Valley Care Center','No','0.62','4.20','4.01','21.0%','44%'],['Elmwood Nursing & Rehab','No','0.49','3.60','3.45','30.1%','31%']],
     rThresh:[null,null,null,null,null,30.0,null], gThresh:[null,null,0.60,4.00,3.80,22.0,null], lowBad:[2,3,4],
   },
   financial: {
     label:'Financial', lag:'NH Provider Info: 1–3 mo',
-    cols:['Name','Members','Case Mix Index (CMI)','Occupancy Rate %'],
+    cols:['Name','AAPACN Members','Case Mix Index (CMI)','Occupancy Rate %'],
     pRows:[['Sunrise Senior Living','42','1.08','82.4%'],['Genesis Healthcare','18','1.22','88.1%'],['Kindred Health','7','0.94','71.2%'],['Independent','312','1.05','79.6%']],
-    fRows:[['Sunrise of Lincoln Park','✅','1.11','84.2%'],['Sunrise of Hyde Park','✅','1.02','68.5%'],['Valley Care Center','—','1.28','91.0%'],['Elmwood Nursing & Rehab','—','0.98','73.1%']],
+    fRows:[['Sunrise of Lincoln Park','Yes','1.11','84.2%'],['Sunrise of Hyde Park','Yes','1.02','68.5%'],['Valley Care Center','No','1.28','91.0%'],['Elmwood Nursing & Rehab','No','0.98','73.1%']],
     rThresh:[null,null,null,70.0], gThresh:[null,null,null,85.0], lowBad:[],
   },
   training: {
     label:'Training & Certification', lag:'AAPACN ProTech: monthly | ⚠ <1/3 of certifications matched to facility CCN',
-    cols:['Name','Members','# For-Sale\nProducts','# On-Demand\nProducts','% Cert\nCompleted','% Cert\nStarted','Certification\nRate %','Conference\nParticipation'],
+    cols:['Name','AAPACN Members','# For-Sale\nProducts','# On-Demand\nProducts','% Cert\nCompleted','% Cert\nStarted','Certification\nRate %','Conference\nParticipation'],
     pRows:[['Sunrise Senior Living','42','87','142','34%','41%','29%','62%'],['Genesis Healthcare','18','31','58','28%','35%','24%','44%'],['Kindred Health','7','12','19','19%','27%','16%','31%'],['Independent','312','624','1,041','41%','49%','36%','58%']],
-    fRows:[['Sunrise of Lincoln Park','✅','8','14','38%','45%','32%','67%'],['Sunrise of Hyde Park','✅','5','9','21%','29%','18%','38%'],['Valley Care Center','—','0','0','—','—','—','—'],['Elmwood Nursing & Rehab','—','0','2','—','—','—','—']],
+    fRows:[['Sunrise of Lincoln Park','Yes','8','14','38%','45%','32%','67%'],['Sunrise of Hyde Park','Yes','5','9','21%','29%','18%','38%'],['Valley Care Center','No','0','0','—','—','—','—'],['Elmwood Nursing & Rehab','No','0','2','—','—','—','—']],
     rThresh:[null,null,null,null,null,null,null,null], gThresh:[null,null,5,8,35,40,30,55], lowBad:[2,3,4,5,6,7],
   },
 };
@@ -472,7 +473,7 @@ function showHeaderTip(e, metaIdx) {
 function showCellTip(e, entityName, metaIdx, facilVal, rowIdx) {
   const meta = (META[currentTab]||[])[metaIdx];
   if (!meta) return;
-  const color = TAB_COLORS[currentTab] || '#4f6ef7';
+  const color = TAB_COLORS[currentTab] || '#444';
 
   document.getElementById('tt-name').textContent   = meta.name;
   document.getElementById('tt-entity').textContent = entityName;
@@ -688,7 +689,7 @@ function renderFacRows(rows, tab) {
           onmouseenter="showFacNameTip(event,'${facName.replace(/'/g,"\\'")}') "
           onmouseleave="scheduleTipHide()">${v}</td>`;
       } else if (i === 1) {
-        html += `<td class="${v==='✅'?'member-yes':'val-muted'}">${v}</td>`;
+        html += `<td class="${v==='Yes'?'member-yes':'val-muted'}">${v}</td>`;
       } else {
         const metaIdx = i - 2;
         const name = cells[0];
