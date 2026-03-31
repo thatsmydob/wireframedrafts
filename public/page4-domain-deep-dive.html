@@ -45,8 +45,8 @@ body { font-family: 'DM Sans', sans-serif; font-size: 13px; background: var(--bg
 
 /* OM Identity Banner */
 .om-identity { display: flex; background: var(--surface); border-bottom: 2px solid var(--border); }
-.om-id-left   { flex: 0 0 28%; padding: 16px 20px; display: flex; flex-direction: column; justify-content: center; }
-.om-id-middle { flex: 0 0 30%; padding: 16px 20px; }
+.om-id-left   { flex: 0 0 28%; padding: 16px 20px; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--border); }
+.om-id-middle { flex: 0 0 30%; padding: 16px 20px; border-right: 1px solid var(--border); }
 .om-id-right  { flex: 1; padding: 16px 20px; }
 .om-card-name { font-size: 23px; font-weight: 700; color: var(--text); line-height: 1.15; margin-bottom: 4px; }
 .om-card-sub  { font-size: 10.5px; color: #777; margin-bottom: 10px; line-height: 1.4; }
@@ -147,6 +147,10 @@ body { font-family: 'DM Sans', sans-serif; font-size: 13px; background: var(--bg
   <div class="back-btn" onclick="window.location='page2-om-view.html'">&#8592; Back to OM View</div>
   <div class="filter-divider"></div>
   <span class="filter-label">Filter:</span>
+  <select id="filter-org" class="filter-select" onchange="applyFilters()">
+    <option value="">All Parent Organizations</option>
+    <option>Sunrise Senior Living</option>
+  </select>
   <input id="filter-name" class="filter-input" placeholder="Search facility name&hellip;" oninput="applyFilters()">
   <select id="filter-state" class="filter-select" onchange="applyFilters()">
     <option value="">All States</option>
@@ -181,7 +185,6 @@ body { font-family: 'DM Sans', sans-serif; font-size: 13px; background: var(--bg
     <div class="om-meta-grid">
       <div class="om-meta-item"><div class="om-meta-label">OM Tier</div><div class="om-meta-val">OM</div></div>
       <div class="om-meta-item"><div class="om-meta-label">Member Since</div><div class="om-meta-val">2018</div></div>
-      <div class="om-meta-item"><div class="om-meta-label">Facilities</div><div class="om-meta-val">8</div></div>
       <div class="om-meta-item"><div class="om-meta-label">States</div><div class="om-meta-val">3</div></div>
     </div>
   </div>
@@ -341,11 +344,13 @@ function fmtVal(v, unit) {
 }
 
 function filterFacilities() {
+  const org   = document.getElementById('filter-org').value;
   const name  = document.getElementById('filter-name').value.toLowerCase();
   const state = document.getElementById('filter-state').value;
   const size  = document.getElementById('filter-size').value;
   return FACILITIES
     .filter(f => {
+      if (org   && (f.org || 'Sunrise Senior Living') !== org) return false;
       if (name  && !f.name.toLowerCase().includes(name)) return false;
       if (state && f.state !== state) return false;
       if (size === 'small'  && f.beds >= 90)  return false;
@@ -491,6 +496,7 @@ function applyFilters() {
 }
 
 function clearAllFilters() {
+  document.getElementById('filter-org').selectedIndex = 0;
   document.getElementById('filter-name').value = '';
   document.getElementById('filter-state').selectedIndex = 0;
   document.getElementById('filter-size').selectedIndex = 0;

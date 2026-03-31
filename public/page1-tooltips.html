@@ -58,7 +58,7 @@
   .panel-sub { font-size: 11px; color: var(--text2); margin-top: 3px; }
 
   .tabs-row { padding: 0 14px; display: flex; gap: 3px; border-bottom: 2px solid var(--border); background: var(--surface); }
-  .tab { padding: 7px 13px; font-size: 10.5px; font-weight: 600; cursor: pointer; color: var(--text2); background: transparent; border: none; border-bottom: 3px solid transparent; margin-bottom: -2px; white-space: nowrap; }
+  .tab { padding: 7px 13px; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--text2); background: transparent; border: none; border-bottom: 3px solid transparent; margin-bottom: -2px; white-space: nowrap; }
   .tab:hover { color: var(--text); }
   .tab[data-tab="clinical"].active   { color: #444; border-bottom-color: #444; }
   .tab[data-tab="regulatory"].active { color: #444; border-bottom-color: #444; }
@@ -434,7 +434,7 @@ function makeBenchmarkBar(facilVal, meta) {
 
   function bar(val) {
     const pct = Math.min(100, Math.round((val / maxVal) * 100));
-    return `<div style="flex:1;height:8px;background:#ccc;border-radius:3px;">
+    return `<div style="flex:1;height:8px;background:transparent;border-radius:3px;">
       <div style="width:${pct}%;height:8px;background:#888;border-radius:3px;"></div>
     </div>`;
   }
