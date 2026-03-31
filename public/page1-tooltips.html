@@ -160,6 +160,31 @@
   .tt-trend-direction.stable { color: var(--text3); }
 
   .tt-no-trend { font-size: 9.5px; color: var(--text3); font-style: italic; }
+
+  /* ── Star Rating Chart ── */
+  .star-section { background: var(--surface); border-top: 2px solid var(--border); padding: 20px 24px 24px; }
+  .star-section-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .star-section-sub { font-size: 12px; color: var(--text2); margin-bottom: 16px; line-height: 1.5; }
+  .star-legend { display: flex; gap: 20px; align-items: center; margin-bottom: 20px; }
+  .star-legend-item { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--text2); }
+  .star-legend-dot { width: 13px; height: 13px; border-radius: 3px; flex-shrink: 0; }
+  .star-chart { display: flex; align-items: flex-end; gap: 20px; padding-bottom: 32px; border-bottom: 2px solid var(--border); position: relative; }
+  .star-group { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0; }
+  .star-bars { display: flex; align-items: flex-end; gap: 4px; }
+  .star-bar-col { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .star-bar-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text2); font-weight: 500; }
+  .star-bar { border-radius: 3px 3px 0 0; }
+  .star-bar.mem { background: #444; }
+  .star-bar.non { background: #c4c0b8; }
+  .star-x-label { font-size: 13px; font-weight: 700; color: var(--text); margin-top: 10px; letter-spacing: .02em; }
+  .star-axis-line { position: absolute; bottom: 32px; left: 0; right: 0; height: 2px; background: var(--border); }
+  .star-gridline { position: absolute; left: 0; right: 0; border-top: 1px dashed var(--border); pointer-events: none; }
+  .star-gridline-label { position: absolute; left: 0; font-size: 9px; font-family: 'DM Mono', monospace; color: var(--text3); transform: translateY(-50%); }
+  .star-insight { margin-top: 16px; display: flex; gap: 24px; }
+  .star-insight-item { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+  .star-insight-val { font-family: 'DM Mono', monospace; font-size: 20px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .star-insight-val.accent { color: #444; }
+  .star-insight-label { font-size: 11px; color: var(--text2); line-height: 1.4; }
 </style>
 </head>
 <body>
@@ -251,6 +276,94 @@
       <table id="facility-table" class="accent-clinical"><thead id="facility-head"></thead><tbody id="facility-body"></tbody></table>
     </div>
     <div class="table-hint">Click row for Facility Detail &nbsp;|&nbsp; <span style="color:#c0392b">Red</span> = above threshold &nbsp;|&nbsp; <span style="color:#27ae60">Green</span> = below threshold</div>
+  </div>
+
+</div>
+
+<!-- ── Star Rating Distribution ── -->
+<div class="star-section">
+
+  <div class="star-section-title">Do AAPACN Members Outperform on CMS Star Ratings?</div>
+  <div class="star-section-sub">AAPACN member facilities concentrate at 4–5★ ratings while non-members spread toward the lower end of the scale — a measurable quality gap that reflects the impact of AAPACN education and credentialing programs on care delivery outcomes.</div>
+
+  <div class="star-legend">
+    <div class="star-legend-item"><div class="star-legend-dot" style="background:#444;"></div>AAPACN Members &nbsp;<span style="font-family:'DM Mono',monospace;color:var(--text3);">(2,841 facilities)</span></div>
+    <div class="star-legend-item"><div class="star-legend-dot" style="background:#c4c0b8;"></div>Non-Members &nbsp;<span style="font-family:'DM Mono',monospace;color:var(--text3);">(11,461 facilities)</span></div>
+  </div>
+
+  <!-- Chart: bar height = value/40 * 140px -->
+  <div style="position:relative;">
+    <!-- Gridlines -->
+    <div class="star-gridline" style="bottom:calc(32px + 105px);"><span class="star-gridline-label" style="bottom:calc(32px + 105px);">30%</span></div>
+    <div class="star-gridline" style="bottom:calc(32px + 70px);"><span class="star-gridline-label" style="bottom:calc(32px + 70px);">20%</span></div>
+    <div class="star-gridline" style="bottom:calc(32px + 35px);"><span class="star-gridline-label" style="bottom:calc(32px + 35px);">10%</span></div>
+
+    <div class="star-chart">
+      <div style="width:28px;flex-shrink:0;"></div><!-- spacer for y-axis labels -->
+
+      <!-- 1★ -->
+      <div class="star-group">
+        <div class="star-bars">
+          <div class="star-bar-col"><span class="star-bar-label">4%</span><div class="star-bar mem" style="width:36px;height:14px;"></div></div>
+          <div class="star-bar-col"><span class="star-bar-label">13%</span><div class="star-bar non" style="width:36px;height:46px;"></div></div>
+        </div>
+        <div class="star-x-label">1★</div>
+      </div>
+
+      <!-- 2★ -->
+      <div class="star-group">
+        <div class="star-bars">
+          <div class="star-bar-col"><span class="star-bar-label">11%</span><div class="star-bar mem" style="width:36px;height:39px;"></div></div>
+          <div class="star-bar-col"><span class="star-bar-label">21%</span><div class="star-bar non" style="width:36px;height:74px;"></div></div>
+        </div>
+        <div class="star-x-label">2★</div>
+      </div>
+
+      <!-- 3★ -->
+      <div class="star-group">
+        <div class="star-bars">
+          <div class="star-bar-col"><span class="star-bar-label">26%</span><div class="star-bar mem" style="width:36px;height:91px;"></div></div>
+          <div class="star-bar-col"><span class="star-bar-label">33%</span><div class="star-bar non" style="width:36px;height:116px;"></div></div>
+        </div>
+        <div class="star-x-label">3★</div>
+      </div>
+
+      <!-- 4★ -->
+      <div class="star-group">
+        <div class="star-bars">
+          <div class="star-bar-col"><span class="star-bar-label">36%</span><div class="star-bar mem" style="width:36px;height:126px;"></div></div>
+          <div class="star-bar-col"><span class="star-bar-label">23%</span><div class="star-bar non" style="width:36px;height:81px;"></div></div>
+        </div>
+        <div class="star-x-label">4★</div>
+      </div>
+
+      <!-- 5★ -->
+      <div class="star-group">
+        <div class="star-bars">
+          <div class="star-bar-col"><span class="star-bar-label">23%</span><div class="star-bar mem" style="width:36px;height:81px;"></div></div>
+          <div class="star-bar-col"><span class="star-bar-label">10%</span><div class="star-bar non" style="width:36px;height:35px;"></div></div>
+        </div>
+        <div class="star-x-label">5★</div>
+      </div>
+
+      <div class="star-axis-line"></div>
+    </div>
+  </div>
+
+  <!-- Insight callouts -->
+  <div class="star-insight">
+    <div class="star-insight-item">
+      <div class="star-insight-val accent">59%</div>
+      <div class="star-insight-label">of AAPACN member facilities are rated <strong>4★ or 5★</strong> — nearly double the non-member rate</div>
+    </div>
+    <div class="star-insight-item">
+      <div class="star-insight-val accent">15%</div>
+      <div class="star-insight-label">of AAPACN members fall in <strong>1★ or 2★</strong>, compared to 34% of non-member facilities</div>
+    </div>
+    <div class="star-insight-item">
+      <div class="star-insight-val accent">3.6★</div>
+      <div class="star-insight-label">average CMS star rating for <strong>AAPACN members</strong> vs 2.9★ for non-members</div>
+    </div>
   </div>
 
 </div>
