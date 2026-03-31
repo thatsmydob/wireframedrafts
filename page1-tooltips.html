@@ -366,28 +366,29 @@
 const TAB_COLORS = { clinical:'#444', regulatory:'#444', staffing:'#444', financial:'#444', training:'#444' };
 
 // ─── OM summary table data ────────────────────────────────────────────────────
-const OM_COLS = ['Parent Organization', '# Facilities', '% Rural', 'Avg Age of Residents', 'Census', 'Avg Five Star'];
+const OM_COLS = ['Parent Organization', '# Facilities', '% AAPACN Member', '% Rural', 'Avg Age of Residents', 'Census', 'Avg Five Star'];
 const OM_META_COLS = [
   null,
-  { name:'# Facilities',          def:'Total facilities in this Parent Organization. Format: total (# AAPACN members / % in OM).',                                                   src:'CMS Provider Info', lag:'Monthly' },
+  { name:'# Facilities',          def:'Total facilities operating under this Parent Organization.',                                                                                    src:'CMS Provider Info', lag:'Monthly' },
+  { name:'% AAPACN Member',       def:'Percentage of facilities in this organization with at least one active AAPACN member. Format: % (count).',                                     src:'AAPACN ProTech',    lag:'Monthly' },
   { name:'% Rural',               def:'Percentage of facilities in this organization classified as rural by CMS.',                                                                    src:'CMS Provider Info', lag:'Annual' },
   { name:'Avg Age of Residents',  def:'Average age of residents across all facilities in this organization.',                                                                         src:'MDS',               lag:'Quarterly' },
   { name:'Census',                def:'Average occupancy rate (% of certified beds occupied on an average day) across all facilities in this organization.',                          src:'NH Provider Info',  lag:'1–3 months' },
   { name:'Avg Five Star',         def:'CMS 5-Star Overall rating averaged across all facilities in this organization. Composite of health inspection, staffing, and quality measures.',src:'NH Provider Info',  lag:'1–3 months' },
 ];
 // rThresh / gThresh for OM summary columns (index matches OM_COLS)
-const OM_R_THRESH = [null, null, null, null, 70.0, 2.0];
-const OM_G_THRESH = [null, null, null, null, 85.0, 4.0];
-const OM_LOW_BAD  = [4]; // Avg Five Star: higher is better
+const OM_R_THRESH = [null, null, null, null, null, 70.0, 2.0];
+const OM_G_THRESH = [null, null, null, null, null, 85.0, 4.0];
+const OM_LOW_BAD  = [5]; // Avg Five Star: higher is better
 
 const OM_ROWS = [
-  { name:'Sunrise Senior Living', vals:['42 (28 / 67%)', '24%', 82.1, '82.4%', 3.2] },
-  { name:'Genesis HealthCare',    vals:['18 (12 / 67%)', '18%', 80.8, '88.1%', 3.6] },
-  { name:'Kindred Healthcare',    vals:['7 (4 / 57%)',   '31%', 79.4, '71.2%', 2.8] },
-  { name:'Beverly Healthcare',    vals:['31 (19 / 61%)', '22%', 81.5, '79.8%', 3.1] },
-  { name:'Consulate Health Care', vals:['24 (15 / 63%)', '28%', 80.2, '75.6%', 2.9] },
-  { name:'Ensign Group',          vals:['12 (9 / 75%)',  '15%', 83.2, '85.3%', 3.7] },
-  { name:'Independent',           vals:['312 (186 / 60%)','35%', 80.9, '78.4%', 3.3] },
+  { name:'Sunrise Senior Living', vals:[42,  '67% (28)',  '24%', 82.1, '82.4%', 3.2] },
+  { name:'Genesis HealthCare',    vals:[18,  '67% (12)',  '18%', 80.8, '88.1%', 3.6] },
+  { name:'Kindred Healthcare',    vals:[7,   '57% (4)',   '31%', 79.4, '71.2%', 2.8] },
+  { name:'Beverly Healthcare',    vals:[31,  '61% (19)',  '22%', 81.5, '79.8%', 3.1] },
+  { name:'Consulate Health Care', vals:[24,  '63% (15)',  '28%', 80.2, '75.6%', 2.9] },
+  { name:'Ensign Group',          vals:[12,  '75% (9)',   '15%', 83.2, '85.3%', 3.7] },
+  { name:'Independent',           vals:[312, '60% (186)', '35%', 80.9, '78.4%', 3.3] },
 ];
 
 // Facility → OM mapping (parallel to fRows per tab — same order)
