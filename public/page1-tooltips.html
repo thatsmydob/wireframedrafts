@@ -163,8 +163,11 @@
 
   /* ── Star Rating Chart ── */
   .star-section { background: var(--surface); border-top: 2px solid var(--border); padding: 20px 24px 24px; }
-  .star-section-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
-  .star-section-sub { font-size: 12px; color: var(--text2); margin-bottom: 16px; line-height: 1.5; }
+  .star-section-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 16px; }
+  .star-group { cursor: pointer; transition: opacity 0.15s; }
+  .star-group:hover { opacity: 0.75; }
+  .star-section.has-selection .star-group:not(.selected) { opacity: 0.25; }
+  .star-section.has-selection .star-group.selected { opacity: 1; }
   .star-legend { display: flex; gap: 20px; align-items: center; margin-bottom: 20px; }
   .star-legend-item { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--text2); }
   .star-legend-dot { width: 13px; height: 13px; border-radius: 3px; flex-shrink: 0; }
@@ -283,8 +286,7 @@
 <!-- ── Star Rating Distribution ── -->
 <div class="star-section">
 
-  <div class="star-section-title">Do AAPACN Members Outperform on CMS Star Ratings?</div>
-  <div class="star-section-sub">AAPACN member facilities concentrate at 4–5★ ratings while non-members spread toward the lower end of the scale — a measurable quality gap that reflects the impact of AAPACN education and credentialing programs on care delivery outcomes.</div>
+  <div class="star-section-title">Distribution of CMS Star Ratings across all facilities</div>
 
   <div class="star-legend">
     <div class="star-legend-item"><div class="star-legend-dot" style="background:#444;"></div>AAPACN Members &nbsp;<span style="font-family:'DM Mono',monospace;color:var(--text3);">(2,841 facilities)</span></div>
@@ -302,7 +304,7 @@
       <div style="width:28px;flex-shrink:0;"></div><!-- spacer for y-axis labels -->
 
       <!-- 1★ -->
-      <div class="star-group">
+      <div class="star-group" data-star="1" onclick="selectStarFilter(1)">
         <div class="star-bars">
           <div class="star-bar-col"><span class="star-bar-label">4%</span><div class="star-bar mem" style="width:36px;height:14px;"></div></div>
           <div class="star-bar-col"><span class="star-bar-label">13%</span><div class="star-bar non" style="width:36px;height:46px;"></div></div>
@@ -311,7 +313,7 @@
       </div>
 
       <!-- 2★ -->
-      <div class="star-group">
+      <div class="star-group" data-star="2" onclick="selectStarFilter(2)">
         <div class="star-bars">
           <div class="star-bar-col"><span class="star-bar-label">11%</span><div class="star-bar mem" style="width:36px;height:39px;"></div></div>
           <div class="star-bar-col"><span class="star-bar-label">21%</span><div class="star-bar non" style="width:36px;height:74px;"></div></div>
@@ -320,7 +322,7 @@
       </div>
 
       <!-- 3★ -->
-      <div class="star-group">
+      <div class="star-group" data-star="3" onclick="selectStarFilter(3)">
         <div class="star-bars">
           <div class="star-bar-col"><span class="star-bar-label">26%</span><div class="star-bar mem" style="width:36px;height:91px;"></div></div>
           <div class="star-bar-col"><span class="star-bar-label">33%</span><div class="star-bar non" style="width:36px;height:116px;"></div></div>
@@ -329,7 +331,7 @@
       </div>
 
       <!-- 4★ -->
-      <div class="star-group">
+      <div class="star-group" data-star="4" onclick="selectStarFilter(4)">
         <div class="star-bars">
           <div class="star-bar-col"><span class="star-bar-label">36%</span><div class="star-bar mem" style="width:36px;height:126px;"></div></div>
           <div class="star-bar-col"><span class="star-bar-label">23%</span><div class="star-bar non" style="width:36px;height:81px;"></div></div>
@@ -338,7 +340,7 @@
       </div>
 
       <!-- 5★ -->
-      <div class="star-group">
+      <div class="star-group" data-star="5" onclick="selectStarFilter(5)">
         <div class="star-bars">
           <div class="star-bar-col"><span class="star-bar-label">23%</span><div class="star-bar mem" style="width:36px;height:81px;"></div></div>
           <div class="star-bar-col"><span class="star-bar-label">10%</span><div class="star-bar non" style="width:36px;height:35px;"></div></div>
@@ -350,21 +352,6 @@
     </div>
   </div>
 
-  <!-- Insight callouts -->
-  <div class="star-insight">
-    <div class="star-insight-item">
-      <div class="star-insight-val accent">59%</div>
-      <div class="star-insight-label">of AAPACN member facilities are rated <strong>4★ or 5★</strong> — nearly double the non-member rate</div>
-    </div>
-    <div class="star-insight-item">
-      <div class="star-insight-val accent">15%</div>
-      <div class="star-insight-label">of AAPACN members fall in <strong>1★ or 2★</strong>, compared to 34% of non-member facilities</div>
-    </div>
-    <div class="star-insight-item">
-      <div class="star-insight-val accent">3.6★</div>
-      <div class="star-insight-label">average CMS star rating for <strong>AAPACN members</strong> vs 2.9★ for non-members</div>
-    </div>
-  </div>
 
 </div>
 
@@ -409,6 +396,9 @@ const FAC_OM = [
   'Genesis HealthCare',     // Valley Care Center
   'Kindred Healthcare',     // Elmwood Nursing & Rehab
 ];
+
+// Facility CMS 5-Star Overall rating (parallel to fRows)
+const FAC_STARS = [4, 2, 4, 3];
 
 // ─── Tooltip metadata — 1 entry per metric column (col index 2+) ─────────────
 // hasTrend: false → no sparkline. benchmarkNat: null → no benchmark bar.
@@ -686,18 +676,37 @@ function omColorClass(val, colIdx) {
 
 // ─── OM table rendering ───────────────────────────────────────────────────────
 let selectedOM = null;
+let selectedStarFilter = null;
+
+function selectStarFilter(star) {
+  selectedStarFilter = (selectedStarFilter === star) ? null : star;
+  const section = document.querySelector('.star-section');
+  section.classList.toggle('has-selection', selectedStarFilter !== null);
+  document.querySelectorAll('.star-group').forEach(g => {
+    g.classList.toggle('selected', parseInt(g.dataset.star) === selectedStarFilter);
+  });
+  renderOMTable();
+  renderFacilityTable();
+}
 
 function renderOMTable() {
   // Header
   document.getElementById('parent-head').innerHTML = '<tr>' +
     OM_COLS.map((c, i) => {
       if (i === 0) return `<th class="col-name">${c}</th>`;
-      const mi = i; // OM_META_COLS index
+      const mi = i;
       return `<th onmouseenter="showOMHeaderTip(event,${mi})" onmouseleave="scheduleTipHide()" style="cursor:help;">${c}</th>`;
     }).join('') + '</tr>';
 
+  // Filter OM rows by star rating if active
+  let visibleOMs = OM_ROWS;
+  if (selectedStarFilter !== null) {
+    const eligible = new Set(FAC_STARS.map((s, i) => s === selectedStarFilter ? FAC_OM[i] : null).filter(Boolean));
+    visibleOMs = OM_ROWS.filter(r => eligible.has(r.name));
+  }
+
   // Rows
-  document.getElementById('parent-body').innerHTML = OM_ROWS.map((row, ri) => {
+  document.getElementById('parent-body').innerHTML = visibleOMs.map((row, ri) => {
     const isSelected = row.name === selectedOM;
     const cells = [row.name, ...row.vals];
     let html = `<tr class="${isSelected ? 'om-selected' : ''}" style="cursor:pointer"
@@ -830,19 +839,21 @@ function renderFacRows(rows, tab) {
 
 function renderFacilityTable() {
   const t = TABS[currentTab];
-  // Filter rows by selected OM
-  let rows = t.fRows;
+  // Index-based filtering so star + OM + member filters all compose
+  let indices = t.fRows.map((_, i) => i);
+  if (selectedStarFilter !== null)  indices = indices.filter(i => FAC_STARS[i] === selectedStarFilter);
+  if (selectedOM)                   indices = indices.filter(i => FAC_OM[i] === selectedOM);
+  const memberFilter = document.getElementById('filter-member').value;
+  if (memberFilter)                 indices = indices.filter(i => t.fRows[i][1] === memberFilter);
+  const rows = indices.map(i => t.fRows[i]);
+
   let countLabel = '14,302 facilities';
+  if (selectedStarFilter !== null) countLabel = `Filtered: ${selectedStarFilter}★ CMS rating`;
   if (selectedOM) {
-    const indices = FAC_OM.map((om, i) => om === selectedOM ? i : -1).filter(i => i >= 0);
-    rows = indices.map(i => t.fRows[i]).filter(Boolean);
     const omRow = OM_ROWS.find(r => r.name === selectedOM);
     const num = omRow ? omRow.vals[1] : rows.length;
     countLabel = `${num} facilities · ${selectedOM}`;
   }
-  // Filter by AAPACN member status (row[1] is 'Yes' or 'No')
-  const memberFilter = document.getElementById('filter-member').value;
-  if (memberFilter) rows = rows.filter(r => r[1] === memberFilter);
   document.getElementById('fac-panel-title').textContent = selectedOM ? selectedOM : 'All Facilities';
   document.getElementById('fac-panel-hint').textContent  = countLabel;
   document.getElementById('fac-panel-sub').textContent   = selectedOM
@@ -864,7 +875,10 @@ function switchTab(tab) {
 function clearAllFilters() {
   selectedOM = null;
   selectedFacility = null;
+  selectedStarFilter = null;
   document.querySelectorAll('.filters select').forEach(s => s.selectedIndex = 0);
+  document.querySelector('.star-section').classList.remove('has-selection');
+  document.querySelectorAll('.star-group').forEach(g => g.classList.remove('selected'));
   renderOMTable();
   renderFacilityTable();
 }
