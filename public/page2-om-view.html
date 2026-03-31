@@ -655,9 +655,7 @@ function setNavFooter(label, url) {
 document.getElementById('tooltip').addEventListener('mouseenter', () => clearTimeout(_tipTimer));
 document.getElementById('tooltip').addEventListener('mouseleave', scheduleTipHide);
 
-document.addEventListener('mousemove', e => {
-  if (document.getElementById('tooltip').style.display === 'block') positionTip(e);
-});
+// Tooltip is positioned once on show — no cursor-tracking so nav buttons remain clickable.
 
 // ─── Outlier detection: ≥2 metrics exceed red threshold ──────────────────────
 function isOutlier(rowIdx, tab) {
