@@ -279,7 +279,7 @@
     <div class="table-scroll">
       <table id="facility-table" class="accent-summary"><thead id="facility-head"></thead><tbody id="facility-body"></tbody></table>
     </div>
-    <div class="table-hint">Click row for Facility Detail &nbsp;|&nbsp; <span style="color:#c0392b">Red</span> = above threshold &nbsp;|&nbsp; <span style="color:#27ae60">Green</span> = below threshold</div>
+    <div class="table-hint">Click row for Facility Detail &nbsp;|&nbsp; <span style="color:#c0392b">Red</span> = exceeds benchmark &nbsp;|&nbsp; Hover cells for details</div>
   </div>
 
 </div>
@@ -537,11 +537,11 @@ function trendDirection(values, highIsBad) {
   const pct = Math.abs(delta/values[0]*100).toFixed(1);
   if (Math.abs(delta) < 0.01) return { label:'→ Stable', cls:'stable' };
   const rising = delta > 0;
-  if (highIsBad) return rising ? { label:`↑ Worsening (+${pct}%)`, cls:'worse' } : { label:`↓ Improving (${pct}%)`, cls:'better' };
-  else           return rising ? { label:`↑ Improving (+${pct}%)`, cls:'better' } : { label:`↓ Declining (${pct}%)`, cls:'worse' };
+  if (highIsBad) return rising ? { label:`↑ +${pct}%`, cls:'worse' } : { label:`↓ −${pct}%`, cls:'better' };
+  else           return rising ? { label:`↑ +${pct}%`, cls:'better' } : { label:`↓ −${pct}%`, cls:'worse' };
 }
 
-// ─── Benchmark bar (grayscale, no flags) ─────────────────────────────────────
+// ─── Benchmark bar — contextual scale with national avg reference line ────────
 function makeBenchmarkBar(facilVal, meta) {
   const nat = meta.benchmarkNat;
   if (nat == null) return '';
@@ -549,32 +549,40 @@ function makeBenchmarkBar(facilVal, meta) {
   if (isNaN(num)) return '';
   const unit = String(facilVal).includes('%') ? '%' : '';
   const state = meta.benchmarkState;
-  // Scale bars relative to the largest of the three values
-  const maxVal = Math.max(num, nat, state != null ? state : 0) * 1.15 || 1;
 
-  function bar(val) {
-    const pct = Math.min(100, Math.round((val / maxVal) * 100));
-    return `<div style="flex:1;height:8px;background:transparent;border-radius:3px;">
-      <div style="width:${pct}%;height:8px;background:#888;border-radius:3px;"></div>
+  // Contextual scale: floor/ceiling based on actual data range, not 0–100
+  const refs = [num, nat, state].filter(v => v != null);
+  const lo = Math.min(...refs), hi = Math.max(...refs);
+  const slack = (hi - lo) * 0.5 || hi * 0.25 || 1;
+  const minVal = Math.max(0, lo - slack);
+  const maxVal = hi + slack;
+  const range  = maxVal - minVal;
+  const natPct = ((nat - minVal) / range * 100).toFixed(1);
+
+  function bar(val, bg) {
+    const pct = Math.min(100, Math.max(0, (val - minVal) / range * 100)).toFixed(1);
+    return `<div style="position:relative;flex:1;height:8px;background:transparent;border-radius:3px;">
+      <div style="width:${pct}%;height:8px;background:${bg};border-radius:3px;"></div>
+      <div style="position:absolute;top:-2px;left:${natPct}%;width:2px;height:12px;background:var(--border2);transform:translateX(-50%);border-radius:1px;" title="nat'l avg: ${nat}${unit}"></div>
     </div>`;
   }
 
   const stateRow = state != null ? `
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
       <span style="width:95px;font-size:9.5px;color:var(--text2);text-align:right;flex-shrink:0;">State avg</span>
-      ${bar(state)}
+      ${bar(state, '#bbb')}
       <span style="width:36px;font-size:9.5px;color:#444;font-weight:600;text-align:right;flex-shrink:0;">${state}${unit}</span>
     </div>` : '';
 
   return `
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
       <span style="width:95px;font-size:9.5px;color:var(--text2);text-align:right;flex-shrink:0;">This facility</span>
-      ${bar(num)}
+      ${bar(num, '#888')}
       <span style="width:36px;font-size:9.5px;color:#444;font-weight:600;text-align:right;flex-shrink:0;">${facilVal}</span>
     </div>
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
       <span style="width:95px;font-size:9.5px;color:var(--text2);text-align:right;flex-shrink:0;">National avg</span>
-      ${bar(nat)}
+      ${bar(nat, '#bbb')}
       <span style="width:36px;font-size:9.5px;color:#444;font-weight:600;text-align:right;flex-shrink:0;">${nat}${unit}</span>
     </div>
     ${stateRow}`;
