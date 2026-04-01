@@ -396,7 +396,8 @@ const FACILITY_DATA = {
 const DOMAIN_ORDER = ['clinical','regulatory','staffing','financial','training'];
 
 // ─── Tooltip functions (verbatim from page2-om-view.html) ────────────────────
-function colorClass(val, i, data) {
+function colorClass(val, i, data) { return ''; }
+function _colorClass_disabled(val, i, data) {
   const num = parseFloat(String(val).replace('%','').replace('x','').replace('+','').replace(',',''));
   if (isNaN(num)) return '';
   const rt = (data.rThresh||[])[i], gt = (data.gThresh||[])[i];

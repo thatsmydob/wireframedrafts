@@ -502,19 +502,7 @@ const TABS = {
 let currentTab = 'summary';
 
 // ─── Threshold coloring ──────────────────────────────────────────────────────
-function colorClass(val, i, tab) {
-  const num = parseFloat(String(val).replace('%','').replace('x','').replace('+','').replace(',',''));
-  if (isNaN(num)) return '';
-  const rt = (tab.rThresh||[])[i], gt = (tab.gThresh||[])[i];
-  if ((tab.lowBad||[]).includes(i)) {
-    if (gt!=null && num>=gt) return 'val-green';
-    if (rt!=null && num<=rt) return 'val-red';
-  } else {
-    if (rt!=null && num>=rt) return 'val-red';
-    if (gt!=null && num<=gt) return 'val-green';
-  }
-  return '';
-}
+function colorClass(val, i, tab) { return ''; }
 
 // ─── SVG sparkline ───────────────────────────────────────────────────────────
 function makeSpark(values, color) {
@@ -684,7 +672,8 @@ document.getElementById('tooltip').addEventListener('mouseleave', scheduleTipHid
 // Tooltip is positioned once on show — no cursor-tracking so nav buttons remain clickable.
 
 // ─── OM table coloring ────────────────────────────────────────────────────────
-function omColorClass(val, colIdx) {
+function omColorClass(val, colIdx) { return ''; }
+function _omColorClass_disabled(val, colIdx) {
   const num = parseFloat(String(val).replace('%',''));
   if (isNaN(num)) return '';
   const rt = OM_R_THRESH[colIdx + 1]; // +1 because OM_COLS[0] = name
