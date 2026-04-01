@@ -327,7 +327,8 @@ let activeDomain  = 'clinical';
 let selectedFacId = null;
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
-function isViolation(fac, metricObj, domainKey) {
+function isViolation(fac, metricObj, domainKey) { return false; }
+function _isViolation_disabled(fac, metricObj, domainKey) {
   const m = fac.metrics[domainKey]?.[metricObj.key];
   if (!m || metricObj.benchmarkNat == null) return false;
   return metricObj.highIsBad ? m.current > metricObj.benchmarkNat : m.current < metricObj.benchmarkNat;

@@ -519,7 +519,8 @@ const TABS = {
 let currentTab = 'clinical';
 
 // ─── Threshold coloring ───────────────────────────────────────────────────────
-function colorClass(val, i, tab) {
+function colorClass(val, i, tab) { return ''; }
+function _colorClass_disabled(val, i, tab) {
   const num = parseFloat(String(val).replace('%','').replace('x','').replace('+','').replace(',',''));
   if (isNaN(num)) return '';
   const rt = (tab.rThresh||[])[i], gt = (tab.gThresh||[])[i];
