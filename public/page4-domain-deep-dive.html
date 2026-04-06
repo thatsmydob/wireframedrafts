@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<title>AAPACN Domain Deep-Dive — Sunrise Senior Living</title>
+<title>AAPACN Domain Deep-Dive — Sunrise Hyde Park</title>
 <style>
   :root {
     --bg:      #f0ede8;
@@ -16,118 +16,94 @@
     --text2:   #5c5a54;
     --text3:   #9c9a94;
     --ph:      #dddad4;
-    --flag-bg: #e2ded7;
   }
-* { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
   input, button, select, textarea { font-family: inherit; }
-body { font-family: 'DM Sans', sans-serif; font-size: 13px; background: var(--bg); color: var(--text); }
+  body { font-family: 'DM Sans', sans-serif; font-size: 13px; background: var(--bg); color: var(--text); }
 
-/* Nav */
-.nav { background: #1a2a4a; color: #fff; padding: 10px 20px; display: flex; align-items: center; justify-content: flex-start; }
-.nav-links { display: flex; gap: 4px; }
-.nav-link { padding: 4px 12px; border-radius: 3px; font-size: 12px; cursor: pointer; opacity: 0.6; }
-.nav-link:hover { opacity: 0.9; }
-.nav-link.active { background: #333; opacity: 1; }
+  /* Nav */
+  .nav { background: #1a2a4a; color: #fff; padding: 10px 20px; display: flex; align-items: center; }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-link { padding: 4px 12px; border-radius: 3px; font-size: 12px; cursor: pointer; opacity: 0.6; }
+  .nav-link:hover { opacity: 0.9; }
+  .nav-link.active { background: #333; opacity: 1; }
 
-/* Filter bar */
-.filters { background: #f8f7f4; padding: 8px 20px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; border-bottom: 1px solid var(--border); }
-.filter-label { font-size: 11px; color: var(--text2); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
-.filter-select { background: var(--surface); border: 1px solid var(--border); padding: 4px 10px; border-radius: 3px; color: var(--text); font-size: 12px; cursor: pointer; appearance: none; padding-right: 20px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 6px center; }
-.filter-input { background: var(--surface); border: 1px solid var(--border); padding: 4px 10px; border-radius: 3px; color: var(--text); font-size: 12px; width: 160px; }
-.back-btn { background: var(--surface); border: 1px solid var(--border2); padding: 4px 12px; border-radius: 3px; font-size: 12px; color: #444; font-weight: 600; cursor: pointer; white-space: nowrap; }
-.filter-divider { width: 1px; height: 20px; background: var(--border); flex-shrink: 0; }
-.fac-count { font-size: 11px; color: var(--text3); margin-left: auto; white-space: nowrap; }
+  /* Filter bar */
+  .filters { background: #f8f7f4; padding: 8px 20px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; border-bottom: 1px solid var(--border); }
+  .filter-label { font-size: 11px; color: var(--text2); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
+  .filter-select { background: var(--surface); border: 1px solid var(--border); padding: 4px 10px; border-radius: 3px; color: var(--text); font-size: 12px; cursor: pointer; appearance: none; padding-right: 20px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 6px center; }
+  .filter-input { background: var(--surface); border: 1px solid var(--border); padding: 4px 10px; border-radius: 3px; color: var(--text); font-size: 12px; width: 160px; }
+  .back-btn { background: var(--surface); border: 1px solid var(--border2); padding: 4px 12px; border-radius: 3px; font-size: 12px; color: #444; font-weight: 600; cursor: pointer; white-space: nowrap; }
+  .filter-divider { width: 1px; height: 20px; background: var(--border); flex-shrink: 0; }
 
-/* Page header */
-.page-header { background: var(--surface); padding: 10px 20px 8px; border-bottom: 1px solid var(--border); }
-.page-header-title { font-size: 16px; font-weight: 700; color: var(--text); line-height: 1.2; }
-.page-header-sub { font-size: 10.5px; color: var(--text2); line-height: 1.5; margin-top: 3px; font-style: italic; }
+  /* Page header */
+  .page-header { background: var(--surface); padding: 10px 20px 8px; border-bottom: 1px solid var(--border); }
+  .page-header-title { font-size: 16px; font-weight: 700; color: var(--text); line-height: 1.2; }
+  .page-header-sub { font-size: 10.5px; color: var(--text2); line-height: 1.5; margin-top: 3px; font-style: italic; }
 
-/* OM Identity Banner */
-.om-identity { display: flex; background: var(--surface); border-bottom: 2px solid var(--border); }
-.om-id-left   { flex: 0 0 28%; padding: 16px 20px; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--border); }
-.om-id-middle { flex: 0 0 30%; padding: 16px 20px; border-right: 1px solid var(--border); }
-.om-id-right  { flex: 1; padding: 16px 20px; }
-.om-card-name { font-size: 23px; font-weight: 700; color: var(--text); line-height: 1.15; margin-bottom: 4px; }
-.om-card-sub  { font-size: 10.5px; color: #777; margin-bottom: 10px; line-height: 1.4; }
-.om-tier-badge { display: inline-block; background: #1a2a4a; color: #fff; padding: 3px 10px; border-radius: 3px; font-size: 11px; font-weight: 700; letter-spacing: 0.3px; }
-.om-section-title { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text3); margin-bottom: 10px; }
-.om-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; }
-.om-meta-item { display: flex; flex-direction: column; gap: 3px; }
-.om-meta-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text3); }
-.om-meta-val { font-size: 21px; font-weight: 700; color: var(--text); line-height: 1.1; }
-.om-kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; }
-.om-kpi-item { display: flex; flex-direction: column; gap: 2px; }
-.om-kpi-label { font-size: 9px; color: var(--text3); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-.om-kpi-val { font-size: 21px; font-weight: 700; color: var(--text); line-height: 1.1; }
-.om-kpi-val.warn { color: #c0392b; }
-.om-kpi-val.good { color: #444; }
-.om-kpi-val.blue { color: #444; }
-.om-kpi-sub { font-size: 8.5px; color: var(--text3); margin-top: 1px; }
+  /* Facility Identity Banner (mirrors Page 3) */
+  .fac-identity { display: flex; background: var(--surface); border-bottom: 2px solid var(--border); }
+  .fac-id-left   { flex: 0 0 28%; padding: 16px 20px; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--border); }
+  .fac-id-middle { flex: 0 0 30%; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .fac-id-right  { flex: 1; padding: 16px 20px; }
+  .fac-card-name { font-size: 23px; font-weight: 700; color: var(--text); line-height: 1.15; margin-bottom: 4px; }
+  .fac-card-sub  { font-size: 10.5px; color: #777; margin-bottom: 10px; line-height: 1.4; }
+  .fac-tier-badge { display: inline-block; background: #1a2a4a; color: #fff; padding: 3px 10px; border-radius: 3px; font-size: 11px; font-weight: 700; }
+  .fac-section-title { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text3); margin-bottom: 10px; }
+  .fac-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; }
+  .fac-meta-item { display: flex; flex-direction: column; gap: 3px; }
+  .fac-meta-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text3); }
+  .fac-meta-val { font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.2; }
+  .fac-meta-val.small { font-size: 13px; }
+  .fac-kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; }
+  .fac-kpi-item { display: flex; flex-direction: column; gap: 2px; }
+  .fac-kpi-label { font-size: 9px; color: var(--text3); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .fac-kpi-val { font-size: 21px; font-weight: 700; color: var(--text); line-height: 1.1; }
+  .fac-kpi-sub { font-size: 8.5px; color: var(--text3); margin-top: 1px; }
 
-/* Domain tabs */
-.domain-tabs { display: flex; background: var(--surface); border-bottom: 2px solid var(--border); padding: 0 20px; }
-.domain-tab { padding: 10px 18px; font-size: 12px; font-weight: 600; color: var(--text2); cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; white-space: nowrap; display: flex; align-items: center; gap: 6px; }
-.domain-tab:hover { color: var(--text); }
-.domain-tab.active { border-bottom-color: var(--tab-color); color: var(--tab-color); }
-.domain-tab-badge { font-size: 10px; font-weight: 700; background: #666; color: #fff; border-radius: 8px; padding: 1px 5px; line-height: 1.4; }
+  /* Domain tabs */
+  .domain-tabs { display: flex; background: var(--surface); border-bottom: 2px solid var(--border); padding: 0 20px; }
+  .domain-tab { padding: 10px 18px; font-size: 12px; font-weight: 600; color: var(--text2); cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; white-space: nowrap; }
+  .domain-tab:hover { color: var(--text); }
+  .domain-tab.active { border-bottom-color: #444; color: #444; }
 
-/* Domain section header */
-.domain-section-header { padding: 9px 20px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
-.domain-section-name { font-size: 14px; font-weight: 700; color: var(--tab-color, #333); }
-.domain-section-badge { font-size: 11px; font-weight: 700; border-radius: 8px; padding: 2px 8px; }
+  /* Deep-dive 2-column layout */
+  .deep-layout { display: flex; min-height: 460px; }
 
-/* Layout: table + side panel */
-.layout-wrap { display: flex; align-items: flex-start; }
-.table-wrap { flex: 1; min-width: 0; overflow-x: hidden; }
+  /* Left: metric list */
+  .metric-list-col { width: 220px; flex-shrink: 0; border-right: 1px solid var(--border); background: var(--surface); overflow-y: auto; }
+  .metric-list-hdr { padding: 8px 14px 6px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; color: var(--text3); border-bottom: 1px solid var(--border); background: var(--chrome); }
+  .metric-item { padding: 10px 14px; border-bottom: 1px solid #f0ede8; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .metric-item:hover { background: var(--bg); }
+  .metric-item.active { border-left: 3px solid #444; padding-left: 11px; background: #f5f5f5; }
+  .metric-item-label { font-size: 12px; font-weight: 600; color: var(--text); line-height: 1.3; flex: 1; }
+  .metric-item-val { font-size: 12px; font-weight: 700; color: var(--text2); font-family: 'DM Mono', monospace; white-space: nowrap; flex-shrink: 0; }
 
-/* Sort/legend strip */
-.sort-strip { background: #f7f7f7; padding: 4px 20px; font-size: 11px; color: var(--text3); border-bottom: 1px solid #e8e8e8; display: flex; align-items: center; gap: 12px; }
-.sort-strip strong { color: #444; }
+  /* Right: chart panel */
+  .chart-col { flex: 1; padding: 20px 24px; min-width: 0; background: var(--surface); }
+  .chart-placeholder { display: flex; align-items: center; justify-content: center; height: 340px; }
+  .chart-placeholder-inner { text-align: center; }
+  .chart-placeholder-icon { font-size: 32px; color: var(--ph); margin-bottom: 10px; }
+  .chart-placeholder-msg  { font-size: 13px; font-weight: 600; color: var(--ph); margin-bottom: 4px; }
+  .chart-placeholder-sub  { font-size: 11px; color: var(--ph); }
+  .chart-metric-name { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .chart-kv-row { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 14px; }
+  .chart-kv { font-size: 11px; color: var(--text2); }
+  .chart-kv strong { color: var(--text); }
+  .benchmark-row { display: flex; align-items: center; gap: 8px; margin-bottom: 18px; padding: 8px 12px; background: var(--chrome); border-radius: 4px; border: 1px solid var(--border); }
+  .benchmark-row-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text3); white-space: nowrap; }
+  .benchmark-sel { background: var(--surface); border: 1px solid var(--border); padding: 4px 20px 4px 8px; border-radius: 3px; font-size: 12px; color: var(--text); appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 6px center; cursor: pointer; }
+  .benchmark-note { font-size: 11px; color: var(--text3); font-style: italic; }
+  .chart-svg-wrap { width: 100%; }
+  .chart-legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text2); }
+  .leg-solid     { width: 20px; height: 2.5px; background: #444; border-radius: 2px; flex-shrink: 0; }
+  .leg-dash-nat  { width: 20px; height: 0; border-top: 2px dashed #aaa; flex-shrink: 0; }
+  .leg-dash-st   { width: 20px; height: 0; border-top: 2px dashed #bbb; flex-shrink: 0; }
+  .leg-dash-3rd  { width: 20px; height: 0; border-top: 2px dashed #888; flex-shrink: 0; }
 
-/* Column headers */
-.col-header-row { display: flex; background: var(--chrome); border-bottom: 1px solid #d0d0d0; padding: 5px 20px; font-size: 11px; font-weight: 700; color: var(--text2); }
-.col-fac { flex: 0 0 180px; }
-.col-metric { flex: 1; text-align: center; }
-
-/* Facility rows */
-.fac-row { display: flex; padding: 7px 20px; border-bottom: 1px solid #ececec; align-items: center; cursor: pointer; }
-.fac-row:hover { background: #f0ede8; }
-.fac-row.selected { background: #e8eaf0; border-left: 3px solid #555; padding-left: 17px; }
-.fac-name-cell { flex: 0 0 180px; }
-.fac-name { font-size: 12px; font-weight: 700; color: #222; }
-.fac-sub  { font-size: 10px; color: var(--text3); margin-top: 1px; }
-
-/* Metric cells & bars */
-.metric-cell { flex: 1; padding: 0 8px; }
-.metric-val { font-size: 11px; font-weight: 700; color: #222; text-align: center; margin-bottom: 3px; }
-.metric-val.ok { font-weight: 400; color: var(--text2); }
-.bar-wrap { position: relative; height: 8px; background: transparent; border-radius: 2px; }
-.bar-fill { height: 100%; border-radius: 2px; }
-.bar-fill.viol { background: #444; }
-.bar-fill.ok   { background: #aaa; }
-.bench-mark { position: absolute; top: 0; width: 2px; height: 100%; background: #111; }
-.bench-mark.ok { background: #888; }
-.bench-arrow { position: absolute; top: -9px; font-size: 8px; color: #111; transform: translateX(-50%); line-height: 1; }
-.bench-arrow.ok { color: var(--text3); }
-
-/* Side panel */
-.side-panel { width: 224px; flex-shrink: 0; border-left: 1px solid #d0d0d0; background: var(--surface); display: flex; flex-direction: column; }
-.panel-hdr { padding: 10px 12px; background: var(--chrome); border-bottom: 1px solid #d0d0d0; flex-shrink: 0; }
-.panel-fac-name { font-size: 13px; font-weight: 700; color: var(--text); }
-.panel-fac-sub  { font-size: 11px; color: var(--text3); margin-top: 2px; }
-.panel-detail-btn { display: inline-block; margin-top: 7px; font-size: 11px; background: #1a2a4a; color: #fff; padding: 3px 9px; border-radius: 3px; cursor: pointer; }
-.panel-detail-btn:hover { background: #2c3e6b; }
-.panel-body { overflow-y: auto; }
-.spark-section { padding: 8px 12px; border-bottom: 1px solid #ececec; }
-.spark-label { font-size: 11px; font-weight: 700; color: var(--text); margin-bottom: 4px; line-height: 1.3; }
-.spark-qtrs  { display: flex; justify-content: space-between; font-size: 9px; color: var(--text3); margin-top: 2px; }
-.spark-vals  { display: flex; justify-content: space-between; font-size: 10px; margin-top: 3px; }
-.spark-current { font-weight: 700; color: #222; }
-.spark-bench   { color: var(--text3); }
-
-/* Status bar */
-.status-bar { background: #f0ede8; padding: 6px 20px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 11px; color: var(--text3); }
+  /* Status bar */
+  .status-bar { background: #f0ede8; padding: 6px 20px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 11px; color: var(--text3); }
 </style>
 </head>
 <body>
@@ -144,62 +120,65 @@ body { font-family: 'DM Sans', sans-serif; font-size: 13px; background: var(--bg
 
 <!-- Filters -->
 <div class="filters">
-  <div class="back-btn" onclick="window.location='page2-om-view.html'">&#8592; Back to Parent Company View</div>
+  <div class="back-btn" onclick="window.location='page3-facility-detail.html'">&#8592; Back to Facility View</div>
   <div class="filter-divider"></div>
   <span class="filter-label">Filter:</span>
-  <select id="filter-org" class="filter-select" onchange="applyFilters()">
-    <option value="">All Parent Organizations</option>
-    <option>Sunrise Senior Living</option>
-  </select>
-  <input id="filter-name" class="filter-input" placeholder="Search facility name&hellip;" oninput="applyFilters()">
-  <select id="filter-state" class="filter-select" onchange="applyFilters()">
+  <input class="filter-input" placeholder="Search facility name&hellip;">
+  <select class="filter-select">
     <option value="">All States</option>
     <option>IL</option><option>WI</option><option>IN</option>
   </select>
-  <select id="filter-size" class="filter-select" onchange="applyFilters()">
+  <select class="filter-select">
     <option value="">All Sizes</option>
-    <option value="small">Small (&lt;90 beds)</option>
-    <option value="medium">Medium (90&ndash;130 beds)</option>
-    <option value="large">Large (&gt;130 beds)</option>
+    <option>Small (&lt;90 beds)</option>
+    <option>Medium (90&ndash;130 beds)</option>
+    <option>Large (&gt;130 beds)</option>
   </select>
-  <select id="filter-member" class="filter-select highlight" onchange="applyFilters()">
-    <option value="">AAPACN Member</option>
-    <option value="Yes">Yes</option>
-    <option value="No">No</option>
-  </select>
-  <span class="fac-count" id="fac-count">8 facilities</span>
   <div class="filter-divider"></div>
-  <button onclick="clearAllFilters()" style="background:var(--surface);border:1px solid var(--border2);padding:4px 12px;border-radius:3px;font-size:12px;color:var(--text2);cursor:pointer;font-weight:600;">&#10005; Clear All</button>
+  <button style="background:var(--surface);border:1px solid var(--border2);padding:4px 12px;border-radius:3px;font-size:12px;color:var(--text2);cursor:pointer;font-weight:600;">&#10005; Clear All</button>
 </div>
 
 <!-- Page Header -->
 <div class="page-header">
   <div class="page-header-title">Domain Deep-Dive</div>
-  <div class="page-header-sub">Compare all facilities within this OM on a single domain&rsquo;s metrics. Select a domain tab to view facility performance side-by-side. Facilities with above-threshold values are ranked first. Click any row to view 8-quarter trend detail.</div>
+  <div class="page-header-sub">Select a domain tab and metric to explore 3-year trend data for this facility. Compare against national, state, and an optional third benchmark. Filters are not wired up — values are sample data.</div>
 </div>
 
-<!-- OM Identity Banner -->
-<div class="om-identity">
-  <div class="om-id-left">
-    <div class="om-card-name">Sunrise Senior Living</div>
-    <div class="om-card-sub">Multi-state operator &middot; IL, WI, IN</div>
-    <div><span class="om-tier-badge">Organizational Member</span></div>
+<!-- Facility Identity Banner (mirrors Page 3) -->
+<div class="fac-identity">
+  <div class="fac-id-left">
+    <div class="fac-card-name">Sunrise Hyde Park</div>
+    <div class="fac-card-sub">Sunrise Senior Living &middot; Chicago, IL &middot; Urban</div>
+    <div><span class="fac-tier-badge">Organizational Member</span></div>
   </div>
-  <div class="om-id-middle">
-    <div class="om-section-title">Organization Info</div>
-    <div class="om-meta-grid">
-      <div class="om-meta-item"><div class="om-meta-label">OM Tier</div><div class="om-meta-val">OM</div></div>
-      <div class="om-meta-item"><div class="om-meta-label">Member Since</div><div class="om-meta-val">2018</div></div>
-      <div class="om-meta-item"><div class="om-meta-label">States</div><div class="om-meta-val">3</div></div>
+  <div class="fac-id-middle">
+    <div class="fac-section-title">Facility Info</div>
+    <div class="fac-meta-grid">
+      <div class="fac-meta-item"><div class="fac-meta-label">CCN</div><div class="fac-meta-val small">145892</div></div>
+      <div class="fac-meta-item"><div class="fac-meta-label">Certified Beds</div><div class="fac-meta-val">124</div></div>
+      <div class="fac-meta-item"><div class="fac-meta-label">City / State</div><div class="fac-meta-val small">Chicago, IL</div></div>
+      <div class="fac-meta-item"><div class="fac-meta-label">Rural / Urban</div><div class="fac-meta-val small">Urban</div></div>
+      <div class="fac-meta-item"><div class="fac-meta-label">Parent Org</div><div class="fac-meta-val small">Sunrise Senior Living</div></div>
     </div>
   </div>
-  <div class="om-id-right">
-    <div class="om-section-title">Portfolio Snapshot</div>
-    <div class="om-kpi-grid">
-      <div class="om-kpi-item"><div class="om-kpi-label">Total Facilities</div><div class="om-kpi-val">8</div><div class="om-kpi-sub">in this OM</div></div>
-      <div class="om-kpi-item"><div class="om-kpi-label">Avg CMS 5-Star</div><div class="om-kpi-val warn">3.2 &#9733;</div><div class="om-kpi-sub">OM avg</div></div>
-      <div class="om-kpi-item"><div class="om-kpi-label">Avg Turnover %</div><div class="om-kpi-val warn">26.2%</div><div class="om-kpi-sub">nat&rsquo;l avg: 24.0%</div></div>
-      <div class="om-kpi-item"><div class="om-kpi-label"># AAPACN Members</div><div class="om-kpi-val blue">6</div><div class="om-kpi-sub">75% of OM</div></div>
+  <div class="fac-id-right">
+    <div class="fac-section-title">Performance Snapshot</div>
+    <div class="fac-kpi-grid">
+      <div class="fac-kpi-item">
+        <div class="fac-kpi-label">CMS 5-Star Overall</div>
+        <div class="fac-kpi-val">4 &#9733;</div>
+        <div class="fac-kpi-sub">overall rating</div>
+      </div>
+      <div class="fac-kpi-item">
+        <div class="fac-kpi-label">Staff Turnover Rate</div>
+        <div class="fac-kpi-val">27.8%</div>
+        <div class="fac-kpi-sub">nat&rsquo;l avg: 24.0%</div>
+      </div>
+      <div class="fac-kpi-item">
+        <div class="fac-kpi-label">Occupancy Rate</div>
+        <div class="fac-kpi-val">81.5%</div>
+        <div class="fac-kpi-sub">nat&rsquo;l avg: 80.0%</div>
+      </div>
     </div>
   </div>
 </div>
@@ -207,141 +186,98 @@ body { font-family: 'DM Sans', sans-serif; font-size: 13px; background: var(--bg
 <!-- Domain tab strip -->
 <div class="domain-tabs" id="domain-tabs"></div>
 
-<!-- Main layout: table + side panel -->
-<div class="layout-wrap">
-  <div class="table-wrap">
-    <div class="sort-strip">Sorted by: <strong>Above-threshold count &#8595;</strong> &nbsp;&middot;&nbsp; &#9660; = national benchmark</div>
-    <div id="col-headers"></div>
-    <div id="fac-rows"></div>
+<!-- Deep-dive layout: metric list | trend chart -->
+<div class="deep-layout">
+  <div class="metric-list-col" id="metric-list"></div>
+  <div class="chart-col" id="chart-col">
+    <div class="chart-placeholder">
+      <div class="chart-placeholder-inner">
+        <div class="chart-placeholder-icon">&#9700;</div>
+        <div class="chart-placeholder-msg">Select a metric</div>
+        <div class="chart-placeholder-sub">Click any metric in the list to view its 3-year trend</div>
+      </div>
+    </div>
   </div>
-  <div class="side-panel" id="side-panel"></div>
 </div>
 
 <!-- Status bar -->
 <div class="status-bar">
-  <span>Domain Deep-Dive: Sunrise Senior Living &nbsp;|&nbsp; Facility-level data &nbsp;|&nbsp; Click a row to view trends</span>
-  <span id="status-lag"></span>
+  <span>Domain Deep-Dive: Sunrise Hyde Park &nbsp;|&nbsp; Sunrise Senior Living &nbsp;|&nbsp; Sample data &mdash; Q1 2023 &ndash; Q4 2025</span>
 </div>
 
 <script>
-const TAB_COLORS = { clinical:'#444', regulatory:'#444', staffing:'#444', financial:'#444', training:'#444' };
-const TAB_TINTS  = { clinical:'#f5f5f5', regulatory:'#f5f5f5', staffing:'#f5f5f5', financial:'#f5f5f5', training:'#f5f5f5' };
+// ─── Constants ────────────────────────────────────────────────────────────────
 const DOMAIN_ORDER  = ['clinical','regulatory','staffing','financial','training'];
-const DOMAIN_LABELS = { clinical:'Clinical Quality', regulatory:'Regulatory / Survey', staffing:'Workforce & Staffing', financial:'Financial', training:'Training & Certification' };
+const DOMAIN_LABELS = {
+  clinical:'Clinical Quality', regulatory:'Regulatory / Survey',
+  staffing:'Workforce & Staffing', financial:'Financial', training:'Training & Certification'
+};
 
 // ─── Metric definitions ───────────────────────────────────────────────────────
 const METRICS = {
   clinical: [
-    { key:'antipsychotic', label:'Antipsychotic Use %',          shortLabel:'Antipsych %',  unit:'%', highIsBad:true,  benchmarkNat:14.1, benchmarkState:15.8 },
-    { key:'weightLoss',    label:'Exaggerated Weight Loss %',    shortLabel:'Wt Loss %',    unit:'%', highIsBad:true,  benchmarkNat:4.8,  benchmarkState:5.1  },
-    { key:'fallsMajor',    label:'Falls w/ Major Injury %',      shortLabel:'Falls MI',     unit:'%', highIsBad:true,  benchmarkNat:13.5, benchmarkState:14.1 },
-    { key:'pressureUlcer', label:'Pressure Ulcer % (New/Wors)',  shortLabel:'Press Ulcer',  unit:'%', highIsBad:true,  benchmarkNat:5.9,  benchmarkState:6.2  },
-    { key:'readmission',   label:'30-Day Readmission %',         shortLabel:'Readmit %',    unit:'%', highIsBad:true,  benchmarkNat:19.5, benchmarkState:20.1 },
+    { key:'antipsychotic',  label:'Antipsychotic Use %',           unit:'%', highIsBad:true,  benchmarkNat:14.1, benchmarkState:15.8 },
+    { key:'weightLoss',     label:'Significant Weight Loss %',     unit:'%', highIsBad:true,  benchmarkNat:4.8,  benchmarkState:5.1  },
+    { key:'fallsMajor',     label:'Falls w/ Major Injury %',       unit:'%', highIsBad:true,  benchmarkNat:13.5, benchmarkState:14.1 },
+    { key:'pressureUlcer',  label:'Pressure Ulcer % (New/Wors.)',  unit:'%', highIsBad:true,  benchmarkNat:5.9,  benchmarkState:6.2  },
+    { key:'readmission',    label:'30-Day Readmission %',          unit:'%', highIsBad:true,  benchmarkNat:19.5, benchmarkState:20.1 },
   ],
   regulatory: [
-    { key:'gPlusCitations',   label:'G+ Severity Citations',    shortLabel:'G+ Cit.',      unit:'',  highIsBad:true,  benchmarkNat:1.8,  benchmarkState:2.1  },
-    { key:'ijCitations',      label:'IJ Citations',             shortLabel:'IJ Cit.',      unit:'',  highIsBad:true,  benchmarkNat:0.4,  benchmarkState:0.5  },
-    { key:'citationsQtr',     label:'Citations / Quarter',      shortLabel:'Cit/Qtr',      unit:'',  highIsBad:true,  benchmarkNat:3.1,  benchmarkState:3.3  },
-    { key:'fiveStar',         label:'CMS 5-Star Overall',       shortLabel:'5-Star',       unit:'★', highIsBad:false, benchmarkNat:3.1,  benchmarkState:3.0  },
-    { key:'healthInspection', label:'Health Inspection ★',      shortLabel:'Health ★',     unit:'★', highIsBad:false, benchmarkNat:3.0,  benchmarkState:2.9  },
+    { key:'gPlusCitations',    label:'G+ Severity Citations',      unit:'',  highIsBad:true,  benchmarkNat:1.8,  benchmarkState:2.1  },
+    { key:'ijCitations',       label:'IJ Citations',               unit:'',  highIsBad:true,  benchmarkNat:0.4,  benchmarkState:0.5  },
+    { key:'citationsQtr',      label:'Citations / Quarter',        unit:'',  highIsBad:true,  benchmarkNat:3.1,  benchmarkState:3.3  },
+    { key:'fiveStar',          label:'CMS 5-Star Overall',         unit:'★', highIsBad:false, benchmarkNat:3.1,  benchmarkState:3.0  },
+    { key:'healthInspection',  label:'Health Inspection ★',        unit:'★', highIsBad:false, benchmarkNat:3.0,  benchmarkState:2.9  },
   ],
   staffing: [
-    { key:'rnHprd',       label:'RN HPRD',                      shortLabel:'RN HPRD',      unit:'',  highIsBad:false, benchmarkNat:0.55, benchmarkState:0.54 },
-    { key:'totalNursing', label:'Total Nursing HPRD',           shortLabel:'Nsg HPRD',     unit:'',  highIsBad:false, benchmarkNat:3.75, benchmarkState:3.70 },
-    { key:'turnoverRate', label:'Staff Turnover Rate %',        shortLabel:'Turnover %',   unit:'%', highIsBad:true,  benchmarkNat:24.0, benchmarkState:25.5 },
-    { key:'qualityMix',   label:'Quality Mix %',                shortLabel:'Quality Mix',  unit:'%', highIsBad:false, benchmarkNat:38.0, benchmarkState:36.0 },
+    { key:'rnHprd',       label:'RN HPRD',                         unit:'',  highIsBad:false, benchmarkNat:0.55, benchmarkState:0.54 },
+    { key:'totalNursing', label:'Total Nursing HPRD',              unit:'',  highIsBad:false, benchmarkNat:3.75, benchmarkState:3.70 },
+    { key:'turnoverRate', label:'Staff Turnover Rate %',           unit:'%', highIsBad:true,  benchmarkNat:24.0, benchmarkState:25.5 },
+    { key:'qualityMix',   label:'Quality Mix %',                   unit:'%', highIsBad:false, benchmarkNat:38.0, benchmarkState:36.0 },
   ],
   financial: [
-    { key:'cmi',       label:'Case Mix Index (CMI)',             shortLabel:'CMI',          unit:'',  highIsBad:false, benchmarkNat:1.04, benchmarkState:1.03 },
-    { key:'occupancy', label:'Occupancy Rate %',                 shortLabel:'Occupancy %',  unit:'%', highIsBad:false, benchmarkNat:80.0, benchmarkState:79.5 },
+    { key:'cmi',       label:'Case Mix Index (CMI)',                unit:'',  highIsBad:false, benchmarkNat:1.04, benchmarkState:1.03 },
+    { key:'occupancy', label:'Occupancy Rate %',                    unit:'%', highIsBad:false, benchmarkNat:80.0, benchmarkState:79.5 },
   ],
   training: [
-    { key:'certCompleted',     label:'% Cert Completed',        shortLabel:'Cert Done %',  unit:'%', highIsBad:false, benchmarkNat:32.0, benchmarkState:null },
-    { key:'certStarted',       label:'% Cert Started',          shortLabel:'Cert Start %', unit:'%', highIsBad:false, benchmarkNat:40.0, benchmarkState:null },
-    { key:'certificationRate', label:'Certification Rate %',    shortLabel:'Cert Rate %',  unit:'%', highIsBad:false, benchmarkNat:28.0, benchmarkState:null },
+    { key:'certCompleted',     label:'% Certification Completed',  unit:'%', highIsBad:false, benchmarkNat:32.0, benchmarkState:null },
+    { key:'certStarted',       label:'% Certification Started',    unit:'%', highIsBad:false, benchmarkNat:40.0, benchmarkState:null },
+    { key:'certificationRate', label:'Certification Rate %',       unit:'%', highIsBad:false, benchmarkNat:28.0, benchmarkState:null },
   ],
 };
 
-// ─── Facility data (8 facilities · history = Q1'23 → Q4'24) ──────────────────
-const FACILITIES = [
-  { id:'F001', name:'Sunrise Hyde Park',  state:'IL', beds:120, member:'Yes', metrics:{
-    clinical:    { antipsychotic:{current:18.4, history:[15.2,15.8,16.1,16.7,17.0,17.5,17.9,18.4]}, weightLoss:{current:6.1, history:[4.9,5.1,5.3,5.5,5.7,5.8,6.0,6.1]}, fallsMajor:{current:12.3, history:[13.0,12.8,12.6,12.5,12.4,12.4,12.3,12.3]}, pressureUlcer:{current:5.5, history:[5.8,5.7,5.6,5.6,5.5,5.5,5.5,5.5]}, readmission:{current:19.2, history:[20.1,19.8,19.7,19.5,19.4,19.3,19.2,19.2]} },
-    regulatory:  { gPlusCitations:{current:2.1, history:[1.8,1.9,2.0,2.0,2.1,2.1,2.1,2.1]}, ijCitations:{current:0.3, history:[0.2,0.2,0.2,0.3,0.3,0.3,0.3,0.3]}, citationsQtr:{current:3.5, history:[3.0,3.1,3.2,3.3,3.4,3.4,3.5,3.5]}, fiveStar:{current:3.0, history:[3.2,3.1,3.1,3.0,3.0,3.0,3.0,3.0]}, healthInspection:{current:2.8, history:[3.0,2.9,2.9,2.8,2.8,2.8,2.8,2.8]} },
-    staffing:    { rnHprd:{current:0.52, history:[0.55,0.54,0.54,0.53,0.53,0.52,0.52,0.52]}, totalNursing:{current:3.62, history:[3.75,3.72,3.70,3.68,3.66,3.64,3.63,3.62]}, turnoverRate:{current:28.1, history:[25.5,26.0,26.5,27.0,27.3,27.7,27.9,28.1]}, qualityMix:{current:36.2, history:[38.5,38.0,37.5,37.2,36.9,36.6,36.4,36.2]} },
-    financial:   { cmi:{current:1.06, history:[1.03,1.04,1.04,1.05,1.05,1.06,1.06,1.06]}, occupancy:{current:81.2, history:[78.5,79.0,79.5,80.0,80.5,80.8,81.0,81.2]} },
-    training:    { certCompleted:{current:28.5, history:[25.0,25.8,26.2,26.8,27.1,27.5,28.0,28.5]}, certStarted:{current:36.2, history:[33.0,33.5,34.0,34.5,35.0,35.5,35.9,36.2]}, certificationRate:{current:25.1, history:[22.0,22.5,23.0,23.5,24.0,24.4,24.8,25.1]} },
-  }},
-  { id:'F002', name:'Sunrise Racine',     state:'WI', beds:140, member:'Yes', metrics:{
-    clinical:    { antipsychotic:{current:15.2, history:[13.8,14.0,14.3,14.5,14.8,15.0,15.1,15.2]}, weightLoss:{current:5.3, history:[4.5,4.6,4.8,4.9,5.0,5.1,5.2,5.3]}, fallsMajor:{current:11.2, history:[12.0,11.8,11.6,11.5,11.4,11.3,11.2,11.2]}, pressureUlcer:{current:4.9, history:[5.2,5.1,5.1,5.0,5.0,4.9,4.9,4.9]}, readmission:{current:18.1, history:[19.2,19.0,18.8,18.6,18.5,18.3,18.2,18.1]} },
-    regulatory:  { gPlusCitations:{current:1.6, history:[1.8,1.7,1.7,1.6,1.6,1.6,1.6,1.6]}, ijCitations:{current:0.2, history:[0.3,0.2,0.2,0.2,0.2,0.2,0.2,0.2]}, citationsQtr:{current:2.9, history:[3.2,3.1,3.1,3.0,3.0,2.9,2.9,2.9]}, fiveStar:{current:3.3, history:[3.1,3.2,3.2,3.3,3.3,3.3,3.3,3.3]}, healthInspection:{current:3.1, history:[2.9,3.0,3.0,3.1,3.1,3.1,3.1,3.1]} },
-    staffing:    { rnHprd:{current:0.57, history:[0.54,0.55,0.55,0.56,0.56,0.57,0.57,0.57]}, totalNursing:{current:3.80, history:[3.70,3.72,3.74,3.76,3.77,3.78,3.79,3.80]}, turnoverRate:{current:25.2, history:[26.5,26.2,26.0,25.8,25.6,25.4,25.3,25.2]}, qualityMix:{current:39.5, history:[37.5,38.0,38.5,38.8,39.0,39.2,39.4,39.5]} },
-    financial:   { cmi:{current:1.08, history:[1.03,1.04,1.05,1.06,1.06,1.07,1.08,1.08]}, occupancy:{current:82.5, history:[79.0,79.5,80.0,80.5,81.0,81.5,82.0,82.5]} },
-    training:    { certCompleted:{current:31.2, history:[27.0,27.5,28.0,28.8,29.5,30.0,30.6,31.2]}, certStarted:{current:39.1, history:[35.0,35.5,36.2,37.0,37.5,38.0,38.6,39.1]}, certificationRate:{current:27.5, history:[23.5,24.0,24.5,25.0,25.5,26.0,26.8,27.5]} },
-  }},
-  { id:'F003', name:'Sunrise Naperville', state:'IL', beds:85,  member:'Yes', metrics:{
-    clinical:    { antipsychotic:{current:15.1, history:[13.5,13.7,14.0,14.2,14.5,14.7,14.9,15.1]}, weightLoss:{current:4.2, history:[4.8,4.7,4.6,4.5,4.4,4.3,4.2,4.2]}, fallsMajor:{current:12.1, history:[13.2,13.0,12.8,12.6,12.4,12.3,12.2,12.1]}, pressureUlcer:{current:5.1, history:[5.5,5.4,5.3,5.2,5.2,5.1,5.1,5.1]}, readmission:{current:17.8, history:[19.0,18.8,18.5,18.2,18.0,17.9,17.8,17.8]} },
-    regulatory:  { gPlusCitations:{current:1.5, history:[1.9,1.8,1.7,1.7,1.6,1.6,1.5,1.5]}, ijCitations:{current:0.1, history:[0.3,0.2,0.2,0.2,0.1,0.1,0.1,0.1]}, citationsQtr:{current:2.8, history:[3.3,3.2,3.1,3.0,2.9,2.9,2.8,2.8]}, fiveStar:{current:3.4, history:[3.1,3.2,3.2,3.3,3.3,3.4,3.4,3.4]}, healthInspection:{current:3.2, history:[3.0,3.0,3.1,3.1,3.2,3.2,3.2,3.2]} },
-    staffing:    { rnHprd:{current:0.58, history:[0.54,0.55,0.56,0.56,0.57,0.57,0.58,0.58]}, totalNursing:{current:3.82, history:[3.71,3.73,3.75,3.77,3.78,3.80,3.81,3.82]}, turnoverRate:{current:23.5, history:[26.0,25.5,25.0,24.5,24.2,23.9,23.7,23.5]}, qualityMix:{current:40.1, history:[37.0,37.5,38.0,38.5,39.0,39.4,39.8,40.1]} },
-    financial:   { cmi:{current:1.05, history:[1.02,1.03,1.03,1.04,1.04,1.05,1.05,1.05]}, occupancy:{current:80.8, history:[78.0,78.5,79.0,79.5,80.0,80.2,80.5,80.8]} },
-    training:    { certCompleted:{current:33.0, history:[28.0,28.8,29.5,30.2,30.8,31.5,32.2,33.0]}, certStarted:{current:41.5, history:[36.0,36.8,37.5,38.2,39.0,39.8,40.5,41.5]}, certificationRate:{current:29.2, history:[24.0,24.5,25.2,25.8,26.5,27.2,28.0,29.2]} },
-  }},
-  { id:'F004', name:'Sunrise Evanston',   state:'IL', beds:88,  member:'Yes', metrics:{
-    clinical:    { antipsychotic:{current:13.2, history:[14.5,14.3,14.1,13.9,13.7,13.5,13.3,13.2]}, weightLoss:{current:5.1, history:[4.5,4.6,4.7,4.8,4.9,5.0,5.1,5.1]}, fallsMajor:{current:11.8, history:[12.5,12.3,12.2,12.1,12.0,11.9,11.8,11.8]}, pressureUlcer:{current:4.8, history:[5.3,5.2,5.1,5.0,4.9,4.9,4.8,4.8]}, readmission:{current:18.9, history:[20.0,19.8,19.5,19.3,19.1,19.0,18.9,18.9]} },
-    regulatory:  { gPlusCitations:{current:1.7, history:[2.0,1.9,1.9,1.8,1.8,1.7,1.7,1.7]}, ijCitations:{current:0.2, history:[0.3,0.3,0.2,0.2,0.2,0.2,0.2,0.2]}, citationsQtr:{current:3.0, history:[3.3,3.2,3.2,3.1,3.1,3.0,3.0,3.0]}, fiveStar:{current:3.2, history:[3.0,3.0,3.1,3.1,3.2,3.2,3.2,3.2]}, healthInspection:{current:3.0, history:[2.8,2.9,2.9,3.0,3.0,3.0,3.0,3.0]} },
-    staffing:    { rnHprd:{current:0.56, history:[0.54,0.54,0.55,0.55,0.55,0.56,0.56,0.56]}, totalNursing:{current:3.76, history:[3.70,3.71,3.72,3.73,3.74,3.75,3.76,3.76]}, turnoverRate:{current:24.8, history:[26.5,26.2,25.9,25.7,25.5,25.2,25.0,24.8]}, qualityMix:{current:37.5, history:[36.0,36.5,36.8,37.0,37.2,37.3,37.4,37.5]} },
-    financial:   { cmi:{current:1.04, history:[1.02,1.02,1.03,1.03,1.04,1.04,1.04,1.04]}, occupancy:{current:79.5, history:[77.5,78.0,78.5,78.8,79.0,79.2,79.4,79.5]} },
-    training:    { certCompleted:{current:30.5, history:[26.0,26.8,27.5,28.0,28.5,29.0,30.0,30.5]}, certStarted:{current:38.8, history:[34.0,34.5,35.2,36.0,36.5,37.2,38.0,38.8]}, certificationRate:{current:27.1, history:[23.0,23.5,24.0,24.5,25.0,25.5,26.2,27.1]} },
-  }},
-  { id:'F005', name:'Sunrise Madison',    state:'WI', beds:110, member:'Yes', metrics:{
-    clinical:    { antipsychotic:{current:16.0, history:[13.2,13.5,13.9,14.2,14.6,15.0,15.5,16.0]}, weightLoss:{current:4.1, history:[4.8,4.7,4.6,4.5,4.4,4.3,4.2,4.1]}, fallsMajor:{current:10.5, history:[12.0,11.8,11.5,11.3,11.0,10.8,10.6,10.5]}, pressureUlcer:{current:4.7, history:[5.5,5.4,5.2,5.1,5.0,4.9,4.8,4.7]}, readmission:{current:17.2, history:[18.9,18.7,18.4,18.2,18.0,17.7,17.5,17.2]} },
-    regulatory:  { gPlusCitations:{current:1.4, history:[1.9,1.8,1.7,1.7,1.6,1.5,1.5,1.4]}, ijCitations:{current:0.1, history:[0.3,0.2,0.2,0.1,0.1,0.1,0.1,0.1]}, citationsQtr:{current:2.7, history:[3.2,3.1,3.0,2.9,2.9,2.8,2.7,2.7]}, fiveStar:{current:3.5, history:[3.1,3.2,3.3,3.3,3.4,3.4,3.5,3.5]}, healthInspection:{current:3.3, history:[3.0,3.0,3.1,3.1,3.2,3.2,3.3,3.3]} },
-    staffing:    { rnHprd:{current:0.59, history:[0.54,0.55,0.56,0.57,0.57,0.58,0.59,0.59]}, totalNursing:{current:3.85, history:[3.70,3.73,3.76,3.78,3.80,3.82,3.84,3.85]}, turnoverRate:{current:22.8, history:[26.0,25.5,24.8,24.2,23.8,23.4,23.1,22.8]}, qualityMix:{current:41.2, history:[37.0,37.8,38.5,39.1,39.6,40.1,40.7,41.2]} },
-    financial:   { cmi:{current:1.07, history:[1.03,1.04,1.05,1.05,1.06,1.06,1.07,1.07]}, occupancy:{current:82.0, history:[78.5,79.0,79.8,80.2,80.6,81.0,81.5,82.0]} },
-    training:    { certCompleted:{current:34.5, history:[28.5,29.2,30.0,30.8,31.5,32.2,33.2,34.5]}, certStarted:{current:43.0, history:[36.5,37.5,38.5,39.5,40.2,41.0,42.0,43.0]}, certificationRate:{current:30.8, history:[25.0,25.8,26.5,27.2,28.0,28.8,29.8,30.8]} },
-  }},
-  { id:'F006', name:'Sunrise Oak Park',   state:'IL', beds:96,  member:'Yes', metrics:{
-    clinical:    { antipsychotic:{current:10.8, history:[12.5,12.2,11.9,11.7,11.5,11.2,11.0,10.8]}, weightLoss:{current:3.7, history:[4.5,4.4,4.3,4.2,4.1,4.0,3.8,3.7]}, fallsMajor:{current:11.1, history:[12.8,12.5,12.2,12.0,11.8,11.5,11.3,11.1]}, pressureUlcer:{current:4.5, history:[5.5,5.4,5.2,5.1,5.0,4.8,4.6,4.5]}, readmission:{current:17.9, history:[19.5,19.2,18.9,18.6,18.4,18.2,18.0,17.9]} },
-    regulatory:  { gPlusCitations:{current:1.3, history:[1.8,1.7,1.6,1.5,1.5,1.4,1.4,1.3]}, ijCitations:{current:0.0, history:[0.2,0.1,0.1,0.1,0.0,0.0,0.0,0.0]}, citationsQtr:{current:2.5, history:[3.1,3.0,2.9,2.8,2.7,2.6,2.6,2.5]}, fiveStar:{current:3.6, history:[3.2,3.3,3.4,3.4,3.5,3.5,3.6,3.6]}, healthInspection:{current:3.4, history:[3.1,3.2,3.2,3.3,3.3,3.4,3.4,3.4]} },
-    staffing:    { rnHprd:{current:0.60, history:[0.55,0.56,0.57,0.58,0.58,0.59,0.60,0.60]}, totalNursing:{current:3.88, history:[3.72,3.75,3.78,3.80,3.82,3.84,3.86,3.88]}, turnoverRate:{current:21.5, history:[25.5,25.0,24.5,24.0,23.5,23.0,22.2,21.5]}, qualityMix:{current:42.0, history:[38.0,38.5,39.2,39.8,40.3,40.8,41.4,42.0]} },
-    financial:   { cmi:{current:1.09, history:[1.04,1.05,1.06,1.07,1.07,1.08,1.09,1.09]}, occupancy:{current:83.5, history:[79.5,80.0,80.5,81.0,81.5,82.0,82.8,83.5]} },
-    training:    { certCompleted:{current:35.8, history:[30.0,30.8,31.5,32.2,33.0,33.8,34.8,35.8]}, certStarted:{current:44.2, history:[38.0,38.8,39.5,40.5,41.2,42.0,43.0,44.2]}, certificationRate:{current:31.5, history:[27.0,27.5,28.2,28.8,29.5,30.0,30.8,31.5]} },
-  }},
-  { id:'F007', name:'Sunrise Waukegan',   state:'IL', beds:72,  member:'No', metrics:{
-    clinical:    { antipsychotic:{current:9.3,  history:[12.0,11.5,11.0,10.8,10.5,10.2,9.8,9.3]},  weightLoss:{current:3.5, history:[4.2,4.1,4.0,3.9,3.8,3.7,3.6,3.5]}, fallsMajor:{current:10.2, history:[12.0,11.8,11.5,11.2,11.0,10.7,10.5,10.2]}, pressureUlcer:{current:4.2, history:[5.1,5.0,4.9,4.8,4.7,4.5,4.3,4.2]}, readmission:{current:16.8, history:[19.0,18.7,18.3,18.0,17.8,17.5,17.1,16.8]} },
-    regulatory:  { gPlusCitations:{current:1.2, history:[1.7,1.6,1.5,1.4,1.4,1.3,1.2,1.2]}, ijCitations:{current:0.0, history:[0.2,0.1,0.1,0.0,0.0,0.0,0.0,0.0]}, citationsQtr:{current:2.3, history:[2.9,2.8,2.7,2.6,2.5,2.4,2.3,2.3]}, fiveStar:{current:3.8, history:[3.3,3.4,3.5,3.5,3.6,3.7,3.8,3.8]}, healthInspection:{current:3.5, history:[3.2,3.2,3.3,3.3,3.4,3.4,3.5,3.5]} },
-    staffing:    { rnHprd:{current:0.61, history:[0.56,0.57,0.58,0.59,0.59,0.60,0.61,0.61]}, totalNursing:{current:3.90, history:[3.73,3.76,3.79,3.82,3.84,3.86,3.88,3.90]}, turnoverRate:{current:20.8, history:[25.0,24.5,23.8,23.2,22.8,22.3,21.5,20.8]}, qualityMix:{current:43.1, history:[38.5,39.0,39.8,40.4,41.0,41.5,42.3,43.1]} },
-    financial:   { cmi:{current:1.10, history:[1.04,1.05,1.06,1.07,1.08,1.09,1.09,1.10]}, occupancy:{current:84.0, history:[80.0,80.5,81.0,81.5,82.0,82.5,83.2,84.0]} },
-    training:    { certCompleted:{current:36.5, history:[30.5,31.2,32.0,32.8,33.5,34.2,35.2,36.5]}, certStarted:{current:45.0, history:[38.5,39.2,40.0,41.0,41.8,42.5,43.5,45.0]}, certificationRate:{current:32.2, history:[27.5,28.2,28.8,29.5,30.2,30.8,31.5,32.2]} },
-  }},
-  { id:'F008', name:'Sunrise Gary',       state:'IN', beds:65,  member:'No', metrics:{
-    clinical:    { antipsychotic:{current:11.5, history:[13.0,12.8,12.5,12.3,12.1,11.9,11.7,11.5]}, weightLoss:{current:3.9, history:[4.6,4.5,4.4,4.3,4.2,4.1,4.0,3.9]}, fallsMajor:{current:10.8, history:[12.5,12.2,12.0,11.8,11.5,11.2,11.0,10.8]}, pressureUlcer:{current:4.4, history:[5.2,5.1,5.0,4.9,4.8,4.7,4.5,4.4]}, readmission:{current:17.5, history:[19.2,19.0,18.7,18.5,18.2,18.0,17.8,17.5]} },
-    regulatory:  { gPlusCitations:{current:1.5, history:[1.8,1.7,1.7,1.6,1.6,1.5,1.5,1.5]}, ijCitations:{current:0.1, history:[0.2,0.2,0.1,0.1,0.1,0.1,0.1,0.1]}, citationsQtr:{current:2.8, history:[3.1,3.0,2.9,2.9,2.8,2.8,2.8,2.8]}, fiveStar:{current:3.3, history:[3.1,3.1,3.2,3.2,3.3,3.3,3.3,3.3]}, healthInspection:{current:3.1, history:[2.9,3.0,3.0,3.0,3.1,3.1,3.1,3.1]} },
-    staffing:    { rnHprd:{current:0.57, history:[0.54,0.55,0.55,0.56,0.56,0.56,0.57,0.57]}, totalNursing:{current:3.78, history:[3.70,3.72,3.73,3.74,3.75,3.76,3.77,3.78]}, turnoverRate:{current:23.2, history:[25.8,25.5,25.0,24.6,24.2,23.8,23.5,23.2]}, qualityMix:{current:38.8, history:[36.5,37.0,37.4,37.8,38.1,38.4,38.6,38.8]} },
-    financial:   { cmi:{current:1.05, history:[1.02,1.03,1.03,1.04,1.04,1.05,1.05,1.05]}, occupancy:{current:80.2, history:[78.0,78.5,79.0,79.4,79.7,80.0,80.1,80.2]} },
-    training:    { certCompleted:{current:32.8, history:[27.5,28.2,29.0,29.8,30.5,31.2,32.0,32.8]}, certStarted:{current:40.5, history:[35.5,36.2,37.0,37.8,38.5,39.2,39.8,40.5]}, certificationRate:{current:28.5, history:[24.5,25.0,25.5,26.2,26.8,27.5,28.0,28.5]} },
-  }},
-];
+// ─── 12-quarter facility data (Q1'23 → Q4'25) ────────────────────────────────
+const QUARTERS = ["Q1'23","Q2'23","Q3'23","Q4'23","Q1'24","Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25"];
+const FAC = {
+  antipsychotic:     [15.2,15.8,16.1,16.7,17.0,17.5,17.9,18.4,18.6,18.8,18.9,19.1],
+  weightLoss:        [4.9, 5.1, 5.3, 5.5, 5.7, 5.8, 6.0, 6.1, 6.2, 6.3, 6.4, 6.5],
+  fallsMajor:        [13.0,12.8,12.6,12.5,12.4,12.4,12.3,12.3,12.2,12.1,12.0,11.9],
+  pressureUlcer:     [5.8, 5.7, 5.6, 5.6, 5.5, 5.5, 5.5, 5.5, 5.5, 5.5, 5.4, 5.4],
+  readmission:       [20.1,19.8,19.7,19.5,19.4,19.3,19.2,19.2,19.1,18.9,18.8,18.7],
+  gPlusCitations:    [1.8, 1.9, 2.0, 2.0, 2.1, 2.1, 2.1, 2.1, 2.0, 2.0, 1.9, 1.9],
+  ijCitations:       [0.2, 0.2, 0.2, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.2, 0.2, 0.2],
+  citationsQtr:      [3.0, 3.1, 3.2, 3.3, 3.4, 3.4, 3.5, 3.5, 3.5, 3.4, 3.4, 3.3],
+  fiveStar:          [3.2, 3.1, 3.1, 3.0, 3.0, 3.0, 3.0, 3.0, 3.1, 3.1, 3.2, 3.2],
+  healthInspection:  [3.0, 2.9, 2.9, 2.8, 2.8, 2.8, 2.8, 2.8, 2.8, 2.8, 2.9, 2.9],
+  rnHprd:            [0.55,0.54,0.54,0.53,0.53,0.52,0.52,0.52,0.52,0.52,0.53,0.53],
+  totalNursing:      [3.75,3.72,3.70,3.68,3.66,3.64,3.63,3.62,3.63,3.65,3.67,3.68],
+  turnoverRate:      [25.5,26.0,26.5,27.0,27.3,27.7,27.9,28.1,27.9,27.5,27.2,26.9],
+  qualityMix:        [38.5,38.0,37.5,37.2,36.9,36.6,36.4,36.2,36.2,36.5,36.8,37.1],
+  cmi:               [1.03,1.04,1.04,1.05,1.05,1.06,1.06,1.06,1.06,1.07,1.07,1.08],
+  occupancy:         [78.5,79.0,79.5,80.0,80.5,80.8,81.0,81.2,81.5,81.8,82.0,82.2],
+  certCompleted:     [25.0,25.8,26.2,26.8,27.1,27.5,28.0,28.5,29.0,29.5,30.0,30.5],
+  certStarted:       [33.0,33.5,34.0,34.5,35.0,35.5,35.9,36.2,36.5,37.0,37.5,38.0],
+  certificationRate: [22.0,22.5,23.0,23.5,24.0,24.4,24.8,25.1,25.5,25.9,26.2,26.5],
+};
 
 // ─── State ────────────────────────────────────────────────────────────────────
-let activeDomain  = 'clinical';
-let selectedFacId = null;
+let activeDomain     = 'clinical';
+let activeMetricKey  = null;
+let activeThirdBench = '';   // '', 'parent', 'member', 'nonmember'
+
+const THIRD_LABELS = { parent:'Parent Company Avg', member:'AAPACN Member Avg', nonmember:'Non-Member Avg' };
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
-function isViolation(fac, metricObj, domainKey) { return false; }
-function _isViolation_disabled(fac, metricObj, domainKey) {
-  const m = fac.metrics[domainKey]?.[metricObj.key];
-  if (!m || metricObj.benchmarkNat == null) return false;
-  return metricObj.highIsBad ? m.current > metricObj.benchmarkNat : m.current < metricObj.benchmarkNat;
-}
-
-function violationCount(fac, domainKey) {
-  return METRICS[domainKey].filter(m => isViolation(fac, m, domainKey)).length;
-}
-
-function domainViolationCount(domainKey) {
-  return FACILITIES.filter(f => violationCount(f, domainKey) > 0).length;
-}
-
 function fmtVal(v, unit) {
   if (v == null) return '—';
   if (unit === '%') return v.toFixed(1) + '%';
@@ -349,201 +285,194 @@ function fmtVal(v, unit) {
   return v >= 10 ? v.toFixed(1) : v.toFixed(2);
 }
 
-function filterFacilities() {
-  const org    = document.getElementById('filter-org').value;
-  const name   = document.getElementById('filter-name').value.toLowerCase();
-  const state  = document.getElementById('filter-state').value;
-  const size   = document.getElementById('filter-size').value;
-  const member = document.getElementById('filter-member').value;
-  return FACILITIES
-    .filter(f => {
-      if (org    && (f.org || 'Sunrise Senior Living') !== org) return false;
-      if (name   && !f.name.toLowerCase().includes(name)) return false;
-      if (state  && f.state !== state) return false;
-      if (member && f.member !== member) return false;
-      if (size === 'small'  && f.beds >= 90)  return false;
-      if (size === 'medium' && (f.beds < 90 || f.beds > 130)) return false;
-      if (size === 'large'  && f.beds <= 130) return false;
-      return true;
-    })
-    .sort((a, b) => violationCount(b, activeDomain) - violationCount(a, activeDomain));
+function thirdBenchVal(metricObj) {
+  if (!activeThirdBench || metricObj.benchmarkNat == null) return null;
+  const nat = metricObj.benchmarkNat;
+  const f = metricObj.highIsBad
+    ? { parent:1.08, member:0.90, nonmember:1.14 }
+    : { parent:0.95, member:1.07, nonmember:0.88 };
+  return parseFloat((nat * f[activeThirdBench]).toFixed(2));
 }
 
-// ─── Bar cell ─────────────────────────────────────────────────────────────────
-function buildBarCell(fac, metricObj, domainKey) {
-  const m = fac.metrics[domainKey]?.[metricObj.key];
-  if (!m) return `<div class="metric-cell"><div class="metric-val ok">—</div></div>`;
-  const v      = m.current;
-  const bench  = metricObj.benchmarkNat;
-  const viol   = isViolation(fac, metricObj, domainKey);
-  // Contextual scale: floor/ceiling based on actual data range, not 0–100
-  const refs = [v, bench].filter(b => b != null);
-  const lo = Math.min(...refs), hi = Math.max(...refs);
-  const slack = (hi - lo) * 0.5 || hi * 0.25 || 1;
-  const minVal = Math.max(0, lo - slack);
-  const maxVal = hi + slack;
-  const range  = maxVal - minVal;
-  const barPct = Math.min(100, Math.max(0, (v     - minVal) / range * 100));
-  const bPct   = bench != null ? Math.min(97, Math.max(3, (bench - minVal) / range * 100)) : null;
-  const fillCls = viol ? 'viol' : 'ok';
-  const markCls = viol ? '' : ' ok';
-  const benchHTML = bPct != null
-    ? `<div class="bench-mark${markCls}" style="left:${bPct}%"></div><div class="bench-arrow${markCls}" style="left:${bPct}%">&#9660;</div>`
-    : '';
-  return `<div class="metric-cell">
-    <div class="metric-val${viol ? '' : ' ok'}">${fmtVal(v, metricObj.unit)}</div>
-    <div class="bar-wrap"><div class="bar-fill ${fillCls}" style="width:${barPct}%"></div>${benchHTML}</div>
-  </div>`;
-}
+// ─── Trend SVG (12 quarters, 3-year lookback) ─────────────────────────────────
+function buildTrendSVG(metricObj, history) {
+  const nat   = metricObj.benchmarkNat;
+  const state = metricObj.benchmarkState;
+  const third = thirdBenchVal(metricObj);
+  const N = history.length;
 
-// ─── Sparkline SVG ────────────────────────────────────────────────────────────
-function buildSparkSVG(history, benchmarkNat) {
-  const W = 180, H = 36, pL = 2, pR = 2, pT = 8, pB = 4;
-  const n = history.length;
-  if (!n) return '';
-  const allVals = benchmarkNat != null ? [...history, benchmarkNat] : [...history];
-  const lo = Math.min(...allVals), hi = Math.max(...allVals);
-  const pad = (hi - lo) * 0.2 || hi * 0.1 || 1;
-  const yMin = lo - pad, yMax = hi + pad, chartW = W - pL - pR, chartH = H - pT - pB;
-  const xOf = i => pL + (i / (n - 1)) * chartW;
-  const yOf = v => pT + chartH - ((v - yMin) / (yMax - yMin)) * chartH;
-  const pts = history.map((v, i) => `${xOf(i).toFixed(1)},${yOf(v).toFixed(1)}`).join(' ');
-  const benchLine = benchmarkNat != null
-    ? `<line x1="${pL}" y1="${yOf(benchmarkNat).toFixed(1)}" x2="${W-pR}" y2="${yOf(benchmarkNat).toFixed(1)}" stroke="#bbb" stroke-width="1" stroke-dasharray="3,2"/>`
-    : '';
-  return `<svg width="${W}" height="${H}" style="display:block;overflow:visible">
-    ${benchLine}
-    <polyline points="${pts}" fill="none" stroke="#555" stroke-width="1.5" stroke-linejoin="round"/>
-    <circle cx="${xOf(0).toFixed(1)}" cy="${yOf(history[0]).toFixed(1)}" r="2" fill="#bbb"/>
-    <circle cx="${xOf(n-1).toFixed(1)}" cy="${yOf(history[n-1]).toFixed(1)}" r="3" fill="#333"/>
+  const W = 680, H = 230;
+  const pL = 46, pR = 94, pT = 16, pB = 38;
+  const PW = W - pL - pR, PH = H - pT - pB;
+
+  // Contextual scale
+  const refVals = [...history];
+  if (nat   != null) refVals.push(nat);
+  if (state != null) refVals.push(state);
+  if (third != null) refVals.push(third);
+  const lo = Math.min(...refVals), hi = Math.max(...refVals);
+  const range = hi - lo || Math.abs(hi) * 0.2 || 1;
+  const yMin = Math.max(0, lo - range * 0.35);
+  const yMax = hi + range * 0.35;
+
+  const px = i  => pL + (i / (N - 1)) * PW;
+  const py = v  => pT + (1 - (v - yMin) / (yMax - yMin)) * PH;
+
+  // Grid lines + y-axis labels
+  let grid = '';
+  [0.25, 0.5, 0.75].forEach(f => {
+    const gv = yMin + f * (yMax - yMin);
+    const gy = py(gv).toFixed(1);
+    grid += `<line x1="${pL}" y1="${gy}" x2="${(pL+PW).toFixed(1)}" y2="${gy}" stroke="#e8e5df" stroke-width="1"/>`;
+    grid += `<text x="${(pL-5).toFixed(1)}" y="${gy}" text-anchor="end" dominant-baseline="middle" font-size="9" fill="#bbb">${fmtVal(gv, metricObj.unit)}</text>`;
+  });
+
+  // Axis box
+  const axisBox = `
+    <line x1="${pL}" y1="${pT}" x2="${pL}" y2="${(pT+PH).toFixed(1)}" stroke="#e0e0e0" stroke-width="1"/>
+    <line x1="${pL}" y1="${(pT+PH).toFixed(1)}" x2="${(pL+PW).toFixed(1)}" y2="${(pT+PH).toFixed(1)}" stroke="#e0e0e0" stroke-width="1"/>`;
+
+  // Flat reference lines (horizontal)
+  function refLine(val, stroke, dash, label) {
+    if (val == null) return '';
+    const y  = py(val).toFixed(1);
+    const x2 = (pL + PW).toFixed(1);
+    return `<line x1="${pL}" y1="${y}" x2="${x2}" y2="${y}" stroke="${stroke}" stroke-width="1.5" stroke-dasharray="${dash}" opacity="0.85"/>
+            <text x="${(pL+PW+6).toFixed(1)}" y="${y}" dominant-baseline="middle" font-size="9" fill="${stroke}" font-weight="600">${label}</text>`;
+  }
+
+  const thirdShort = activeThirdBench === 'parent' ? 'Parent' : activeThirdBench === 'member' ? 'Members' : activeThirdBench === 'nonmember' ? 'Non-Mbr' : '';
+
+  // Facility polyline
+  const pts = history.map((v,i) => `${px(i).toFixed(1)},${py(v).toFixed(1)}`).join(' ');
+
+  // Dots (all quarters; last is larger)
+  const dots = history.map((v,i) => {
+    const cx = px(i).toFixed(1), cy = py(v).toFixed(1);
+    return `<circle cx="${cx}" cy="${cy}" r="${i===N-1?4:2.5}" fill="#444" stroke="#fff" stroke-width="1"/>`;
+  }).join('');
+
+  // Last-point value label
+  const lastY = py(history[N-1]).toFixed(1);
+  const valLabel = `<text x="${(pL+PW+6).toFixed(1)}" y="${lastY}" dominant-baseline="middle" font-size="9" fill="#444" font-weight="700">${fmtVal(history[N-1], metricObj.unit)}</text>`;
+
+  // X-axis quarter labels (every other, to avoid crowding)
+  let xLabels = '';
+  QUARTERS.forEach((q, i) => {
+    if (i % 2 !== 0) return;
+    xLabels += `<text x="${px(i).toFixed(1)}" y="${(pT+PH+14).toFixed(1)}" text-anchor="middle" font-size="9" fill="#bbb">${q}</text>`;
+  });
+
+  return `<svg width="100%" viewBox="0 0 ${W} ${H}" style="overflow:visible;display:block">
+    ${grid}
+    ${axisBox}
+    ${refLine(state, '#ccc', '5,3', "State")}
+    ${refLine(nat,   '#aaa', '8,4', "Nat\u2019l")}
+    ${third != null ? refLine(third, '#888', '5,3', thirdShort) : ''}
+    <polyline points="${pts}" fill="none" stroke="#444" stroke-width="2.5" stroke-linejoin="round"/>
+    ${dots}
+    ${valLabel}
+    ${xLabels}
   </svg>`;
 }
 
-// ─── Side panel ───────────────────────────────────────────────────────────────
-function openPanel(facId) {
-  selectedFacId = facId;
-  const fac     = FACILITIES.find(f => f.id === facId);
-  const metrics = METRICS[activeDomain];
-  const QTRS    = ["Q1'23","Q2'23","Q3'23","Q4'23","Q1'24","Q2'24","Q3'24","Q4'24"];
+// ─── Render chart panel ───────────────────────────────────────────────────────
+function renderChart(metricKey) {
+  const metricObj = METRICS[activeDomain].find(m => m.key === metricKey);
+  const history   = FAC[metricKey];
+  if (!metricObj || !history) return;
 
-  const sparksHTML = metrics.map(m => {
-    const fm = fac.metrics[activeDomain]?.[m.key];
-    if (!fm) return '';
-    const viol = isViolation(fac, m, activeDomain);
-    return `<div class="spark-section">
-      <div class="spark-label">${m.label}</div>
-      ${buildSparkSVG(fm.history, m.benchmarkNat)}
-      <div class="spark-qtrs"><span>${QTRS[0]}</span><span>${QTRS[7]}</span></div>
-      <div class="spark-vals">
-        <span class="spark-current" style="${viol ? 'color:#c0392b' : ''}">${fmtVal(fm.current, m.unit)}</span>
-        ${m.benchmarkNat != null ? `<span class="spark-bench">Nat'l: ${fmtVal(m.benchmarkNat, m.unit)}</span>` : ''}
-      </div>
-    </div>`;
-  }).join('');
+  const third     = thirdBenchVal(metricObj);
+  const nat       = metricObj.benchmarkNat;
+  const state     = metricObj.benchmarkState;
 
-  const panel = document.getElementById('side-panel');
-  panel.innerHTML = `
-    <div class="panel-hdr">
-      <div class="panel-fac-name">${fac.name}</div>
-      <div class="panel-fac-sub">${fac.state} &middot; ${fac.beds} beds</div>
-      <div class="panel-detail-btn" onclick="window.location='page3-facility-detail.html'">&rarr; Open Facility View</div>
+  const kvParts = [
+    nat   != null ? `<span class="chart-kv">Nat&rsquo;l avg: <strong>${fmtVal(nat, metricObj.unit)}</strong></span>` : '',
+    state != null ? `<span class="chart-kv">State avg: <strong>${fmtVal(state, metricObj.unit)}</strong></span>` : '',
+    third != null ? `<span class="chart-kv">${THIRD_LABELS[activeThirdBench]}: <strong>${fmtVal(third, metricObj.unit)}</strong></span>` : '',
+  ].filter(Boolean).join('');
+
+  const opts = ['parent','member','nonmember'].map(k =>
+    `<option value="${k}"${activeThirdBench===k?' selected':''}>${THIRD_LABELS[k]}</option>`
+  ).join('');
+
+  const stateLegend = state != null ? `<div class="legend-item"><div class="leg-dash-st"></div>State Avg</div>` : '';
+  const thirdLegend = third != null ? `<div class="legend-item"><div class="leg-dash-3rd"></div>${THIRD_LABELS[activeThirdBench]}</div>` : '';
+
+  document.getElementById('chart-col').innerHTML = `
+    <div class="chart-metric-name">${metricObj.label}</div>
+    <div class="chart-kv-row">${kvParts}</div>
+    <div class="benchmark-row">
+      <span class="benchmark-row-label">3rd Benchmark:</span>
+      <select class="benchmark-sel" onchange="onBenchmarkChange(this.value)">
+        <option value="">None</option>
+        ${opts}
+      </select>
+      <span class="benchmark-note">National &amp; State always shown</span>
     </div>
-    <div class="panel-body">${sparksHTML}</div>`;
-  panel.classList.add('open');
-  document.querySelectorAll('.fac-row').forEach(r => r.classList.toggle('selected', r.dataset.facId === facId));
+    <div class="chart-svg-wrap">${buildTrendSVG(metricObj, history)}</div>
+    <div class="chart-legend">
+      <div class="legend-item"><div class="leg-solid"></div>This Facility</div>
+      <div class="legend-item"><div class="leg-dash-nat"></div>National Avg</div>
+      ${stateLegend}
+      ${thirdLegend}
+    </div>`;
 }
 
-function showPanelBlank() {
-  document.getElementById('side-panel').innerHTML =
-    `<div style="flex:1;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center">
-       <div>
-         <div style="font-size:29px;color:#ddd;margin-bottom:12px">&#9700;</div>
-         <div style="font-size:12px;font-weight:600;color:var(--text3);margin-bottom:6px">No facility selected</div>
-         <div style="font-size:11px;color:#ccc;line-height:1.5">Click a facility row to<br>visualize metric trends</div>
-       </div>
-     </div>`;
+function onBenchmarkChange(val) {
+  activeThirdBench = val;
+  renderChart(activeMetricKey);
 }
 
-function closePanel() {
-  selectedFacId = null;
-  showPanelBlank();
-  document.querySelectorAll('.fac-row').forEach(r => r.classList.remove('selected'));
-}
-
-// ─── Renderers ────────────────────────────────────────────────────────────────
-function renderColHeaders(domainKey) {
-  const cols = METRICS[domainKey].map(m => `<div class="col-metric">${m.shortLabel}</div>`).join('');
-  document.getElementById('col-headers').innerHTML =
-    `<div class="col-header-row"><div class="col-fac">Facility</div>${cols}</div>`;
-}
-
-function renderFacRows(facilities, domainKey) {
-  if (!facilities.length) {
-    document.getElementById('fac-rows').innerHTML =
-      `<div style="padding:24px;text-align:center;color:var(--text3);font-size:12px">No facilities match the current filters.</div>`;
-    return;
-  }
-  document.getElementById('fac-rows').innerHTML = facilities.map(fac => {
-    const vc   = violationCount(fac, domainKey);
-    const cells = METRICS[domainKey].map(m => buildBarCell(fac, m, domainKey)).join('');
-    const sel  = fac.id === selectedFacId ? ' selected' : '';
-    return `<div class="fac-row${sel}" data-fac-id="${fac.id}" onclick="handleRowClick('${fac.id}')">
-      <div class="fac-name-cell">
-        <div class="fac-name">${fac.name}</div>
-        <div class="fac-sub">${fac.state} &middot; ${fac.beds} beds</div>
-      </div>${cells}
+// ─── Metric list ─────────────────────────────────────────────────────────────
+function renderMetricList(domain) {
+  const metrics = METRICS[domain];
+  const rows = metrics.map(m => {
+    const vals    = FAC[m.key];
+    const current = vals ? vals[vals.length - 1] : null;
+    const active  = m.key === activeMetricKey ? ' active' : '';
+    return `<div class="metric-item${active}" onclick="selectMetric('${m.key}')">
+      <span class="metric-item-label">${m.label}</span>
+      <span class="metric-item-val">${fmtVal(current, m.unit)}</span>
     </div>`;
   }).join('');
+  document.getElementById('metric-list').innerHTML =
+    `<div class="metric-list-hdr">${DOMAIN_LABELS[domain]}</div>${rows}`;
 }
 
-function handleRowClick(facId) {
-  if (selectedFacId === facId) { closePanel(); return; }
-  openPanel(facId);
+function selectMetric(key) {
+  activeMetricKey = key;
+  renderMetricList(activeDomain);
+  renderChart(key);
 }
 
-function applyFilters() {
-  const facilities = filterFacilities();
-  document.getElementById('fac-count').textContent =
-    `${facilities.length} facilit${facilities.length === 1 ? 'y' : 'ies'}`;
-  renderFacRows(facilities, activeDomain);
-  if (selectedFacId && !facilities.find(f => f.id === selectedFacId)) closePanel();
-}
-
-function clearAllFilters() {
-  document.getElementById('filter-org').selectedIndex = 0;
-  document.getElementById('filter-name').value = '';
-  document.getElementById('filter-state').selectedIndex = 0;
-  document.getElementById('filter-size').selectedIndex = 0;
-  document.getElementById('filter-member').selectedIndex = 0;
-  applyFilters();
-}
-
-// ─── Domain tabs & header ─────────────────────────────────────────────────────
+// ─── Domain tabs ─────────────────────────────────────────────────────────────
 function renderDomainTabs() {
-  document.getElementById('domain-tabs').innerHTML = DOMAIN_ORDER.map(key => {
-    const color  = TAB_COLORS[key];
-    const count  = domainViolationCount(key);
-    return `<div class="domain-tab${key === activeDomain ? ' active' : ''}" style="--tab-color:${color}"
-                 onclick="setDomainTab('${key}')">${DOMAIN_LABELS[key]}</div>`;
-  }).join('');
+  document.getElementById('domain-tabs').innerHTML = DOMAIN_ORDER.map(key =>
+    `<div class="domain-tab${key === activeDomain ? ' active' : ''}" onclick="setDomainTab('${key}')">${DOMAIN_LABELS[key]}</div>`
+  ).join('');
 }
-
 
 function setDomainTab(key) {
-  activeDomain  = key;
-  selectedFacId = null;
-  showPanelBlank();
+  activeDomain    = key;
+  activeMetricKey = null;
   renderDomainTabs();
-  renderColHeaders(key);
-  applyFilters();
+  renderMetricList(key);
+  document.getElementById('chart-col').innerHTML = `
+    <div class="chart-placeholder">
+      <div class="chart-placeholder-inner">
+        <div class="chart-placeholder-icon">&#9700;</div>
+        <div class="chart-placeholder-msg">Select a metric</div>
+        <div class="chart-placeholder-sub">Click any metric in the list to view its 3-year trend</div>
+      </div>
+    </div>`;
 }
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
 function init() {
   renderDomainTabs();
-  renderColHeaders(activeDomain);
-  applyFilters();
-  showPanelBlank();
+  renderMetricList(activeDomain);
+  selectMetric(METRICS[activeDomain][0].key);
 }
 init();
 </script>
