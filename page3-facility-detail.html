@@ -244,10 +244,6 @@
         <div class="fac-meta-val small">Urban</div>
       </div>
       <div class="fac-meta-item">
-        <div class="fac-meta-label">Facility Type</div>
-        <div class="fac-meta-val small">SNF / NF</div>
-      </div>
-      <div class="fac-meta-item">
         <div class="fac-meta-label">Parent Org</div>
         <div class="fac-meta-val small">Sunrise Senior Living</div>
       </div>
@@ -265,18 +261,13 @@
       </div>
       <div class="fac-kpi-item">
         <div class="fac-kpi-label">Staff Turnover Rate</div>
-        <div class="fac-kpi-val warn">27.8%</div>
+        <div class="fac-kpi-val">27.8%</div>
         <div class="fac-kpi-sub">nat'l avg: 24.0%</div>
       </div>
       <div class="fac-kpi-item">
         <div class="fac-kpi-label">Occupancy Rate</div>
         <div class="fac-kpi-val">81.5%</div>
         <div class="fac-kpi-sub">nat'l avg: 80.0%</div>
-      </div>
-      <div class="fac-kpi-item">
-        <div class="fac-kpi-label">Member Status</div>
-        <div class="fac-kpi-val blue">OM</div>
-        <div class="fac-kpi-sub">AAPACN membership</div>
       </div>
     </div>
   </div>
@@ -755,7 +746,7 @@ function makeTrendSVG(facilityVals, natVal, stateVal, omVals, color) {
 <text x="${cx}" y="${labelY}" text-anchor="middle" font-size="8" fill="${color}" font-weight="700" font-family="-apple-system,sans-serif">${fmt}</text>`;
   }).join('');
 
-  return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" style="overflow:visible">
+  return `<svg width="100%" height="${H}" viewBox="0 0 ${W} ${H}" style="overflow:visible">
     ${grids}
     ${lineOf(natVals,      '#aaa',    '5,4',  1.5)}
     ${lineOf(stateVals,    '#ccc',    '4,4',  1)}
