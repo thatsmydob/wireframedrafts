@@ -82,6 +82,8 @@
   .tab[data-tab="staffing"].active   { color: #444; border-bottom-color: #444; }
   .tab[data-tab="financial"].active  { color: #444; border-bottom-color: #444; }
   .tab[data-tab="training"].active   { color: #444; border-bottom-color: #444; }
+  .tab-disabled { opacity: 0.35; color: var(--text3) !important; cursor: not-allowed; pointer-events: none; }
+  .tab-disabled:hover { color: var(--text3) !important; }
 
   /* ── Table panel ── */
   .tables-wrap { background: var(--surface); padding: 0 16px; }
@@ -333,7 +335,7 @@
       <div class="tab" data-tab="regulatory"        onclick="switchTab('regulatory')">Regulatory &amp; Survey</div>
       <div class="tab" data-tab="staffing"          onclick="switchTab('staffing')">Workforce &amp; Staffing</div>
       <div class="tab" data-tab="financial"         onclick="switchTab('financial')">Financial</div>
-      <div class="tab" data-tab="training"          onclick="switchTab('training')">Training &amp; Certification</div>
+      <div class="tab tab-disabled" data-tab="training">Training &amp; Certification</div>
     </div>
 
     <!-- Facilities table (rendered by JS) -->

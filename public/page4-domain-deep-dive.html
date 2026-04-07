@@ -92,15 +92,20 @@
   .chart-kv strong { color: var(--text); }
   .benchmark-row { display: flex; align-items: center; gap: 8px; margin-bottom: 18px; padding: 8px 12px; background: var(--chrome); border-radius: 4px; border: 1px solid var(--border); }
   .benchmark-row-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text3); white-space: nowrap; }
-  .benchmark-sel { background: var(--surface); border: 1px solid var(--border); padding: 4px 20px 4px 8px; border-radius: 3px; font-size: 12px; color: var(--text); appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 6px center; cursor: pointer; }
-  .benchmark-note { font-size: 11px; color: var(--text3); font-style: italic; }
+  .bench-checks { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .bench-check-item { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--text2); white-space: nowrap; cursor: pointer; }
+  .bench-check-item input[type="checkbox"] { accent-color: #444; width: 13px; height: 13px; cursor: pointer; margin: 0; flex-shrink: 0; }
+  .bench-check-item input[type="checkbox"]:disabled { opacity: 0.5; cursor: not-allowed; }
+  .bench-check-item.is-disabled { opacity: 0.55; cursor: default; }
   .chart-svg-wrap { width: 100%; }
   .chart-legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
   .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text2); }
-  .leg-solid     { width: 20px; height: 2.5px; background: #444; border-radius: 2px; flex-shrink: 0; }
-  .leg-dash-nat  { width: 20px; height: 0; border-top: 2px dashed #aaa; flex-shrink: 0; }
-  .leg-dash-st   { width: 20px; height: 0; border-top: 2px dashed #bbb; flex-shrink: 0; }
-  .leg-dash-3rd  { width: 20px; height: 0; border-top: 2px dashed #888; flex-shrink: 0; }
+  .leg-solid        { width: 20px; height: 2.5px; background: #444; border-radius: 2px; flex-shrink: 0; }
+  .leg-dash-nat     { width: 20px; height: 0; border-top: 2px dashed #aaa; flex-shrink: 0; }
+  .leg-dash-st      { width: 20px; height: 0; border-top: 2px dashed #bbb; flex-shrink: 0; }
+  .leg-dash-parent    { width: 20px; height: 0; border-top: 2px dashed #7a7a7a; flex-shrink: 0; }
+  .leg-dash-member    { width: 20px; height: 0; border-top: 2px dashed #909090; flex-shrink: 0; }
+  .leg-dash-nonmember { width: 20px; height: 0; border-top: 2px dashed #b0b0b0; flex-shrink: 0; }
 
   /* Status bar */
   .status-bar { background: #f0ede8; padding: 6px 20px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 11px; color: var(--text3); }
@@ -279,7 +284,7 @@ const FAC = {
 // ─── State ────────────────────────────────────────────────────────────────────
 let activeDomain     = 'clinical';
 let activeMetricKey  = null;
-let activeThirdBench = '';   // '', 'parent', 'member', 'nonmember'
+const activeThirdSet = new Set();   // keys: 'parent', 'member', 'nonmember'
 
 const THIRD_LABELS = { parent:'Parent Company Avg', member:'AAPACN Member Avg', nonmember:'Non-Member Avg' };
 
@@ -291,21 +296,26 @@ function fmtVal(v, unit) {
   return v >= 10 ? v.toFixed(1) : v.toFixed(2);
 }
 
-function thirdBenchVal(metricObj) {
-  if (!activeThirdBench || metricObj.benchmarkNat == null) return null;
+function thirdBenchVals(metricObj) {
+  if (activeThirdSet.size === 0 || metricObj.benchmarkNat == null) return [];
   const nat = metricObj.benchmarkNat;
-  const f = metricObj.highIsBad
-    ? { parent:1.08, member:0.90, nonmember:1.14 }
-    : { parent:0.95, member:1.07, nonmember:0.88 };
-  return parseFloat((nat * f[activeThirdBench]).toFixed(2));
+  const f = { parent:1.08, member:0.90, nonmember:1.14 };
+  return [...activeThirdSet].map(key => ({ key, val: parseFloat((nat * f[key]).toFixed(2)) }));
 }
 
 // ─── Trend SVG (12 quarters, 3-year lookback) ─────────────────────────────────
 function buildTrendSVG(metricObj, history) {
   const nat   = metricObj.benchmarkNat;
   const state = metricObj.benchmarkState;
-  const third = thirdBenchVal(metricObj);
+  const thirds = thirdBenchVals(metricObj);
   const N = history.length;
+
+  const THIRD_STYLES = {
+    parent:    { stroke:'#7a7a7a', dash:'4,3,1,3' },
+    member:    { stroke:'#909090', dash:'8,3'      },
+    nonmember: { stroke:'#b0b0b0', dash:'2,4'      },
+  };
+  const THIRD_SHORT = { parent:'Parent', member:'Members', nonmember:'Non-Mbr' };
 
   const W = 680, H = 230;
   const pL = 46, pR = 94, pT = 16, pB = 38;
@@ -315,7 +325,7 @@ function buildTrendSVG(metricObj, history) {
   const refVals = [...history];
   if (nat   != null) refVals.push(nat);
   if (state != null) refVals.push(state);
-  if (third != null) refVals.push(third);
+  thirds.forEach(({val}) => refVals.push(val));
   const lo = Math.min(...refVals), hi = Math.max(...refVals);
   const range = hi - lo || Math.abs(hi) * 0.2 || 1;
   const yMin = Math.max(0, lo - range * 0.35);
@@ -347,7 +357,6 @@ function buildTrendSVG(metricObj, history) {
             <text x="${(pL+PW+6).toFixed(1)}" y="${y}" dominant-baseline="middle" font-size="9" fill="${stroke}" font-weight="600">${label}</text>`;
   }
 
-  const thirdShort = activeThirdBench === 'parent' ? 'Parent' : activeThirdBench === 'member' ? 'Members' : activeThirdBench === 'nonmember' ? 'Non-Mbr' : '';
 
   // Facility polyline
   const pts = history.map((v,i) => `${px(i).toFixed(1)},${py(v).toFixed(1)}`).join(' ');
@@ -374,7 +383,7 @@ function buildTrendSVG(metricObj, history) {
     ${axisBox}
     ${refLine(state, '#ccc', '5,3', "State")}
     ${refLine(nat,   '#aaa', '8,4', "Nat\u2019l")}
-    ${third != null ? refLine(third, '#888', '5,3', thirdShort) : ''}
+    ${thirds.map(({key, val}) => refLine(val, THIRD_STYLES[key].stroke, THIRD_STYLES[key].dash, THIRD_SHORT[key])).join('\n    ')}
     <polyline points="${pts}" fill="none" stroke="#444" stroke-width="2.5" stroke-linejoin="round"/>
     ${dots}
     ${valLabel}
@@ -388,45 +397,45 @@ function renderChart(metricKey) {
   const history   = FAC[metricKey];
   if (!metricObj || !history) return;
 
-  const third     = thirdBenchVal(metricObj);
+  const thirds    = thirdBenchVals(metricObj);
   const nat       = metricObj.benchmarkNat;
   const state     = metricObj.benchmarkState;
 
   const kvParts = [
     nat   != null ? `<span class="chart-kv">Nat&rsquo;l avg: <strong>${fmtVal(nat, metricObj.unit)}</strong></span>` : '',
     state != null ? `<span class="chart-kv">State avg: <strong>${fmtVal(state, metricObj.unit)}</strong></span>` : '',
-    third != null ? `<span class="chart-kv">${THIRD_LABELS[activeThirdBench]}: <strong>${fmtVal(third, metricObj.unit)}</strong></span>` : '',
+    ...thirds.map(({key, val}) => `<span class="chart-kv">${THIRD_LABELS[key]}: <strong>${fmtVal(val, metricObj.unit)}</strong></span>`),
   ].filter(Boolean).join('');
 
-  const opts = ['parent','member','nonmember'].map(k =>
-    `<option value="${k}"${activeThirdBench===k?' selected':''}>${THIRD_LABELS[k]}</option>`
+  const stateLegend  = state != null ? `<div class="legend-item"><div class="leg-dash-st"></div>State Avg</div>` : '';
+  const thirdLegends = thirds.map(({key}) =>
+    `<div class="legend-item"><div class="leg-dash-${key}"></div>${THIRD_LABELS[key]}</div>`
   ).join('');
-
-  const stateLegend = state != null ? `<div class="legend-item"><div class="leg-dash-st"></div>State Avg</div>` : '';
-  const thirdLegend = third != null ? `<div class="legend-item"><div class="leg-dash-3rd"></div>${THIRD_LABELS[activeThirdBench]}</div>` : '';
 
   document.getElementById('chart-col').innerHTML = `
     <div class="chart-metric-name">${metricObj.label}</div>
     <div class="chart-kv-row">${kvParts}</div>
     <div class="benchmark-row">
-      <span class="benchmark-row-label">3rd Benchmark:</span>
-      <select class="benchmark-sel" onchange="onBenchmarkChange(this.value)">
-        <option value="">None</option>
-        ${opts}
-      </select>
-      <span class="benchmark-note">National &amp; State always shown</span>
+      <span class="benchmark-row-label">Benchmarks:</span>
+      <div class="bench-checks">
+        <label class="bench-check-item is-disabled"><input type="checkbox" checked disabled> National Avg</label>
+        <label class="bench-check-item is-disabled"><input type="checkbox" checked disabled> State Avg</label>
+        <label class="bench-check-item"><input type="checkbox" ${activeThirdSet.has('parent')?'checked':''} onchange="onBenchmarkToggle('parent', this.checked)"> Parent Co Avg</label>
+        <label class="bench-check-item"><input type="checkbox" ${activeThirdSet.has('member')?'checked':''} onchange="onBenchmarkToggle('member', this.checked)"> AAPACN Members</label>
+        <label class="bench-check-item"><input type="checkbox" ${activeThirdSet.has('nonmember')?'checked':''} onchange="onBenchmarkToggle('nonmember', this.checked)"> Non-Members</label>
+      </div>
     </div>
     <div class="chart-svg-wrap">${buildTrendSVG(metricObj, history)}</div>
     <div class="chart-legend">
       <div class="legend-item"><div class="leg-solid"></div>This Facility</div>
       <div class="legend-item"><div class="leg-dash-nat"></div>National Avg</div>
       ${stateLegend}
-      ${thirdLegend}
+      ${thirdLegends}
     </div>`;
 }
 
-function onBenchmarkChange(val) {
-  activeThirdBench = val;
+function onBenchmarkToggle(key, checked) {
+  if (checked) { activeThirdSet.add(key); } else { activeThirdSet.delete(key); }
   renderChart(activeMetricKey);
 }
 
