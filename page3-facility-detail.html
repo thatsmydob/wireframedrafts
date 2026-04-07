@@ -701,7 +701,7 @@ function renderScorecards() {
 
 // ─── Trend chart SVG ─────────────────────────────────────────────────────────
 function makeTrendSVG(facilityVals, natVal, stateVal, omVals, color) {
-  const W=340, H=180, padL=36, padR=64, padT=24, padB=28;
+  const W=340, H=180, padL=36, padR=8, padT=24, padB=28;
   const chartW = W - padL - padR;
   const chartH = H - padT - padB;
   const n = 4;
@@ -762,9 +762,6 @@ function makeTrendSVG(facilityVals, natVal, stateVal, omVals, color) {
     ${lineOf(omVals,       '#888',    '6,3',  1.5)}
     ${lineOf(facilityVals, color,     'none', 2.5)}
     ${facilityDots}
-    ${rightLabelOf(natVals,   '#aaa',    "Nat'")}
-    ${rightLabelOf(stateVals, '#ccc',    'State')}
-    ${rightLabelOf(omVals,    '#888',    'OM')}
     ${xLabels}
   </svg>`;
 }
