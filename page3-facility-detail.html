@@ -79,6 +79,8 @@
   .domain-tab:hover { color: var(--text); }
   .domain-tab.active { border-bottom-color: var(--tab-color); color: var(--tab-color); }
   .domain-tab-badge { font-size: 10px; font-weight: 700; background: #666; color: #fff; border-radius: 8px; padding: 1px 5px; line-height: 1.4; }
+  .domain-tab-disabled { opacity: 0.35; color: var(--text3) !important; cursor: not-allowed; pointer-events: none; }
+  .domain-tab-disabled:hover { color: var(--text3) !important; }
 
   /* ── Two-column main layout ── */
   .main-layout { display: flex; gap: 16px; padding: 16px 20px; align-items: flex-start; }
@@ -627,7 +629,7 @@ const DOMAIN_LABELS = {
   regulatory: 'Regulatory',
   staffing:   'Staffing',
   financial:  'Financial',
-  training:   'Training'
+  training:   'Training & Certification'
 };
 
 // ─── Domain tab renderer ──────────────────────────────────────────────────────
@@ -641,10 +643,11 @@ function renderDomainTabs() {
       data.values.forEach((v, i) => { if (colorClass(v, i, data) === 'val-red') aboveCount++; });
     }
     const badge   = aboveCount > 0 ? `<span class="domain-tab-badge">${aboveCount}</span>` : '';
-    const isActive = key === activeDomain;
-    return `<div class="domain-tab${isActive ? ' active' : ''}"
+    const isActive   = key === activeDomain;
+    const isDisabled = key === 'training';
+    return `<div class="domain-tab${isActive ? ' active' : ''}${isDisabled ? ' domain-tab-disabled' : ''}"
                  style="--tab-color:${color}"
-                 onclick="setDomainTab('${key}')">${DOMAIN_LABELS[key]}${badge}</div>`;
+                 ${isDisabled ? '' : `onclick="setDomainTab('${key}')"`}>${DOMAIN_LABELS[key]}${badge}</div>`;
   }).join('');
 }
 
