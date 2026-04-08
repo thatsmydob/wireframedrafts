@@ -66,6 +66,8 @@
   .domain-tab { padding: 10px 18px; font-size: 12px; font-weight: 600; color: var(--text2); cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; white-space: nowrap; }
   .domain-tab:hover { color: var(--text); }
   .domain-tab.active { border-bottom-color: #444; color: #444; }
+  .domain-tab-disabled { opacity: 0.35; color: var(--text3) !important; cursor: not-allowed; pointer-events: none; }
+  .domain-tab-disabled:hover { color: var(--text3) !important; }
 
   /* Deep-dive 2-column layout */
   .deep-layout { display: flex; min-height: 460px; }
@@ -463,9 +465,10 @@ function selectMetric(key) {
 
 // ─── Domain tabs ─────────────────────────────────────────────────────────────
 function renderDomainTabs() {
-  document.getElementById('domain-tabs').innerHTML = DOMAIN_ORDER.map(key =>
-    `<div class="domain-tab${key === activeDomain ? ' active' : ''}" onclick="setDomainTab('${key}')">${DOMAIN_LABELS[key]}</div>`
-  ).join('');
+  document.getElementById('domain-tabs').innerHTML = DOMAIN_ORDER.map(key => {
+    const isDisabled = key === 'training';
+    return `<div class="domain-tab${key === activeDomain ? ' active' : ''}${isDisabled ? ' domain-tab-disabled' : ''}" ${isDisabled ? '' : `onclick="setDomainTab('${key}')"`}>${DOMAIN_LABELS[key]}</div>`;
+  }).join('');
 }
 
 function setDomainTab(key) {
