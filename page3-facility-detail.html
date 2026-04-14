@@ -412,10 +412,11 @@ const FACILITY_DATA = {
 const DOMAIN_ORDER = ['clinical','regulatory','staffing','financial','training'];
 
 // ─── Tooltip functions (verbatim from page2-om-view.html) ────────────────────
-function colorClass(val, i, data) {
+function colorClass(val, i, data, domain) {
   const num = parseFloat(String(val).replace('%','').replace('x','').replace(',','').replace('\u2605',''));
   if (isNaN(num)) return '';
-  const meta = META[activeDomain];
+  const d = domain || activeDomain;
+  const meta = META[d];
   if (!meta || !meta[i]) return '';
   const nat = meta[i].benchmarkNat;
   if (nat == null) return '';
@@ -533,7 +534,7 @@ function domainStatusBadge(domainKey) {
     return `<span class="domain-badge" style="background:rgba(0,0,0,0.05);color:var(--text2)">Active</span>`;
   }
   let aboveCount = 0;
-  data.values.forEach((v, i) => { if (colorClass(v, i, data) === 'val-red') aboveCount++; });
+  data.values.forEach((v, i) => { if (colorClass(v, i, data, domainKey) === 'val-red') aboveCount++; });
   if (aboveCount > 0) {
     return `<span class="domain-badge" style="background:rgba(0,0,0,0.05);color:#c0392b">${aboveCount} flagged</span>`;
   }
@@ -662,7 +663,7 @@ function renderDomainTabs() {
     const data  = FACILITY_DATA[key];
     let aboveCount = 0;
     if (key !== 'training') {
-      data.values.forEach((v, i) => { if (colorClass(v, i, data) === 'val-red') aboveCount++; });
+      data.values.forEach((v, i) => { if (colorClass(v, i, data, key) === 'val-red') aboveCount++; });
     }
     const badge   = aboveCount > 0 ? `<span class="domain-tab-badge">${aboveCount}</span>` : '';
     const isActive   = key === activeDomain;
