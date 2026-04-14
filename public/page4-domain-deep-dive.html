@@ -157,6 +157,8 @@
     <div class="fac-card-name">Sunrise Hyde Park</div>
     <div class="fac-card-sub">Sunrise Senior Living &middot; Chicago, IL &middot; Urban</div>
     <div><span class="fac-tier-badge">Organizational Member</span></div>
+    <div style="margin-top:4px;font-size:11px;color:var(--text2);">Member Since: 2019 <span style="color:var(--text3)">(6 yrs)</span></div>
+    <div style="margin-top:4px;"><span style="display:inline-block;background:var(--flag-bg);border:1px solid var(--border2);color:var(--text2);padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;">SFF Candidate</span></div>
   </div>
   <div class="fac-id-middle">
     <div class="fac-section-title">Facility Info</div>
@@ -166,6 +168,7 @@
       <div class="fac-meta-item"><div class="fac-meta-label">Certified Beds</div><div class="fac-meta-val">124</div></div>
       <div class="fac-meta-item"><div class="fac-meta-label">Avg Age Residents</div><div class="fac-meta-val">82</div></div>
       <div class="fac-meta-item"><div class="fac-meta-label">City / State</div><div class="fac-meta-val small">Chicago, IL</div></div>
+      <div class="fac-meta-item"><div class="fac-meta-label">County</div><div class="fac-meta-val small">Cook County</div></div>
       <div class="fac-meta-item"><div class="fac-meta-label">Parent Org</div><div class="fac-meta-val small">Sunrise Senior Living</div></div>
     </div>
   </div>
@@ -234,6 +237,11 @@ const METRICS = {
     { key:'fallsMajor',     label:'Falls w/ Major Injury %',       unit:'%', highIsBad:true,  benchmarkNat:13.5, benchmarkState:14.1 },
     { key:'pressureUlcer',  label:'Pressure Ulcer % (New/Wors.)',  unit:'%', highIsBad:true,  benchmarkNat:5.9,  benchmarkState:6.2  },
     { key:'readmission',    label:'30-Day Readmission %',          unit:'%', highIsBad:true,  benchmarkNat:19.5, benchmarkState:20.1 },
+    { key:'catheterUse',    label:'Catheter Use Rate %',           unit:'%', highIsBad:true,  benchmarkNat:3.5,  benchmarkState:3.8  },
+    { key:'utiRate',        label:'UTI Rate %',                    unit:'%', highIsBad:true,  benchmarkNat:3.2,  benchmarkState:3.5  },
+    { key:'depressive',     label:'Depressive Symptoms %',         unit:'%', highIsBad:true,  benchmarkNat:11.0, benchmarkState:11.8 },
+    { key:'helpADL',        label:'Help w/ Daily Activities %',    unit:'%', highIsBad:false, benchmarkNat:65.0, benchmarkState:64.2 },
+    { key:'incontinence',   label:'Incontinence Rate %',           unit:'%', highIsBad:true,  benchmarkNat:46.0, benchmarkState:47.5 },
   ],
   regulatory: [
     { key:'gPlusCitations',    label:'G+ Severity Citations',      unit:'',  highIsBad:true,  benchmarkNat:1.8,  benchmarkState:2.1  },
@@ -241,6 +249,7 @@ const METRICS = {
     { key:'citationsQtr',      label:'Citations / Quarter',        unit:'',  highIsBad:true,  benchmarkNat:3.1,  benchmarkState:3.3  },
     { key:'fiveStar',          label:'CMS 5-Star Overall',         unit:'★', highIsBad:false, benchmarkNat:3.1,  benchmarkState:3.0  },
     { key:'healthInspection',  label:'Health Inspection ★',        unit:'★', highIsBad:false, benchmarkNat:3.0,  benchmarkState:2.9  },
+    { key:'sff',               label:'SFF Status',                 unit:'',  highIsBad:true,  benchmarkNat:null, benchmarkState:null },
   ],
   staffing: [
     { key:'rnHprd',       label:'RN HPRD',                         unit:'',  highIsBad:false, benchmarkNat:0.55, benchmarkState:0.54 },
@@ -249,8 +258,10 @@ const METRICS = {
     { key:'qualityMix',   label:'Quality Mix %',                   unit:'%', highIsBad:false, benchmarkNat:38.0, benchmarkState:36.0 },
   ],
   financial: [
-    { key:'cmi',       label:'Case Mix Index (CMI)',                unit:'',  highIsBad:false, benchmarkNat:1.04, benchmarkState:1.03 },
-    { key:'occupancy', label:'Occupancy Rate %',                    unit:'%', highIsBad:false, benchmarkNat:80.0, benchmarkState:79.5 },
+    { key:'cmi',              label:'Case Mix Index (CMI)',          unit:'',  highIsBad:false, benchmarkNat:1.04, benchmarkState:1.03 },
+    { key:'occupancy',        label:'Occupancy Rate %',             unit:'%', highIsBad:false, benchmarkNat:80.0, benchmarkState:79.5 },
+    { key:'operatingMargin',  label:'Operating Margin %',           unit:'%', highIsBad:false, benchmarkNat:2.1,  benchmarkState:1.8  },
+    { key:'snfQrpCompliance', label:'SNF QRP Compliance %',         unit:'%', highIsBad:false, benchmarkNat:94.0, benchmarkState:93.5 },
   ],
   training: [
     { key:'certCompleted',     label:'% Certification Completed',  unit:'%', highIsBad:false, benchmarkNat:32.0, benchmarkState:null },
@@ -281,6 +292,15 @@ const FAC = {
   certCompleted:     [25.0,25.8,26.2,26.8,27.1,27.5,28.0,28.5,29.0,29.5,30.0,30.5],
   certStarted:       [33.0,33.5,34.0,34.5,35.0,35.5,35.9,36.2,36.5,37.0,37.5,38.0],
   certificationRate: [22.0,22.5,23.0,23.5,24.0,24.4,24.8,25.1,25.5,25.9,26.2,26.5],
+  // Clinical QMs (Items 1–5)
+  catheterUse:       [4.0, 4.2, 4.4, 4.5, 4.6, 4.7, 4.8, 4.9, 5.0, 5.0, 5.1, 5.2],
+  utiRate:           [3.8, 3.6, 3.5, 3.4, 3.3, 3.2, 3.1, 3.1, 3.0, 2.9, 2.9, 2.8],
+  depressive:        [11.0,11.4,11.8,12.0,12.2,12.4,12.6,12.8,13.0,13.2,13.4,13.5],
+  helpADL:           [62.0,62.5,63.0,63.8,64.2,64.8,65.5,66.0,66.5,67.1,67.8,68.2],
+  incontinence:      [44.0,44.5,45.0,45.5,46.0,46.5,47.0,47.0,47.2,47.5,48.0,48.5],
+  // Financial (Items 8–9)
+  operatingMargin:   [2.8, 3.0, 3.1, 3.2, 3.2, 3.3, 3.4, 3.4, 3.5, 3.5, 3.5, 3.5],
+  snfQrpCompliance:  [93.0,93.5,94.0,94.5,95.0,95.0,95.5,95.5,95.8,96.0,96.0,96.2],
 };
 
 // ─── State ────────────────────────────────────────────────────────────────────
@@ -448,9 +468,11 @@ function renderMetricList(domain) {
     const vals    = FAC[m.key];
     const current = vals ? vals[vals.length - 1] : null;
     const active  = m.key === activeMetricKey ? ' active' : '';
+    const isAbove = current != null && m.benchmarkNat != null && current > m.benchmarkNat;
+    const valStyle = isAbove ? ' style="color:#c0392b;font-weight:600"' : '';
     return `<div class="metric-item${active}" onclick="selectMetric('${m.key}')">
       <span class="metric-item-label">${m.label}</span>
-      <span class="metric-item-val">${fmtVal(current, m.unit)}</span>
+      <span class="metric-item-val"${valStyle}>${fmtVal(current, m.unit)}</span>
     </div>`;
   }).join('');
   document.getElementById('metric-list').innerHTML =

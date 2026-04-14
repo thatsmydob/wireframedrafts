@@ -223,6 +223,8 @@
     <div class="fac-card-name">Sunrise Hyde Park</div>
     <div class="fac-card-sub">Sunrise Senior Living &middot; Chicago, IL &middot; Urban</div>
     <div><span class="fac-tier-badge">Organizational Member</span></div>
+    <div style="margin-top:4px;font-size:11px;color:var(--text2);">Member Since: 2019 <span style="color:var(--text3)">(6 yrs)</span></div>
+    <div style="margin-top:4px;"><span style="display:inline-block;background:var(--flag-bg);border:1px solid var(--border2);color:var(--text2);padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;">SFF Candidate</span></div>
   </div>
 
   <!-- Middle: facility info -->
@@ -248,6 +250,10 @@
       <div class="fac-meta-item">
         <div class="fac-meta-label">City / State</div>
         <div class="fac-meta-val small">Chicago, IL</div>
+      </div>
+      <div class="fac-meta-item">
+        <div class="fac-meta-label">County</div>
+        <div class="fac-meta-val small">Cook County</div>
       </div>
       <div class="fac-meta-item">
         <div class="fac-meta-label">Parent Org</div>
@@ -323,6 +329,11 @@ const META = {
     { name:'Falls w/ Major Injury %',          def:'% of SNF residents who experienced one or more falls with major injury during their stay.',                                                                  src:'SNF QRP',                lag:'9 months',   benchmarkNat:13.5, benchmarkState:14.1, highIsBad:true,  hasTrend:true,  omAvg:[8.1,8.2,8.3,8.1],   trend:[12.3,12.4,12.5,12.6] },
     { name:'Pressure Ulcer % (New/Worsening)', def:'% of residents with pressure ulcers or injuries that are new or worsened.',                                                                                  src:'SNF QRP',                lag:'9 months',   benchmarkNat:5.9,  benchmarkState:6.2,  highIsBad:true,  hasTrend:true,  omAvg:[4.8,4.9,5.0,4.9],   trend:[5.9,6.0,6.2,6.3] },
     { name:'30-Day Readmission %',             def:'Risk-standardized rate of unplanned hospital readmissions within 30 days of SNF discharge. Core SNF VBP measure.',                                          src:'SNF VBP',                lag:'~2 years',   benchmarkNat:19.5, benchmarkState:20.1, highIsBad:true,  hasTrend:false, omAvg:null,                 trend:null },
+    { name:'Catheter Use Rate %',              def:'% of long-stay residents who have an indwelling urinary catheter. High rates suggest overuse and infection risk.',                                              src:'MDS Quality Measures',   lag:'6–9 months', benchmarkNat:3.5,  benchmarkState:3.8,  highIsBad:true,  hasTrend:true,  omAvg:[3.2,3.3,3.3,3.4], trend:[4.8,5.0,5.1,5.2] },
+    { name:'UTI Rate %',                       def:'% of long-stay residents who had a urinary tract infection. Indicator of infection prevention and catheter management quality.',                               src:'MDS Quality Measures',   lag:'6–9 months', benchmarkNat:3.2,  benchmarkState:3.5,  highIsBad:true,  hasTrend:true,  omAvg:[3.0,3.1,3.1,3.1], trend:[3.1,3.0,2.9,2.8] },
+    { name:'Depressive Symptoms %',            def:'% of long-stay residents experiencing depressive symptoms. Reflects psychosocial care quality and staff engagement with residents.',                           src:'MDS Quality Measures',   lag:'6–9 months', benchmarkNat:11.0, benchmarkState:11.8, highIsBad:true,  hasTrend:true,  omAvg:[10.8,11.0,11.1,11.0], trend:[12.8,13.0,13.2,13.5] },
+    { name:'Help w/ Daily Activities %',       def:'% of long-stay residents who received assistance with activities of daily living (ADLs). Higher rates indicate greater resident independence support.',        src:'MDS Quality Measures',   lag:'6–9 months', benchmarkNat:65.0, benchmarkState:64.2, highIsBad:false, hasTrend:true,  omAvg:[64.5,65.0,65.2,65.3], trend:[66.5,67.1,67.8,68.2] },
+    { name:'Incontinence Rate %',              def:'% of long-stay residents who are frequently incontinent or have an indwelling catheter. Reflects bowel and bladder management care quality.',                  src:'MDS Quality Measures',   lag:'6–9 months', benchmarkNat:46.0, benchmarkState:47.5, highIsBad:true,  hasTrend:true,  omAvg:[45.5,45.8,46.0,46.1], trend:[47.0,47.5,48.0,48.5] },
   ],
   regulatory: [
     { name:'G+ Severity Citations',     def:'Count of survey deficiencies at severity G or higher — actual harm to one or more residents. Denise\'s top tracking priority.',         src:'NH Health Deficiencies', lag:'1–3 months', benchmarkNat:1.8,  benchmarkState:2.1,  highIsBad:true,  hasTrend:true,  omAvg:[1.8,1.9,2.0,1.8], trend:[3,4,4,4] },
@@ -334,6 +345,7 @@ const META = {
     { name:'Quality Measure \u2605',   def:'Star rating derived from MDS-based quality measure performance.',                                                                        src:'NH Provider Info',       lag:'1–3 months', benchmarkNat:3.2,  benchmarkState:3.1,  highIsBad:false, hasTrend:true,  omAvg:[3.3,3.4,3.4,3.4], trend:[2.9,3.0,3.0,3.0] },
     { name:'Staffing \u2605',          def:'Star rating based on RN and total staffing HPRD relative to CMS thresholds.',                                                           src:'NH Provider Info',       lag:'1–3 months', benchmarkNat:3.1,  benchmarkState:3.0,  highIsBad:false, hasTrend:true,  omAvg:[3.2,3.3,3.3,3.3], trend:[2.8,2.9,2.9,2.9] },
     { name:'Failed Revisit',            def:'Facility failed a follow-up inspection after a prior deficiency — persistent compliance issues. Data source pending.',                   src:'TBD',                    lag:'TBD',        benchmarkNat:null, benchmarkState:null, highIsBad:true,  hasTrend:false, omAvg:null,               trend:null },
+    { name:'SFF Status',               def:'Special Focus Facility or SFF Candidate designation — CMS flag for facilities with persistent, serious quality issues. Display as status label, not trend.', src:'NH Provider Info',       lag:'Monthly',    benchmarkNat:null, benchmarkState:null, highIsBad:true,  hasTrend:false, omAvg:null,               trend:null },
   ],
   staffing: [
     { name:'RN HPRD',                      def:'Registered nurse hours per resident per day. Key staffing adequacy indicator.',                                                                                src:'NH Provider Info',    lag:'1–3 months', benchmarkNat:0.55, benchmarkState:0.54, highIsBad:false, hasTrend:true,  omAvg:[0.54,0.55,0.55,0.55], trend:[0.47,0.48,0.48,0.48] },
@@ -345,6 +357,8 @@ const META = {
   financial: [
     { name:'Case Mix Index (CMI)', def:'Clinical complexity and resource intensity of the resident population. Higher = sicker residents.',  src:'NH Provider Info', lag:'1–3 months', benchmarkNat:1.04, benchmarkState:1.03, highIsBad:false, hasTrend:true,  omAvg:[1.05,1.06,1.07,1.06], trend:[0.92,0.93,0.94,0.94] },
     { name:'Occupancy Rate %',     def:'% of certified beds occupied on an average day. Low occupancy may signal performance or community trust issues.',                   src:'NH Provider Info', lag:'1–3 months', benchmarkNat:80.0, benchmarkState:79.5, highIsBad:false, hasTrend:true,  omAvg:[80.2,80.5,80.7,80.6], trend:[70.5,70.8,71.0,71.2] },
+    { name:'Operating Margin %',   def:'Operating income as a percentage of total revenue. Indicates financial sustainability. National benchmark reflects CMS cost report data.',                   src:'CMS Cost Reports',  lag:'~1–2 years', benchmarkNat:2.1,  benchmarkState:1.8,  highIsBad:false, hasTrend:true,  omAvg:[2.2,2.3,2.3,2.4],     trend:[3.2,3.4,3.5,3.5] },
+    { name:'SNF QRP Compliance %', def:'% compliance with Skilled Nursing Facility Quality Reporting Program submission requirements. Low compliance may affect Five-Star rating.',               src:'CMS QRP',           lag:'~9 months',  benchmarkNat:94.0, benchmarkState:93.5, highIsBad:false, hasTrend:true,  omAvg:[93.5,94.0,94.2,94.3], trend:[95.0,95.5,96.0,96.2] },
   ],
   training: [
     { name:'# For-Sale Products',     def:'Count of for-sale educational products purchased by members at this facility in the last 12 months.',               src:'AAPACN ProTech',    lag:'Monthly', benchmarkNat:null, benchmarkState:null, highIsBad:false, hasTrend:true,  omAvg:[18,19,20,20], trend:[10,11,12,12] },
@@ -360,16 +374,16 @@ const META = {
 const FACILITY_DATA = {
   clinical: {
     label:'Clinical Quality', lag:'MDS QM: 6–9 mo | SNF QRP: 9 mo | SNF VBP: 2 yr',
-    values:['13.4%','6.8%','2.8%','2.4%','17.2%'],
-    rThresh:[17, 5.0, 18.0, 10.0, 21.0],
-    gThresh:[13, 3.5, 13.0,  6.0, 18.5],
-    lowBad:[],
+    values:['13.4%','6.8%','2.8%','2.4%','17.2%','5.2%','2.8%','13.5%','68.2%','48.5%'],
+    rThresh:[17,  5.0, 18.0, 10.0, 21.0, 4.5, 4.0, 13.0, null, 50.0],
+    gThresh:[13,  3.5, 13.0,  6.0, 18.5, 2.5, 2.5,  9.0, 68.0, 44.0],
+    lowBad:[7],
   },
   regulatory: {
     label:'Regulatory & Survey', lag:'NH Provider Info: 1–3 mo | NH Health Deficiencies: 1–3 mo',
-    values:['2','0','3.5','28','4','4','4','4','No'],
-    rThresh:[3, 1, 4.5, 40, null, null, null, null, null],
-    gThresh:[1, 0, 2.5, 20, null, null, null, null, null],
+    values:['2','0','3.5','28','4','4','4','4','No','No'],
+    rThresh:[3, 1, 4.5, 40, null, null, null, null, null, null],
+    gThresh:[1, 0, 2.5, 20, null, null, null, null, null, null],
     lowBad:[],
   },
   staffing: {
@@ -380,11 +394,11 @@ const FACILITY_DATA = {
     lowBad:[0, 1, 2],
   },
   financial: {
-    label:'Financial', lag:'NH Provider Info: 1–3 mo',
-    values:['1.06','81.5%'],
-    rThresh:[null, 70.0],
-    gThresh:[null, 85.0],
-    lowBad:[1],
+    label:'Financial', lag:'NH Provider Info: 1–3 mo | CMS Cost Reports: 1–2 yr | CMS QRP: ~9 mo',
+    values:['1.06','81.5%','3.5%','96.2%'],
+    rThresh:[null, 70.0, null, null],
+    gThresh:[null, 85.0, 4.0,  96.0],
+    lowBad:[1, 2, 3],
   },
   training: {
     label:'Training & Certification', lag:'AAPACN ProTech: monthly | \u26A0 <1/3 of certifications matched to facility CCN',
@@ -398,7 +412,15 @@ const FACILITY_DATA = {
 const DOMAIN_ORDER = ['clinical','regulatory','staffing','financial','training'];
 
 // ─── Tooltip functions (verbatim from page2-om-view.html) ────────────────────
-function colorClass(val, i, data) { return ''; }
+function colorClass(val, i, data) {
+  const num = parseFloat(String(val).replace('%','').replace('x','').replace(',','').replace('\u2605',''));
+  if (isNaN(num)) return '';
+  const meta = META[activeDomain];
+  if (!meta || !meta[i]) return '';
+  const nat = meta[i].benchmarkNat;
+  if (nat == null) return '';
+  return num > nat ? 'val-red' : '';
+}
 function _colorClass_disabled(val, i, data) {
   const num = parseFloat(String(val).replace('%','').replace('x','').replace('+','').replace(',',''));
   if (isNaN(num)) return '';
