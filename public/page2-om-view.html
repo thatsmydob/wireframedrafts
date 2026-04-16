@@ -228,7 +228,7 @@
 <!-- Nav -->
 <div class="nav">
   <div class="nav-links">
-    <div class="nav-link" onclick="window.location='page1-tooltips.html'" style="cursor:pointer">Portfolio Overview</div>
+    <div class="nav-link" onclick="window.location='page1-tooltips.html'" style="cursor:pointer">National Overview</div>
     <div class="nav-link active">Parent Company View</div>
     <div class="nav-link" onclick="window.location='page3-facility-detail.html'" style="cursor:pointer">Facility View</div>
     <div class="nav-link" onclick="window.location='page4-domain-deep-dive.html'" style="cursor:pointer">Domain Deep-Dive</div>
@@ -237,7 +237,7 @@
 
 <!-- Back + Filters -->
 <div class="filters">
-  <div class="back-btn" onclick="window.location='page1-tooltips.html'">&#8592; Back to Portfolio</div>
+  <div class="back-btn" onclick="window.location='page1-tooltips.html'">&#8592; Back to National Overview</div>
   <div class="filter-divider"></div>
   <span class="filter-label">Parent Org:</span>
   <select class="filter-select highlight" style="min-width:160px"><option>Sunrise Senior Living</option><option>Kindred Healthcare</option><option>Genesis HealthCare</option><option>Trilogy Health Services</option><option>ProMedica Senior Care</option></select>
@@ -376,6 +376,11 @@ const META = {
     { name:'Falls w/ Major Injury %',         def:'% of SNF residents who experienced one or more falls with major injury during their stay.',                                                                  src:'SNF QRP',                lag:'9 months',   benchmarkNat:13.5, benchmarkState:14.1, highIsBad:true,  hasTrend:true,  trend:[[15.1,15.3,15.4,15.5],[13.8,13.9,14.0,14.1],[12.3,12.4,12.5,12.6],[13.4,13.6,13.7,13.8],[2.3,2.3,2.4,2.3],[4.1,4.2,4.3,4.1],[18.2,18.4,18.6,18.2],[11.3,11.4,11.5,11.3],[9.8,9.9,10.0,9.8],[14.7,14.8,15.0,14.7],[3.8,3.9,4.0,3.8],[1.1,1.1,1.2,1.1]] },
     { name:'Pressure Ulcer % (New/Worsening)',def:'% of residents with pressure ulcers or injuries that are new or worsened. Numerator/denominator available on drill-down.',                                  src:'SNF QRP',                lag:'9 months',   benchmarkNat:5.9,  benchmarkState:6.2,  highIsBad:true,  hasTrend:true,  trend:[[6.8,7.0,7.0,7.1],[6.2,6.3,6.4,6.4],[5.9,6.0,6.2,6.3],[6.7,6.8,6.9,6.9],[2.9,3.0,3.0,2.9],[5.1,5.2,5.3,5.1],[13.1,13.3,13.4,13.1],[3.8,3.9,4.0,3.8],[2.4,2.5,2.5,2.4],[7.8,7.9,8.0,7.8],[7.5,7.6,7.7,7.5],[2.4,2.5,2.5,2.4]] },
     { name:'30-Day Readmission %',            def:'Risk-standardized rate of unplanned hospital readmissions within 30 days of SNF discharge. Core SNF VBP measure.',                                          src:'SNF VBP',                lag:'~2 years',   benchmarkNat:19.5, benchmarkState:20.1, highIsBad:true,  hasTrend:false, trend:null },
+    { name:'Catheter Use Rate %',             def:'% of long-stay residents with an indwelling urinary catheter. High rates indicate potential overuse and are a CMS quality measure concern.',                         src:'MDS Quality Measures',   lag:'6–9 months', benchmarkNat:3.5,  benchmarkState:3.8,  highIsBad:true,  hasTrend:false, trend:null },
+    { name:'UTI Rate %',                      def:'% of long-stay residents who experienced a urinary tract infection. Often linked to catheter use rates and infection prevention practices.',                         src:'MDS Quality Measures',   lag:'6–9 months', benchmarkNat:3.2,  benchmarkState:3.5,  highIsBad:true,  hasTrend:false, trend:null },
+    { name:'Depressive Symptoms %',           def:'% of long-stay residents showing depressive symptoms (PHQ-9). Indicator of psychosocial care quality and activity programming.',                                    src:'MDS Quality Measures',   lag:'6–9 months', benchmarkNat:11.0, benchmarkState:11.8, highIsBad:true,  hasTrend:false, trend:null },
+    { name:'Help w/ Daily Activities %',      def:'% of long-stay residents who received help with activities of daily living. Higher = greater dependency; used in conjunction with decline in ADLs.',               src:'MDS Quality Measures',   lag:'6–9 months', benchmarkNat:65.0, benchmarkState:64.2, highIsBad:false, hasTrend:false, trend:null },
+    { name:'Incontinence Rate %',             def:'% of long-stay residents with urinary incontinence who did not have a toileting plan. Linked to catheter use and dignity-of-care outcomes.',                       src:'MDS Quality Measures',   lag:'6–9 months', benchmarkNat:46.0, benchmarkState:47.5, highIsBad:true,  hasTrend:false, trend:null },
   ],
   regulatory: [
     { name:'G+ Severity Citations',    def:'Count of survey deficiencies at severity G or higher — actual harm to one or more residents. Denise\'s top tracking priority.',         src:'NH Health Deficiencies', lag:'1–3 months', benchmarkNat:1.8, benchmarkState:2.1, highIsBad:true, hasTrend:true,  trend:[[2,3,3,3],[1,1,1,1],[3,4,4,4],[2,2,2,2],[0,0,0,0],[4,4,5,4],[1,1,1,0],[0,0,0,0],[2,2,2,1],[3,3,4,3],[1,1,1,0],[0,0,0,0]] },
@@ -387,6 +392,7 @@ const META = {
     { name:'Quality Measure ★',       def:'Star rating derived from MDS-based quality measure performance.',                                                                        src:'NH Provider Info',       lag:'1–3 months', benchmarkNat:3.2, benchmarkState:3.1, highIsBad:false, hasTrend:true,  trend:[[3.2,3.3,3.3,3.3],[3.3,3.4,3.4,3.4],[2.9,3.0,3.0,3.0],[3.3,3.4,3.4,3.4],[4,4,4,4],[2,2,3,3],[4,4,4,4],[5,5,5,5],[3,3,3,3],[3,3,3,3],[4,4,4,4],[4,4,4,4]] },
     { name:'Staffing ★',              def:'Star rating based on RN and total staffing HPRD relative to CMS thresholds.',                                                           src:'NH Provider Info',       lag:'1–3 months', benchmarkNat:3.1, benchmarkState:3.0, highIsBad:false, hasTrend:true,  trend:[[3.1,3.2,3.2,3.2],[3.4,3.5,3.5,3.5],[2.8,2.9,2.9,2.9],[3.1,3.2,3.2,3.2],[4,4,4,4],[2,2,2,2],[3,3,3,3],[4,4,4,4],[3,3,3,3],[2,2,2,2],[3,3,3,3],[4,4,4,4]] },
     { name:'Failed Revisit',           def:'Facility failed a follow-up inspection after a prior deficiency — persistent compliance issues. Data source pending.',                   src:'TBD',                    lag:'TBD',        benchmarkNat:null, benchmarkState:null, highIsBad:true, hasTrend:false, trend:null },
+    { name:'SFF Status',               def:'Special Focus Facility (SFF) designation — assigned to facilities with persistent poor performance. SFF Candidate = under review. Affects staffing requirements and oversight intensity.',  src:'NH Provider Info', lag:'1–3 months', benchmarkNat:null, benchmarkState:null, highIsBad:true, hasTrend:false, trend:null },
   ],
   staffing: [
     { name:'RN HPRD',                     def:'Registered nurse hours per resident per day. Key staffing adequacy indicator.',                                                                                src:'NH Provider Info',    lag:'1–3 months', benchmarkNat:0.55, benchmarkState:0.54, highIsBad:false, hasTrend:true,  trend:[[0.51,0.52,0.52,0.52],[0.60,0.61,0.61,0.61],[0.47,0.48,0.48,0.48],[0.54,0.55,0.55,0.55],[0.44,0.44,0.45,0.44],[0.58,0.59,0.59,0.58],[0.62,0.62,0.63,0.62],[0.71,0.72,0.72,0.71],[0.49,0.50,0.50,0.49],[0.45,0.46,0.46,0.45],[0.67,0.68,0.68,0.67],[0.57,0.58,0.58,0.57]] },
@@ -398,6 +404,7 @@ const META = {
   financial: [
     { name:'Case Mix Index (CMI)',  def:'Clinical complexity and resource intensity of the resident population. Higher = sicker residents. Shown alongside national ratio.',  src:'NH Provider Info', lag:'1–3 months', benchmarkNat:1.04, benchmarkState:1.03, highIsBad:false, hasTrend:true,  trend:[[1.06,1.07,1.08,1.08],[1.20,1.21,1.22,1.22],[0.92,0.93,0.94,0.94],[1.03,1.04,1.05,1.05],[1.02,1.03,1.03,1.02],[1.28,1.29,1.30,1.28],[0.91,0.92,0.93,0.91],[1.11,1.12,1.13,1.11],[1.18,1.19,1.20,1.18],[0.88,0.89,0.90,0.88],[1.07,1.08,1.09,1.07],[0.98,0.99,1.00,0.98]] },
     { name:'Occupancy Rate %',      def:'% of certified beds occupied on an average day. Low occupancy may signal performance or community trust issues.',                   src:'NH Provider Info', lag:'1–3 months', benchmarkNat:80.0, benchmarkState:79.5, highIsBad:false, hasTrend:true,  trend:[[81.5,82.0,82.3,82.4],[87.4,87.7,88.0,88.1],[70.5,70.8,71.0,71.2],[78.8,79.2,79.5,79.6],[68.5,68.8,69.0,68.5],[84.2,84.5,84.8,84.2],[91.0,91.2,91.4,91.0],[88.5,88.8,89.0,88.5],[73.1,73.4,73.6,73.1],[65.2,65.5,65.8,65.2],[86.4,86.7,87.0,86.4],[79.5,79.8,80.0,79.5]] },
+    { name:'SNF QRP Compliance %', def:'% compliance with Skilled Nursing Facility Quality Reporting Program submission requirements. Low compliance may affect Five-Star rating.',               src:'CMS QRP',          lag:'~9 months',  benchmarkNat:94.0, benchmarkState:93.5, highIsBad:false, hasTrend:false, trend:null },
   ],
   training: [
     { name:'# For-Sale Products',    def:'Count of for-sale educational products purchased by members at this facility in the last 12 months.',               src:'AAPACN ProTech',    lag:'Monthly', benchmarkNat:null, benchmarkState:null, highIsBad:false, hasTrend:true,  trend:[[80,82,85,87],[28,29,30,31],[10,11,12,12],[600,610,618,624],[5,5,6,5],[8,8,9,8],[0,0,0,0],[0,0,0,0],[14,15,15,14],[3,3,4,3],[12,13,13,12],[18,19,20,18]] },
@@ -413,44 +420,44 @@ const META = {
 const TABS = {
   clinical: {
     label:'Clinical Quality', lag:'MDS QM: 6–9 mo | SNF QRP: 9 mo | SNF VBP: 2 yr',
-    cols:['Facility Name','Member Status','Antipsychotic Use %','Exag. Wt Loss %','Falls w/ Major Injury %','Pressure Ulcer %\n(New/Worsening)','30-Day Readmit %'],
+    cols:['Facility Name','Member Status','Antipsychotic Use %','Exag. Wt Loss %','Falls w/ Major Injury %','Pressure Ulcer %\n(New/Worsening)','30-Day Readmit %','Catheter Use Rate %','UTI Rate %','Depressive Symptoms %','Help w/ Daily Activities %','Incontinence Rate %'],
     fRows:[
-      ['Sunrise Evanston',     'Non-member','24.1%','9.8%','2.3%','2.9%','21.7%'],
-      ['Sunrise Waukegan',     'Non-member','21.8%','7.2%','4.1%','5.1%','18.9%'],
-      ['Sunrise Hyde Park',    'OM',        '13.4%','6.8%','2.8%','2.4%','17.2%'],
-      ['Sunrise Lincoln Park', 'OM',        '13.4%','4.2%','1.9%','2.1%','16.4%'],
-      ['Sunrise Oak Park',     'OM',       '11.2%','6.3%','1.1%','2.4%','15.8%'],
-      ['Sunrise Naperville',   'OM',        '15.8%','5.1%','3.2%','3.8%','19.4%'],
-      ['Sunrise Schaumburg',   'OM',        '12.9%','4.8%','2.5%','2.9%','17.8%'],
-      ['Sunrise Rockford',     'OM',        '16.2%','5.8%','3.9%','4.2%','20.1%'],
-      ['Sunrise Madison',      'OM','14.7%','4.5%','2.8%','3.1%','18.5%'],
-      ['Sunrise Kenosha',      'OM','13.1%','3.8%','1.8%','1.9%','16.9%'],
-      ['Sunrise Indianapolis', 'OM',        '15.7%','5.7%','3.8%','4.1%','19.8%'],
-      ['Sunrise Bloomington',  'OM',       '9.8%', '3.3%','1.1%','1.5%','15.2%'],
+      ['Sunrise Evanston',     'Non-member','24.1%','9.8%','2.3%','2.9%','21.7%','9.4%','7.1%','23.2%','47.8%','50.1%'],
+      ['Sunrise Waukegan',     'Non-member','21.8%','7.2%','4.1%','5.1%','18.9%','8.7%','6.4%','21.8%','45.3%','48.2%'],
+      ['Sunrise Hyde Park',    'OM',        '13.4%','6.8%','2.8%','2.4%','17.2%','6.2%','4.1%','16.9%','38.7%','40.5%'],
+      ['Sunrise Lincoln Park', 'OM',        '13.4%','4.2%','1.9%','2.1%','16.4%','5.8%','3.6%','15.4%','36.2%','38.1%'],
+      ['Sunrise Oak Park',     'OM',       '11.2%','6.3%','1.1%','2.4%','15.8%','5.1%','3.2%','14.8%','35.1%','37.4%'],
+      ['Sunrise Naperville',   'OM',        '15.8%','5.1%','3.2%','3.8%','19.4%','7.3%','5.0%','18.7%','41.4%','43.8%'],
+      ['Sunrise Schaumburg',   'OM',        '12.9%','4.8%','2.5%','2.9%','17.8%','6.5%','4.3%','17.2%','39.8%','42.0%'],
+      ['Sunrise Rockford',     'OM',        '16.2%','5.8%','3.9%','4.2%','20.1%','8.1%','6.0%','20.5%','44.1%','46.7%'],
+      ['Sunrise Madison',      'OM',        '14.7%','4.5%','2.8%','3.1%','18.5%','7.0%','4.8%','18.1%','40.9%','43.1%'],
+      ['Sunrise Kenosha',      'OM',        '13.1%','3.8%','1.8%','1.9%','16.9%','5.4%','3.4%','15.8%','37.2%','38.9%'],
+      ['Sunrise Indianapolis', 'OM',        '15.7%','5.7%','3.8%','4.1%','19.8%','7.9%','5.8%','20.0%','43.5%','46.2%'],
+      ['Sunrise Bloomington',  'OM',        '9.8%', '3.3%','1.1%','1.5%','15.2%','4.8%','3.0%','13.9%','34.5%','35.7%'],
     ],
-    rThresh:[null,null,17,5.0,18.0,10.0,21.0],
-    gThresh:[null,null,13,3.5,13.0, 6.0,18.5],
+    rThresh:[null,null,17,5.0,18.0,10.0,21.0,5.0,4.5,15.0,null,55.0],
+    gThresh:[null,null,13,3.5,13.0, 6.0,18.5,3.0,3.0,10.0,null,40.0],
     lowBad:[],
   },
   regulatory: {
     label:'Regulatory & Survey', lag:'NH Provider Info: 1–3 mo | NH Health Deficiencies: 1–3 mo',
-    cols:['Facility Name','Member Status','G+ Citations','IJ Citations','Citations/Qtr','Total Citations (3yr)','5-Star Overall','Health Inspection ★','Quality Measure ★','Staffing ★','Failed Revisit'],
+    cols:['Facility Name','Member Status','G+ Citations','IJ Citations','Citations/Qtr','Total Citations (3yr)','5-Star Overall','Health Inspection ★','Quality Measure ★','Staffing ★','Failed Revisit','SFF Status'],
     fRows:[
-      ['Sunrise Evanston',     'Non-member','4','2','5.5','47','2','2','3','2','Yes'],
-      ['Sunrise Waukegan',     'Non-member','3','1','4.8','42','2','2','3','3','No'],
-      ['Sunrise Hyde Park',    'OM',        '2','0','3.5','28','4','4','4','4','No'],
-      ['Sunrise Lincoln Park', 'OM',        '1','0','2.2','18','4','5','4','4','No'],
-      ['Sunrise Oak Park',     'OM',       '1','0','2.8','21','4','4','4','5','No'],
-      ['Sunrise Naperville',   'OM',        '2','0','3.8','31','3','3','4','3','No'],
-      ['Sunrise Schaumburg',   'OM',        '1','0','2.5','22','4','4','4','4','No'],
-      ['Sunrise Rockford',     'OM',        '3','1','4.1','38','3','3','3','3','No'],
-      ['Sunrise Madison',      'OM','2','0','3.2','27','3','3','3','3','No'],
-      ['Sunrise Kenosha',      'OM','1','0','2.0','16','4','4','4','4','No'],
-      ['Sunrise Indianapolis', 'OM',        '2','0','3.5','30','3','3','3','3','No'],
-      ['Sunrise Bloomington',  'OM',       '0','0','1.8','14','5','5','5','5','No'],
+      ['Sunrise Evanston',     'Non-member','4','2','5.5','47','2','2','3','2','Yes','SFF'],
+      ['Sunrise Waukegan',     'Non-member','3','1','4.8','42','2','2','3','3','No','Candidate'],
+      ['Sunrise Hyde Park',    'OM',        '2','0','3.5','28','4','4','4','4','No','—'],
+      ['Sunrise Lincoln Park', 'OM',        '1','0','2.2','18','4','5','4','4','No','—'],
+      ['Sunrise Oak Park',     'OM',       '1','0','2.8','21','4','4','4','5','No','—'],
+      ['Sunrise Naperville',   'OM',        '2','0','3.8','31','3','3','4','3','No','—'],
+      ['Sunrise Schaumburg',   'OM',        '1','0','2.5','22','4','4','4','4','No','—'],
+      ['Sunrise Rockford',     'OM',        '3','1','4.1','38','3','3','3','3','No','Candidate'],
+      ['Sunrise Madison',      'OM',        '2','0','3.2','27','3','3','3','3','No','—'],
+      ['Sunrise Kenosha',      'OM',        '1','0','2.0','16','4','4','4','4','No','—'],
+      ['Sunrise Indianapolis', 'OM',        '2','0','3.5','30','3','3','3','3','No','—'],
+      ['Sunrise Bloomington',  'OM',        '0','0','1.8','14','5','5','5','5','No','—'],
     ],
-    rThresh:[null,null,3,1,4.5,40,null,null,null,null,null],
-    gThresh:[null,null,1,0,2.5,20,null,null,null,null,null],
+    rThresh:[null,null,3,1,4.5,40,null,null,null,null,null,null],
+    gThresh:[null,null,1,0,2.5,20,null,null,null,null,null,null],
     lowBad:[],
   },
   staffing: {
@@ -476,23 +483,23 @@ const TABS = {
   },
   financial: {
     label:'Financial', lag:'NH Provider Info: 1–3 mo',
-    cols:['Facility Name','Member Status','Case Mix Index (CMI)','Occupancy Rate %'],
+    cols:['Facility Name','Member Status','Case Mix Index (CMI)','Occupancy Rate %','SNF QRP Compliance %'],
     fRows:[
-      ['Sunrise Evanston',     'Non-member','1.02','68.5%'],
-      ['Sunrise Waukegan',     'Non-member','0.91','65.2%'],
-      ['Sunrise Hyde Park',    'OM',        '1.06','81.5%'],
-      ['Sunrise Lincoln Park', 'OM',        '1.20','87.4%'],
-      ['Sunrise Oak Park',     'OM',       '0.98','79.5%'],
-      ['Sunrise Naperville',   'OM',        '1.03','78.8%'],
-      ['Sunrise Schaumburg',   'OM',        '1.07','86.4%'],
-      ['Sunrise Rockford',     'OM',        '0.92','70.5%'],
-      ['Sunrise Madison',      'OM','1.05','79.6%'],
-      ['Sunrise Kenosha',      'OM','1.28','91.0%'],
-      ['Sunrise Indianapolis', 'OM',        '0.88','73.1%'],
-      ['Sunrise Bloomington',  'OM',       '1.18','88.5%'],
+      ['Sunrise Evanston',     'Non-member','1.02','68.5%','78.5%'],
+      ['Sunrise Waukegan',     'Non-member','0.91','65.2%','81.2%'],
+      ['Sunrise Hyde Park',    'OM',        '1.06','81.5%','93.5%'],
+      ['Sunrise Lincoln Park', 'OM',        '1.20','87.4%','96.0%'],
+      ['Sunrise Oak Park',     'OM',       '0.98','79.5%','94.8%'],
+      ['Sunrise Naperville',   'OM',        '1.03','78.8%','92.1%'],
+      ['Sunrise Schaumburg',   'OM',        '1.07','86.4%','95.4%'],
+      ['Sunrise Rockford',     'OM',        '0.92','70.5%','88.7%'],
+      ['Sunrise Madison',      'OM',        '1.05','79.6%','93.1%'],
+      ['Sunrise Kenosha',      'OM',        '1.28','91.0%','98.5%'],
+      ['Sunrise Indianapolis', 'OM',        '0.88','73.1%','87.4%'],
+      ['Sunrise Bloomington',  'OM',        '1.18','88.5%','97.2%'],
     ],
-    rThresh:[null,null,null,70.0],
-    gThresh:[null,null,null,85.0],
+    rThresh:[null,null,null,70.0,null],
+    gThresh:[null,null,null,85.0,null],
     lowBad:[3],
   },
   training: {
